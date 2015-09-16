@@ -1,0 +1,83 @@
+{% macro feeds_widget(feeds, moment) %}
+    {% if not feeds %}
+        <p class="text-center">Non ci sono avvisi</p>
+    {% else %}
+        {% for feed in feeds %}
+            <div class="feed-element">
+                <a href="#" class="pull-left">
+                    <img alt="image" class="img-circle" src="{{ feed.author.gravatar() }}">
+                </a>
+
+                <div class="media-body ">
+                    <small class="pull-right">{{ moment(feed.timestamp).fromNow() }}</small>
+                    <strong>{{ feed.author.first_name }} {{ feed.author.last_name }}</strong><br> {{ feed.title }}<br>
+
+                    <div class="well">
+                        {{ feed.body }}
+                    </div>
+                    <small class="text-muted">Postato {{ moment(feed.timestamp).fromNow() }} alle {{ feed.timestamp.strftime('%H:%M') }} - {{ feed.timestamp.strftime('%d.%m.%Y') }}</small>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="text-center link-block m-t">
+            <a href="{{ url_for('main.feeds') }}">
+                <i class="fa fa-envelope"></i> <strong>Leggi tutti gli avvisi</strong>
+            </a>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro feeds_navbar_widget(feeds, moment, n=3) %}
+    {% if not feeds %}
+        <p class="text-center">Non ci sono avvisi</p>
+    {% else %}
+        {% for feed in feeds[:n] %}
+            <li>
+                <div class="dropdown-messages-box">
+                    <a href="{{ feed.author.url }}" class="pull-left">
+                        <img alt="image" class="img-circle" src="{{ feed.author.gravatar() }}">
+                    </a>
+
+                    <div class="media-body">
+                        <small class="pull-right">{{ moment(feed.timestamp).fromNow() }}</small>
+                        <strong>{{ feed.author.first_name }} {{ feed.author.last_name }}</strong><br>{{ feed.title }}<br>
+                        <small class="text-muted">Postato {{ moment(feed.timestamp).fromNow() }} alle {{ feed.timestamp.strftime('%H:%M') }} - {{ feed.timestamp.strftime('%d.%m.%Y') }}</small>
+                    </div>
+                </div>
+            </li>
+            <li class="divider"></li>
+        {% endfor %}
+        <li>
+            <div class="text-center link-block">
+                <a href="{{ url_for('main.feeds') }}">
+                    <i class="fa fa-envelope"></i> <strong>Leggi tutti gli avvisi</strong>
+                </a>
+            </div>
+        </li>
+    {% endif %}
+{% endmacro %}
+
+
+{% macro pagination_widget(pagination, endpoint, fragment='') %}
+    <div class="btn-group pull-right">
+        <a class="btn btn-white btn-sm {% if not pagination.has_prev %}disabled{% endif %}"
+           href="{% if pagination.has_prev %}{{ url_for(endpoint, page=pagination.prev_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">
+            <i class="fa fa-arrow-left"></i>
+        </a>
+        {% for p in pagination.iter_pages() %}
+            {% if p %}
+                {% if p == pagination.page %}
+                    <a class="btn btn-white btn-sm active" href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
+                {% else %}
+                    <a class="btn btn-white btn-sm" href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
+                {% endif %}
+            {% else %}
+            {% endif %}
+        {% endfor %}
+        <a class="btn btn-white btn-sm {% if not pagination.has_next %}disabled{% endif %}"
+           href="{% if pagination.has_next %}{{ url_for(endpoint, page=pagination.next_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">
+            <i class="fa fa-arrow-right"></i>
+        </a>
+
+    </div>
+{% endmacro %}

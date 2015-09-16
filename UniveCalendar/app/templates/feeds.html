@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% set active_page='feeds' %}
+
+{% block head %}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+{% endblock %}
+
+
+{% block styles %}
+    {{ super() }}
+    <link href="{{ url_for('static', filename='css/plugins/iCheck/custom.css') }}" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-lg-12 animated fadeInRight">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Tutti gli avvisi </h5>
+
+                </div>
+                <div class="ibox-content">
+                    <div class="mail-box-header">
+
+                        <h2>
+                            Inbox {% if g.unread > 0 %}({{ g.unread }}){% endif %}
+                        </h2>
+
+                        <div class="mail-tools tooltip-demo m-t-md">
+                            {{ macros.pagination_widget(pagination, 'main.feeds') }}
+                            <a href="{{ url_for('main.feeds') }}" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Controlla avvisi"><i class="fa fa-refresh"></i> Aggiorna</a>
+                            <button class="btn btn-white btn-sm" onclick="markAsRead()" data-toggle="tooltip" data-placement="top" title="Segna come già letto"><i class="fa fa-eye"></i></button>
+
+                        </div>
+                    </div>
+                    <div class="mail-box">
+
+                        <table class="table table-hover table-mail">
+                            <tbody>
+
+
+                            {% if not feeds %}
+                                <p class="text-center">
+                                    Non ci sono avvisi
+                                </p>
+                            {% else %}
+                                {% for feed in feeds %}
+
+                                    <tr class="{% if current_user.has_read(feed) %}read{% else %}unread{% endif %}">
+                                        <td class="check-mail">
+                                            <input type="checkbox" class="i-checks" value="{{ feed.id }}">
+                                        </td>
+                                        <td class="mail-contact"><a href="{{ url_for('main.feed', id=feed.id) }}">{{ feed.author.first_name }} {{ feed.author.last_name }}</a></td>
+                                        <td class="mail-subject"><a href="{{ url_for('main.feed', id=feed.id) }}">{{ feed.title }}</a></td>
+                                        <td class="text-right mail-date">{{ moment(feed.timestamp).fromNow() }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <!-- iCheck -->
+    <script src="{{ url_for('static', filename='js/plugins/iCheck/icheck.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+        });
+
+        var csrftoken = $('meta[name=csrf-token]').attr('content');
+
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                }
+            }
+        });
+
+        function markAsRead() {
+            var checkbox = $('input:checkbox');
+            console.log(checkbox);
+            for (var i = 0; i < checkbox.length; i++) {
+                if (checkbox[i].checked) {
+                    var feed_id = checkbox[i].value;
+                    $.ajax({
+                        type: "POST",
+                        url: $SCRIPT_ROOT + 'feed/' + feed_id + '/read/'
+                    })
+                }
+            }
+            window.location.reload(true);
+        }
+
+
+    </script>
+{% endblock %}
+
+
+

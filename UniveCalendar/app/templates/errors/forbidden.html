@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TrevisoStats | Forbidden</title>
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='css/animate.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+<div class="middle-box text-center animated fadeInDown">
+    <h1>500</h1>
+
+    <h3 class="font-bold">Forbidden!</h3>
+    <div class="error-desc">
+        Non sei autorizzare ad accedere a questa pagina.
+    </div>
+    <div class="error-actions" style="padding-top: 20px;">
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg"><span
+                class="glyphicon glyphicon-home"></span>
+            Torna alla Home </a>
+    </div>
+</div>
+{% block scripts %}
+    <!-- Mainly scripts -->
+    <script src="{{ url_for('static', filename="js/jquery-2.1.1.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/bootstrap.min.js") }}"></script>
+{% endblock %}
+
+</body>
+
+
+</html>

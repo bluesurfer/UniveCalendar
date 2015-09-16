@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% set active_page='register' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block body %}
+    <body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div>
+            <div>
+
+                <h1 class="logo-name">UC</h1>
+
+            </div>
+            <h3>Registrati a UniveCalendar</h3>
+
+            <p>Crea un nuovo account.</p>
+
+            {{ wtf.quick_form(form, role="form", extra_classes="m-t", button_map={"submit": "btn btn-primary block full-width m-b"}) }}
+
+            <p class="text-muted text-center">
+                <small>Hai già un account?</small>
+            </p>
+            <a class="btn btn-sm btn-white btn-block" href="{{ url_for('auth.login') }}">Login</a>
+
+            <p class="m-t">
+                <small>Copyright Università Ca' Foscari di Venezia &copy; 2015</small>
+            </p>
+        </div>
+    </div>
+
+    {% block scripts %}
+        {{ super() }}
+        <script src="{{ url_for('static', filename='js/plugins/iCheck/icheck.min.js') }}"></script>
+    {% endblock %}
+    </body>
+{% endblock %}

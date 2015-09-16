@@ -1,0 +1,132 @@
+{% import "_macros.html" as macros %}
+{% set body_class='top_navigation' %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    {% block head %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>UniveCalendar | {{ active_page|capitalize }}</title>
+    {% endblock %}
+
+    {% block styles %}
+        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+
+        <link href="{{ url_for('static', filename='css/animate.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    {% endblock %}
+
+</head>
+
+<!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+<script type="text/javascript">
+    window.cookieconsent_options = {"message": "This website uses cookies to ensure you get the best experience on our website", "dismiss": "Got it!", "learnMore": "More info", "link": null, "theme": "light-bottom"};
+</script>
+
+<script type="text/javascript" src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
+<!-- End Cookie Consent plugin -->
+
+
+{% block body %}
+    <body class="top-navigation">
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom fancy-bg">
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <div class="navbar-header">
+                        <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                            <i class="fa fa-reorder"></i>
+                        </button>
+                        <a href="{{ url_for('main.index') }}" class="navbar-brand" style="font-size: 24px">
+                            <span class="text-navy">Unive</span>Calendar
+                        </a>
+                    </div>
+                    <div class="navbar-collapse collapse" id="navbar">
+
+                        {% set navigation_bar = [
+                            (url_for('main.index'), 'home', 'Home'),
+                            (url_for('main.courses'), 'courses', 'Corsi'),
+                            (url_for('main.feeds'), 'feeds', 'Avvisi')
+                        ] -%}
+
+                        <ul class="nav navbar-nav">
+                            {% for href, id, caption in navigation_bar %}
+                                <li{% if id == active_page %} class="active"{% endif %}>
+                                    <a aria-expanded="false" role="button" href="{{ href|e }}">{{ caption|e }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+
+                        </ul>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-envelope"></i>
+                                    {% if g.unread %}
+                                        <span class="label label-warning">{{ g.unread }}</span>
+                                    {% endif %}
+                                </a>
+                                <ul class="dropdown-menu dropdown-messages">
+                                    {{ macros.feeds_navbar_widget(g.latest, moment) }}
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('auth.logout') }}">
+                                    <i class="fa fa-sign-out"></i> Esci
+                                </a>
+                            </li>
+
+                            {% if config['DEBUG'] %}
+                                <li><a style="color: red">DEVELOPMENT VERSION</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+
+
+            <div class="wrapper wrapper-content">
+                <div class="container">
+                    {% block content %}
+
+                    {% endblock %}
+                </div>
+            </div>
+
+
+            <div class="footer">
+                <div>
+                    <strong>Copyright</strong> Università Ca' Foscari di Venezia &copy; 2015-2016
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% block scripts %}
+        <!-- Mainly scripts -->
+        <script src="{{ url_for('static', filename='js/jquery-2.1.1.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+        <script src="{{ url_for('static', filename='js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+
+        <!-- Custom and plugin javascript -->
+        <script src="{{ url_for('static', filename='js/univecalendar.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/plugins/pace/pace.min.js') }}"></script>
+
+        {{ moment.include_moment() }}
+        {{ moment.lang("it") }}
+
+        <script type=text/javascript>
+            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        </script>
+    {% endblock %}
+
+    </body>
+{% endblock %}
+</html>
