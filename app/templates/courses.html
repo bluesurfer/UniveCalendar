@@ -278,7 +278,7 @@
                             htmlString = '';
                             for (var i = 0; i < degrees.length; i++) {
                                 var d = degrees[i];
-                                htmlString += '<option value="' + d.id + '">' + toTitleCase(d.name) + ' [' + d.id.toUpperCase() + ']</option>'
+                                htmlString += '<option value="' + d.id + '">' + toTitleCase(d.name) + ' [' + d.code.toUpperCase() + ']</option>'
                             }
                             $('#degrees').html(htmlString).selectpicker('refresh');
                         }

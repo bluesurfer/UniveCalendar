@@ -196,6 +196,7 @@ class Degree(db.Model):
     def to_json(self):
         json_degree = {
             'id': self.id,
+            'code': self.code,
             'name': self.name,
             'category': self.category
         }
