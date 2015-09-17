@@ -82,6 +82,7 @@ class User(UserMixin, db.Model):
         if not self.has_read(feed):
             self.feeds.append(feed)
             db.session.add(feed)
+            db.session.commit()
             return True
         return False
 
@@ -89,6 +90,7 @@ class User(UserMixin, db.Model):
         f = self.feeds.filter_by(id=feed.id).first()
         if f:
             self.feeds.remove(f)
+            db.session.commit()
             return True
         return False
 
