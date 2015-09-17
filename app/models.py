@@ -167,7 +167,8 @@ class Professor(db.Model):
 
 class Degree(db.Model):
     __tablename__ = 'degrees'
-    id = db.Column(db.String(8), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(32), unique=True)
     name = db.Column(db.String(64))
     category = db.Column(db.String(64))
     courses = db.relationship('Course',
@@ -183,7 +184,7 @@ class Degree(db.Model):
         seed()
 
         for i in range(count):
-            d = Degree(id=forgery_py.basic.text(3),
+            d = Degree(code=forgery_py.basic.text(3),
                        name=forgery_py.lorem_ipsum.title(),
                        category=choice(['triennale', 'magistrale']))
             db.session.add(d)
