@@ -17,11 +17,11 @@ manager.add_command('db', MigrateCommand)
 def populatedb():
     """Populate database with fake data."""
     models.Location.generate_fake(10)
-    models.Professor.generate_fake(100)
+    models.Professor.generate_fake(50)
     models.Degree.generate_fake(30)
-    models.Course.generate_fake(250)
-    models.Feed.generate_fake(500)
-    models.Lesson.generate_fake(5000)
+    models.Course.generate_fake(150)
+    models.Feed.generate_fake(1000)
+    models.Lesson.generate_fake(1000)
 
     u = models.User(email='bob@unive.it',
                     username='bob',

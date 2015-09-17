@@ -63,6 +63,7 @@ class User(UserMixin, db.Model):
         if not self.is_following(course):
             self.courses.append(course)
             db.session.add(course)
+            db.session.commit()
             return True
         return False
 
@@ -70,6 +71,7 @@ class User(UserMixin, db.Model):
         c = self.courses.filter_by(id=course.id).first()
         if c:
             self.courses.remove(c)
+            db.session.commit()
             return True
         return False
 
