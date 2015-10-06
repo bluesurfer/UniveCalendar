@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>TrevisoStats | Forbidden</title>
+    <title>UniveCalendar | Forbidden</title>
 
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
@@ -24,12 +24,12 @@
 
     <h3 class="font-bold">Forbidden!</h3>
     <div class="error-desc">
-        Non sei autorizzare ad accedere a questa pagina.
+        {{ gettext('You are not allowed to visit this page.') }}
     </div>
     <div class="error-actions" style="padding-top: 20px;">
-        <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg"><span
-                class="glyphicon glyphicon-home"></span>
-            Torna alla Home </a>
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg">
+            <span class="glyphicon glyphicon-home"></span>{{ gettext('Back to home') }}
+        </a>
     </div>
 </div>
 {% block scripts %}

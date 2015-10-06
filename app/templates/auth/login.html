@@ -1,70 +1,76 @@
 {% extends 'base.html' %}
 {% set active_page='login' %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% from '_macros.html' import render_field %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        .form-control {
+            height: 44px;
+        }
+    </style>
+{% endblock %}
 
 
 {% block body %}
-    <body class="gray-bg">
+    <body class="navy-bg">
 
-    <div class="loginColumns animated fadeInDown">
-        <div class="row">
-            <div class="col-md-6">
-                <h2 class="font-bold">UniveCalendar</h2>
-
-                <p><b>L'agenda digitale</b> per lo studente Ca' Foscarino: gestisci i tuoi corsi,
-                    crea il tuo calendario delle lezioni personalizzato e trova l'aula in cui si
-                    svolge la lezione.
-
-                </p>
-
-                <p>
-                    <small>
-                        ACCOUNT DI TEST:<br>
-                        email:bob@unive.it<br>
-                        password:123
-                    </small>
-                </p>
-
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name">UniveCalendar</h1>
             </div>
-            <div class="col-md-6">
+            <div class="ibox">
+                <div class="ibox-title"><h2>{{ gettext('Login with your account') }}</h2></div>
+                <div class="ibox-content">
 
-                <div class="ibox">
-                    <div class="ibox-title">Accedi</div>
-                    <div class="ibox-content">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
 
-                        {% with messages = get_flashed_messages(with_categories=true) %}
-                            {% if messages %}
-                                {% for category, message in messages %}
-                                    <div class="alert alert-{{ category }}">
-                                        {{ message }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        {% endwith %}
+                    <form class="m-t" role="form" method='post' action="{{ url_for('auth.login') }}">
 
-                        {{ wtf.quick_form(form, role="form", extra_classes="m-t", button_map={"submit": "btn btn-primary block full-width m-b"}) }}
+                        {{ form.csrf_token }}
 
-                        <a href="#">
-                            <small>Password dimenticata?</small>
+                        <div style="margin-bottom: 25px" class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            {{ form.email(type="email", class='form-control', placeholder='Email', required=True) }}
+                        </div>
+
+                        <div style="margin-bottom: 25px" class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            {{ form.password(type="password", class='form-control', placeholder='Password', required=True) }}
+                        </div>
+
+                        <div class="form-group text-left">
+                            {{ form.remember_me }} {{ form.remember_me.label }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary block full-width m-b">{{ gettext('Login') }}</button>
+
+                        <a href="{{ url_for('auth.password_reset_request') }}">
+                            <small>{{ gettext('Forgot password?') }}</small>
                         </a>
 
                         <p class="text-muted text-center">
-                            <small>Non hai un account?</small>
+                            <small>{{ gettext("I don't have an account") }}</small>
                         </p>
-                        <a class="btn btn-sm btn-white btn-block" href="{{ url_for('auth.register') }}">Crea un account</a>
-                    </div>
+
+                        <a class="btn btn-sm btn-white btn-block" href="{{ url_for('auth.register') }}">{{ gettext('Create account') }}</a>
+
+                    </form>
                 </div>
             </div>
         </div>
-        <hr/>
-        <div class="row">
-            <div class="col-md-6">
-                Copyright Università Ca' Foscari di Venezia
-            </div>
-            <div class="col-md-6 text-right">
-                <small>© 2015-2016</small>
-            </div>
-        </div>
+
+        <p style="color: white; text-decoration: underline">Powered by Flask</p>
+
     </div>
     </body>
 {% endblock %}

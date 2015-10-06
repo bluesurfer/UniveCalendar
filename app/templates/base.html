@@ -1,5 +1,4 @@
 {% import "_macros.html" as macros %}
-{% set body_class='top_navigation' %}
 
 <!DOCTYPE html>
 <html>
@@ -18,13 +17,14 @@
 
         <link href="{{ url_for('static', filename='css/animate.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
     {% endblock %}
 
 </head>
 
 <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
 <script type="text/javascript">
-    window.cookieconsent_options = {"message": "This website uses cookies to ensure you get the best experience on our website", "dismiss": "Got it!", "learnMore": "More info", "link": null, "theme": "light-bottom"};
+    window.cookieconsent_options = {"message": "{{ gettext("This website uses cookies to ensure you get the best experience on our website") }}", "dismiss": "{{ gettext("Got it!") }}", "learnMore": "{{ gettext("More info") }}", "link": null, "theme": "light-bottom"};
 </script>
 
 <script type="text/javascript" src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
@@ -32,6 +32,7 @@
 
 
 {% block body %}
+
     <body class="top-navigation">
     <div id="wrapper">
         <div id="page-wrapper" class="gray-bg">
@@ -49,8 +50,8 @@
 
                         {% set navigation_bar = [
                             (url_for('main.index'), 'home', 'Home'),
-                            (url_for('main.courses'), 'courses', 'Corsi'),
-                            (url_for('main.feeds'), 'feeds', 'Avvisi')
+                            (url_for('main.courses'), 'courses', gettext('Courses')),
+                            (url_for('main.feeds'), 'feeds', gettext('Feeds'))
                         ] -%}
 
                         <ul class="nav navbar-nav">
@@ -60,7 +61,6 @@
                                     </a>
                                 </li>
                             {% endfor %}
-
                         </ul>
                         <ul class="nav navbar-top-links navbar-right">
                             <li class="dropdown">
@@ -74,15 +74,18 @@
                                     {{ macros.feeds_navbar_widget(g.latest, moment) }}
                                 </ul>
                             </li>
-                            <li>
-                                <a href="{{ url_for('auth.logout') }}">
-                                    <i class="fa fa-sign-out"></i> Esci
-                                </a>
-                            </li>
+                            <li class="dropdown">
+                                <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">{{ current_user.username }} <span class="caret"></span></a>
+                                <ul role="menu" class="dropdown-menu">
+                                    <li><a href="{{ url_for('main.edit_profile') }}">{{ gettext('Profile') }}</a></li>
 
-                            {% if config['DEBUG'] %}
-                                <li><a style="color: red">DEVELOPMENT VERSION</a></li>
-                            {% endif %}
+                                    <li>
+                                        <a href="{{ url_for('auth.logout') }}">
+                                            <i class="fa fa-sign-out"></i> {{ gettext('Logout') }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </nav>

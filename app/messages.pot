@@ -1,0 +1,442 @@
+# Translations template for PROJECT.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2015-10-01 14:22+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.0\n"
+
+#: __init__.py:36
+msgid "Please login to access this page"
+msgstr ""
+
+#: auth/forms.py:13
+msgid "Keep me logged in"
+msgstr ""
+
+#: auth/forms.py:23
+msgid "Username must have at least 6 characters"
+msgstr ""
+
+#: auth/forms.py:24
+msgid "Usernames must have only letters, numbers, dots or underscores"
+msgstr ""
+
+#: auth/forms.py:28
+msgid "Password must have at least 6 characters"
+msgstr ""
+
+#: auth/forms.py:29 auth/forms.py:55
+msgid "Passwords must match"
+msgstr ""
+
+#: auth/forms.py:30 templates/auth/register.html:43
+#: templates/auth/reset_password.html:49
+msgid "Confirm password"
+msgstr ""
+
+#: auth/forms.py:31 templates/auth/register.html:46
+msgid "Register"
+msgstr ""
+
+#: auth/forms.py:35
+msgid "Email already registered"
+msgstr ""
+
+#: auth/forms.py:39
+msgid "Username already in use"
+msgstr ""
+
+#: auth/forms.py:61
+msgid "Unknown email address"
+msgstr ""
+
+#: auth/views.py:31
+msgid "Invalid username or password."
+msgstr ""
+
+#: auth/views.py:39
+msgid "Logout successful."
+msgstr ""
+
+#: auth/views.py:61 auth/views.py:87
+msgid "Confirm Your Account"
+msgstr ""
+
+#: auth/views.py:65
+msgid "A confirmation email has been sent to you by email."
+msgstr ""
+
+#: auth/views.py:76
+msgid "You have confirmed your account. Thanks!"
+msgstr ""
+
+#: auth/views.py:78
+msgid "The confirmation link is invalid or has expired."
+msgstr ""
+
+#: auth/views.py:91
+msgid "A new confirmation email has been sent to you by email."
+msgstr ""
+
+#: auth/views.py:104
+msgid "Reset Your Password"
+msgstr ""
+
+#: auth/views.py:108
+msgid "An email with instructions to reset your password has been sent to you."
+msgstr ""
+
+#: auth/views.py:124
+msgid "Your password has been updated."
+msgstr ""
+
+#: main/views.py:126 main/views.py:148
+msgid "No course selected"
+msgstr ""
+
+#: main/views.py:134
+#, python-format
+msgid "%(count)s new courses added"
+msgstr ""
+
+#: main/views.py:136
+msgid "1 new course added"
+msgstr ""
+
+#: main/views.py:138
+msgid "No new course added"
+msgstr ""
+
+#: main/views.py:156
+#, python-format
+msgid "%(count)s courses deleted"
+msgstr ""
+
+#: main/views.py:158
+msgid "1 course deleted"
+msgstr ""
+
+#: main/views.py:160
+msgid "No course deleted"
+msgstr ""
+
+#: templates/_macros.html:21 templates/_macros.html:51 templates/feeds.html:63
+msgid "No feed found"
+msgstr ""
+
+#: templates/_macros.html:36 templates/_macros.html:63
+#, python-format
+msgid "Published %(fromnow)s at %(date)s"
+msgstr ""
+
+#: templates/_macros.html:42 templates/_macros.html:72
+msgid "Read all feeds"
+msgstr ""
+
+#: templates/base.html:27
+msgid ""
+"This website uses cookies to ensure you get the best experience on our "
+"website"
+msgstr ""
+
+#: templates/base.html:27
+msgid "Got it!"
+msgstr ""
+
+#: templates/base.html:27
+msgid "More info"
+msgstr ""
+
+#: templates/base.html:53 templates/courses.html:156
+msgid "Courses"
+msgstr ""
+
+#: templates/base.html:54
+msgid "Feeds"
+msgstr ""
+
+#: templates/base.html:79
+msgid "Logout"
+msgstr ""
+
+#: templates/courses.html:37
+msgid "My courses"
+msgstr ""
+
+#: templates/courses.html:54
+msgid "Delete courses"
+msgstr ""
+
+#: templates/courses.html:71 templates/courses.html:176
+msgid "Follow"
+msgstr ""
+
+#: templates/courses.html:73 templates/courses.html:178
+msgid "Code"
+msgstr ""
+
+#: templates/courses.html:74 templates/courses.html:179
+msgid "Year"
+msgstr ""
+
+#: templates/courses.html:75 templates/courses.html:180
+msgid "Name"
+msgstr ""
+
+#: templates/courses.html:77 templates/courses.html:182
+msgid "Partition"
+msgstr ""
+
+#: templates/courses.html:78 templates/courses.html:183
+msgid "Field"
+msgstr ""
+
+#: templates/courses.html:79 templates/courses.html:184
+msgid "Period"
+msgstr ""
+
+#: templates/courses.html:80 templates/courses.html:185
+msgid "Professor"
+msgstr ""
+
+#: templates/courses.html:95 templates/index.html:42
+msgid "Add courses"
+msgstr ""
+
+#: templates/courses.html:100
+msgid "Follow the wizard to add new courses."
+msgstr ""
+
+#: templates/courses.html:106
+msgid "Category"
+msgstr ""
+
+#: templates/courses.html:108
+msgid "Select a category"
+msgstr ""
+
+#: templates/courses.html:114
+msgid "Bachelor"
+msgstr ""
+
+#: templates/courses.html:115
+msgid "Master"
+msgstr ""
+
+#: templates/courses.html:129
+msgid "Degree"
+msgstr ""
+
+#: templates/courses.html:132
+msgid "Find your degree course"
+msgstr ""
+
+#: templates/courses.html:159
+msgid "Choose the courses you intend to follow."
+msgstr ""
+
+#: templates/courses.html:257
+msgid "Current step"
+msgstr ""
+
+#: templates/courses.html:258
+msgid "Steps"
+msgstr ""
+
+#: templates/courses.html:259
+msgid "Finish"
+msgstr ""
+
+#: templates/courses.html:260
+msgid "Next"
+msgstr ""
+
+#: templates/courses.html:261
+msgid "Back"
+msgstr ""
+
+#: templates/courses.html:262
+msgid "Loading..."
+msgstr ""
+
+#: templates/courses.html:338
+msgid "Total"
+msgstr ""
+
+#: templates/feed.html:12
+msgid "Feed"
+msgstr ""
+
+#: templates/feed.html:21
+msgid "Subject:"
+msgstr ""
+
+#: templates/feed.html:25
+msgid "From: "
+msgstr ""
+
+#: templates/feeds.html:23
+msgid "All feeds"
+msgstr ""
+
+#: templates/feeds.html:31
+msgid "Inbox"
+msgstr ""
+
+#: templates/feeds.html:38
+msgid "Select/deselect all"
+msgstr ""
+
+#: templates/feeds.html:42
+msgid "Check feeds"
+msgstr ""
+
+#: templates/feeds.html:43
+msgid "Refresh"
+msgstr ""
+
+#: templates/feeds.html:46
+msgid "Mark as read"
+msgstr ""
+
+#: templates/index.html:35
+msgid "My calendar"
+msgstr ""
+
+#: templates/index.html:42
+msgid "You calendar is empty."
+msgstr ""
+
+#: templates/index.html:51
+msgid "Download Calendar"
+msgstr ""
+
+#: templates/index.html:52
+msgid ""
+"Get your personal calendar in ICS format, compatible with the most common"
+" Calendar apps"
+msgstr ""
+
+#: templates/index.html:55
+msgid "Sync with Google"
+msgstr ""
+
+#: templates/index.html:56
+msgid "Sync calendar with your Google account. "
+msgstr ""
+
+#: templates/index.html:73
+msgid "Latest feeds"
+msgstr ""
+
+#: templates/auth/change_email.html:14 templates/auth/change_password.html:14
+#: templates/auth/reset_password.html:52
+msgid "Reset password"
+msgstr ""
+
+#: templates/auth/change_email.html:41 templates/auth/change_password.html:42
+#: templates/auth/login.html:55 templates/auth/register.html:50
+msgid "Login"
+msgstr ""
+
+#: templates/auth/change_email.html:44 templates/auth/change_password.html:45
+#: templates/auth/login.html:58
+msgid "Forgot password?"
+msgstr ""
+
+#: templates/auth/change_email.html:48 templates/auth/change_password.html:49
+#: templates/auth/login.html:62
+msgid "I don't have an account"
+msgstr ""
+
+#: templates/auth/change_email.html:50 templates/auth/change_password.html:51
+#: templates/auth/login.html:65
+msgid "Create account"
+msgstr ""
+
+#: templates/auth/login.html:24
+msgid "Login with your account"
+msgstr ""
+
+#: templates/auth/register.html:23
+msgid "Create new account"
+msgstr ""
+
+#: templates/auth/register.html:40
+msgid "Username"
+msgstr ""
+
+#: templates/auth/register.html:41 templates/auth/reset_password.html:45
+msgid "Email address"
+msgstr ""
+
+#: templates/auth/register.html:42 templates/auth/reset_password.html:48
+msgid "Password"
+msgstr ""
+
+#: templates/auth/register.html:49
+msgid "Already have an account?"
+msgstr ""
+
+#: templates/auth/reset_password.html:21
+msgid "Forgot password"
+msgstr ""
+
+#: templates/auth/reset_password.html:26
+msgid ""
+"Enter your email address. We will sent you an email with instructions to "
+"reset your password."
+msgstr ""
+
+#: templates/auth/unconfirmed.html:25
+#, python-format
+msgid "Hello, %(username)s"
+msgstr ""
+
+#: templates/auth/unconfirmed.html:28
+msgid "You have not confirmed your account yet."
+msgstr ""
+
+#: templates/auth/unconfirmed.html:31
+msgid ""
+"Before you can access this site you need to confirm your account. Check "
+"your inbox, you should have received an email with a confirmation link."
+msgstr ""
+
+#: templates/auth/unconfirmed.html:36
+msgid "Need another confirmation email?"
+msgstr ""
+
+#: templates/auth/unconfirmed.html:38
+msgid "Click here"
+msgstr ""
+
+#: templates/errors/404.html:25
+msgid "Page not found"
+msgstr ""
+
+#: templates/errors/404.html:28
+msgid "The page you are looking for could not be found."
+msgstr ""
+
+#: templates/errors/404.html:32 templates/errors/500.html:30
+#: templates/errors/forbidden.html:31
+msgid "Back to home"
+msgstr ""
+
+#: templates/errors/forbidden.html:27
+msgid "You are not allowed to visit this page."
+msgstr ""
+

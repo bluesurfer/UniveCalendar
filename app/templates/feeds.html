@@ -2,6 +2,7 @@
 {% set active_page='feeds' %}
 
 {% block head %}
+    {{ super() }}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 {% endblock %}
 
@@ -14,55 +15,91 @@
 
 {% block content %}
 
-
     <div class="row">
+        <div class="col-lg-12">
+            <div class="jumbotron">
+                <p class="lead text-center"><span class="text-navy">Novità!</span> Vuoi ricevere gli avvisi direttamente sul tuo cellulare?</p>
+
+                <p class="text-center">
+                    <button class="btn btn-info btn-w-m">
+                        {{ gettext('Click here') }}
+                    </button>
+                </p>
+            </div>
+        </div>
+
         <div class="col-lg-12 animated fadeInRight">
             <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Tutti gli avvisi </h5>
 
+                <div class="ibox-title">
+                    <h5>{{ gettext('All feeds') }} </h5>
                 </div>
+
                 <div class="ibox-content">
+
                     <div class="mail-box-header">
 
                         <h2>
-                            Inbox {% if g.unread > 0 %}({{ g.unread }}){% endif %}
+                            {{ gettext('Inbox') }} {% if g.unread > 0 %}({{ g.unread }}) {% else %} (0) {% endif %}
                         </h2>
 
                         <div class="mail-tools tooltip-demo m-t-md">
-                            {{ macros.pagination_widget(pagination, 'main.feeds') }}
-                            <a href="{{ url_for('main.feeds') }}" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Controlla avvisi"><i class="fa fa-refresh"></i> Aggiorna</a>
-                            <button class="btn btn-white btn-sm" onclick="markAsRead()" data-toggle="tooltip" data-placement="top" title="Segna come già letto"><i class="fa fa-eye"></i></button>
 
+                            {% if feeds %}
+
+                                <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="{{ gettext('Select/deselect all') }}">
+                                    <input type="checkbox" id="checkAll" onchange="selectAll()"/>
+                                </button>
+
+                                <a href="{{ url_for('main.feeds') }}" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="{{ gettext('Check feeds') }}">
+                                    <i class="fa fa-refresh"></i> {{ gettext('Refresh') }}
+                                </a>
+
+                                <button class="btn btn-white btn-sm" onclick="markAsRead()" data-toggle="tooltip" data-placement="top" title="{{ gettext('Mark as read') }}">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+
+                                {{ macros.pagination_widget(pagination, 'main.feeds') }}
+
+                            {% endif %}
                         </div>
                     </div>
+
                     <div class="mail-box">
 
                         <table class="table table-hover table-mail">
                             <tbody>
 
-
                             {% if not feeds %}
                                 <p class="text-center">
-                                    Non ci sono avvisi
+                                    {{ gettext('No feed found') }}
                                 </p>
+
                             {% else %}
+
                                 {% for feed in feeds %}
 
                                     <tr class="{% if current_user.has_read(feed) %}read{% else %}unread{% endif %}">
                                         <td class="check-mail">
                                             <input type="checkbox" class="i-checks" value="{{ feed.id }}">
                                         </td>
-                                        <td class="mail-contact"><a href="{{ url_for('main.feed', id=feed.id) }}">{{ feed.author.first_name }} {{ feed.author.last_name }}</a></td>
-                                        <td class="mail-subject"><a href="{{ url_for('main.feed', id=feed.id) }}">{{ feed.title }}</a></td>
+
+                                        <td class="mail-contact">
+                                            <a href="{{ url_for('main.feed', id=feed.id) }}">{{ feed.author }}</a>
+                                        </td>
+
+                                        <td class="mail-subject">
+                                            <a href="{{ url_for('main.feed', id=feed.id) }}">{{ feed.title }}</a>
+                                        </td>
+
                                         <td class="text-right mail-date">{{ moment(feed.timestamp).fromNow() }}</td>
                                     </tr>
+
                                 {% endfor %}
                             {% endif %}
 
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>
@@ -94,21 +131,41 @@
         });
 
         function markAsRead() {
-            var checkbox = $('input:checkbox');
-            console.log(checkbox);
+            var checkbox = $('input.i-checks');
+            var checked = false;
+            var feedIds = new FormData();
             for (var i = 0; i < checkbox.length; i++) {
                 if (checkbox[i].checked) {
-                    var feed_id = checkbox[i].value;
-                    $.ajax({
-                        type: "POST",
-                        url: $SCRIPT_ROOT + 'feed/' + feed_id + '/read/'
-                    })
+                    checked = true;
+                    feedIds.append('feed_id', checkbox[i].value);
                 }
             }
-            window.location.reload(true);
+
+            if (checked) {
+                $.ajax({
+                    type: "POST",
+                    url: $SCRIPT_ROOT + '/_mark_as_read',
+                    processData: false,
+                    contentType: false,
+                    data: feedIds
+                }).done(
+                        window.location.reload(true)
+                );
+            }
         }
 
+        function selectAll() {
+            var checkAll = $('#checkAll')[0];
+            var checkboxes = $('input.i-checks');
 
+            for (var i = 0; i < checkboxes.length; i++) {
+                var cb = checkboxes[i];
+                if (checkAll.checked)
+                    $(cb).iCheck('check');
+                else
+                    $(cb).iCheck('uncheck');
+            }
+        }
     </script>
 {% endblock %}
 

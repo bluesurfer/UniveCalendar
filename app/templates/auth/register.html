@@ -1,37 +1,58 @@
 {% extends 'base.html' %}
 {% set active_page='register' %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% from '_macros.html' import render_field %}
+
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        .form-control {
+            height: 44px;
+        }
+    </style>
+{% endblock %}
+
 
 {% block body %}
-    <body class="gray-bg">
-
+    <body class="navy-bg">
     <div class="middle-box text-center loginscreen   animated fadeInDown">
         <div>
-            <div>
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h2>
+                        {{ gettext('Create new account') }}
+                    </h2>
+                </div>
+                <div class="ibox-content">
 
-                <h1 class="logo-name">UC</h1>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
 
+                    <form class="m-t" role="form" method='post' action="{{ url_for('auth.register') }}">
+                        {{ form.csrf_token }}
+                        {{ render_field(form.username, type="text", class='form-control', placeholder=gettext('Username'), required=True) }}
+                        {{ render_field(form.email, type="email", class='form-control', placeholder=gettext('Email address'), required=True) }}
+                        {{ render_field(form.phone_number, type="text", class='form-control', placeholder=gettext('Phone number (optional)')) }}
+                        {{ render_field(form.password, type="password", class='form-control', placeholder=gettext('Password'), required=True) }}
+                        {{ render_field(form.password2, type="password", class='form-control', placeholder=gettext('Confirm password'), required=True) }}
+
+                        <button type="submit" class="btn btn-primary block full-width m-b">
+                            <i class="fa fa-user-plus"></i> {{ gettext('Register') }}
+                        </button>
+
+                        <p>{{ gettext('Already have an account?') }}</p>
+                        <a class="btn btn-sm btn-white block full-width m-b" href="{{ url_for('auth.login') }}">{{ gettext('Login') }}</a>
+                    </form>
+                </div>
             </div>
-            <h3>Registrati a UniveCalendar</h3>
-
-            <p>Crea un nuovo account.</p>
-
-            {{ wtf.quick_form(form, role="form", extra_classes="m-t", button_map={"submit": "btn btn-primary block full-width m-b"}) }}
-
-            <p class="text-muted text-center">
-                <small>Hai già un account?</small>
-            </p>
-            <a class="btn btn-sm btn-white btn-block" href="{{ url_for('auth.login') }}">Login</a>
-
-            <p class="m-t">
-                <small>Copyright Università Ca' Foscari di Venezia &copy; 2015</small>
-            </p>
         </div>
     </div>
-
-    {% block scripts %}
-        {{ super() }}
-        <script src="{{ url_for('static', filename='js/plugins/iCheck/icheck.min.js') }}"></script>
-    {% endblock %}
     </body>
 {% endblock %}

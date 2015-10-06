@@ -31,15 +31,12 @@
 {% block content %}
     <div class="row">
         <div class="col-lg-12">
-
             <div class="ibox">
                 <div class="ibox-title">
 
-                    <h5>I miei Corsi</h5>
+                    <h5>{{ gettext('My courses') }}</h5>
                 </div>
                 <div class="ibox-content">
-
-
                     {% with messages = get_flashed_messages(with_categories=true) %}
                         {% if messages %}
                             {% for category, message in messages %}
@@ -54,7 +51,7 @@
 
                         <div id="toolbar">
                             <button id="remove" type="submit" class="btn btn-danger" disabled>
-                                <i class="glyphicon glyphicon-remove"></i> Elimina Corsi
+                                <i class="glyphicon glyphicon-remove"></i> {{ gettext('Delete courses') }}
                             </button>
                         </div>
                         <table id="followedCoursesTable"
@@ -71,16 +68,16 @@
                                data-page-list="[10, 25, 50, 100, ALL]">
                             <thead>
                             <tr>
-                                <th data-checkbox="true">Segui</th>
+                                <th data-checkbox="true">{{ gettext('Follow') }}</th>
                                 <th data-field="id" data-visible="false">Id</th>
-                                <th data-field="code" data-align="left" data-sortable="true" data-footer-formatter="totalTextFormatter">Codice</th>
-                                <th data-field="year" data-align="left" data-sortable="true" data-searchable="false">Anno</th>
-                                <th data-field="name" data-align="left" data-sortable="true" data-formatter="urlFormatter">Insegnamento</th>
+                                <th data-field="code" data-align="left" data-sortable="true" data-footer-formatter="totalTextFormatter">{{ gettext('Code') }}</th>
+                                <th data-field="year" data-align="left" data-sortable="true" data-searchable="false">{{ gettext('Year') }}</th>
+                                <th data-field="name" data-align="left" data-sortable="true" data-formatter="urlFormatter">{{ gettext('Name') }}</th>
                                 <th data-field="url" data-visible="false">Url</th>
-                                <th data-field="partition" data-align="left" data-searchable="false">Partizione</th>
-                                <th data-field="field" data-align="left" data-sortable="true">Settore</th>
-                                <th data-field="period" data-align="left" data-sortable="true">Periodo</th>
-                                <th data-field="professor" data-align="left" data-sortable="true">Professore</th>
+                                <th data-field="partition" data-align="left" data-searchable="false">{{ gettext('Partition') }}</th>
+                                <th data-field="field" data-align="left" data-sortable="true">{{ gettext('Field') }}</th>
+                                <th data-field="period" data-align="left" data-sortable="true">{{ gettext('Period') }}</th>
+                                <th data-field="professor" data-align="left" data-sortable="true">{{ gettext('Professor') }}</th>
                                 <th data-field="credit" data-align="left" data-searchable="false" data-footer-formatter="totalCreditFormatter">CFU</th>
                             </tr>
                             </thead>
@@ -91,32 +88,31 @@
         </div>
     </div>
 
-
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Aggiungi Corsi</h5>
+                    <h5>{{ gettext('Add courses') }}</h5>
                 </div>
                 <div class="ibox-content">
 
                     <p>
-                        Segui la procedura guidata per aggiungere i corsi che intendi seguire.
+                        {{ gettext('Follow the wizard to add new courses.') }}
                     </p>
 
                     <form id="form" action="{{ url_for('main.follow') }}" method="post" class="wizard-big">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
-                        <h1>Tipologia</h1>
+                        <h1>{{ gettext('Category') }}</h1>
                         <fieldset>
-                            <h2>Scegli una tipologia di laurea</h2>
+                            <h2>{{ gettext('Select a category') }}</h2>
                             <hr>
                             <div class="row">
                                 <div class="col-lg-8">
                                     <select id="categories" class="selectpicker"
                                             data-dropup-auto="false">
-                                        <option>Triennale</option>
-                                        <option>Magistrale</option>
+                                        <option value="0">{{ gettext('Bachelor') }}</option>
+                                        <option value="1">{{ gettext('Master') }}</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-4">
@@ -129,9 +125,11 @@
                             </div>
 
                         </fieldset>
-                        <h1>Laurea</h1>
+
+                        <h1>{{ gettext('Degree') }}</h1>
+
                         <fieldset>
-                            <h2>Trova il tuo corso di laurea</h2>
+                            <h2>{{ gettext('Find your degree course') }}</h2>
                             <hr>
                             <div class="row">
                                 <div class="col-lg-8">
@@ -153,12 +151,12 @@
                                     </div>
                                 </div>
                             </div>
-
                         </fieldset>
 
-                        <h1>Corsi</h1>
+                        <h1>{{ gettext('Courses') }}</h1>
+
                         <fieldset>
-                            <h2>Seleziona i corsi che intendi seguire</h2>
+                            <h2>{{ gettext('Choose the courses you intend to follow.') }}</h2>
                             <hr>
                             <div class="row">
                                 <div class="col-lg-12">
@@ -175,16 +173,16 @@
                                            data-page-list="[10, 25, 50, 100, ALL]">
                                         <thead>
                                         <tr>
-                                            <th data-checkbox="true">Segui</th>
+                                            <th data-checkbox="true">{{ gettext('Follow') }}</th>
                                             <th data-field="id" data-visible="false">Id</th>
-                                            <th data-field="code" data-align="left" data-sortable="true" data-footer-formatter="totalTextFormatter">Codice</th>
-                                            <th data-field="year" data-align="left" data-sortable="true" data-searchable="false">Anno</th>
-                                            <th data-field="name" data-align="left" data-sortable="true" data-formatter="urlFormatter">Insegnamento</th>
+                                            <th data-field="code" data-align="left" data-sortable="true" data-footer-formatter="totalTextFormatter">{{ gettext('Code') }}</th>
+                                            <th data-field="year" data-align="left" data-sortable="true" data-searchable="false">{{ gettext('Year') }}</th>
+                                            <th data-field="name" data-align="left" data-sortable="true" data-formatter="urlFormatter">{{ gettext('Name') }}</th>
                                             <th data-field="url" data-visible="false">Url</th>
-                                            <th data-field="partition" data-align="left" data-searchable="false">Partizione</th>
-                                            <th data-field="field" data-align="left" data-sortable="true">Settore</th>
-                                            <th data-field="period" data-align="left" data-sortable="true">Periodo</th>
-                                            <th data-field="professor" data-align="left" data-sortable="true">Professore</th>
+                                            <th data-field="partition" data-align="left" data-searchable="false">{{ gettext('Partition') }}</th>
+                                            <th data-field="field" data-align="left" data-sortable="true">{{ gettext('Field') }}</th>
+                                            <th data-field="period" data-align="left" data-sortable="true">{{ gettext('Period') }}</th>
+                                            <th data-field="professor" data-align="left" data-sortable="true">{{ gettext('Professor') }}</th>
                                             <th data-field="credit" data-align="left" data-searchable="false" data-footer-formatter="totalCreditFormatter">CFU</th>
                                         </tr>
                                         </thead>
@@ -192,7 +190,6 @@
                                 </div>
                             </div>
                         </fieldset>
-
                     </form>
                 </div>
             </div>
@@ -216,10 +213,15 @@
 
     <!-- Bootstrap Table -->
     <script type="text/javascript" src="{{ url_for('static', filename='js/plugins/bootstrap-table/bootstrap-table.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/plugins/bootstrap-table/bootstrap-table-it-IT.min.js') }}"></script>
+    {% if g.locale == 'it' %}
+        <script type="text/javascript" src="{{ url_for('static', filename='js/plugins/bootstrap-table/bootstrap-table-it-IT.min.js') }}"></script>
+    {% endif %}
 
     <!-- Tinycon -->
     <script src="{{ url_for('static', filename='js/plugins/tinycon/tinycon.min.js') }}"></script>
+
+    <!-- iCheck -->
+    <script src="{{ url_for('static', filename='js/plugins/iCheck/icheck.min.js') }}"></script>
 
     <script>
 
@@ -241,22 +243,23 @@
             })
         });
 
-
+        // Highlight the delete button when something is selected.
         $(table1).on('check.bs.table uncheck.bs.table ' +
                 'check-all.bs.table uncheck-all.bs.table', function () {
             $('#remove').prop('disabled', !$(table1).bootstrapTable('getSelections').length);
         });
 
+
         /* Initialize wizard
          -----------------------------------------------------------------*/
         $("#form").steps({
             labels: {
-                current: "Fase corrente:",
-                pagination: "Pagine",
-                finish: "Fine",
-                next: "Avanti",
-                previous: "Indietro",
-                loading: "Caricamento..."
+                current: "{{ gettext('Current step') }}",
+                pagination: "{{ gettext('Steps') }}",
+                finish: "{{ gettext('Finish') }}",
+                next: "{{ gettext('Next') }}",
+                previous: "{{ gettext('Back') }}",
+                loading: "{{ gettext('Loading...') }}"
             },
             bodyTag: "fieldset",
             onStepChanging: function (event, currentIndex, newIndex) {
@@ -268,7 +271,7 @@
 
                 // Populate degrees options
                 if (newIndex === 1) {
-                    var degreesCat = $("#categories").find("option:selected").text();
+                    var degreesCat = $("#categories").find("option:selected").val();
                     $.ajax({
                         url: $SCRIPT_ROOT + '/api/degrees/?cat=' + degreesCat,
                         type: "GET",
@@ -315,7 +318,8 @@
             }
         });
 
-        // Initialize bootstrap select
+        /* Initialize bootstrap-select
+         -----------------------------------------------------------------*/
         $('.selectpicker').selectpicker();
 
         function urlFormatter(value, row) {
@@ -331,11 +335,10 @@
         }
 
         function totalTextFormatter(data) {
-            return 'Totale';
+            return '{{ gettext('Total') }}';
         }
 
     </script>
-
 
 {% endblock %}
 

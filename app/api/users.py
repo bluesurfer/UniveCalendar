@@ -1,8 +1,8 @@
+from sqlalchemy import or_
 from flask.ext.login import current_user
 from flask import jsonify
 
 from ..models import User, Feed
-
 from . import api
 from .errors import forbidden
 
@@ -12,8 +12,7 @@ def get_user_courses(id):
     u = User.query.get_or_404(id)
     if current_user.id != u.id:
         return forbidden('Insufficient permissions')
-    courses = u.courses.all()
-    return jsonify({'courses': [c.to_json() for c in courses]})
+    return jsonify({'courses': [c.to_json() for c in u.courses.all()]})
 
 
 @api.route('/users/<int:id>/lessons/')
@@ -21,7 +20,7 @@ def get_user_lessons(id):
     u = User.query.get_or_404(id)
     if current_user.id != u.id:
         return forbidden('Insufficient permissions')
-    lessons = [l for c in u.courses.all() for l in c.lessons.all()]
+    lessons = [l for c in u.courses for l in c.lessons]
     return jsonify({'lessons': [l.to_json() for l in lessons]})
 
 
@@ -30,6 +29,8 @@ def get_user_feeds(id):
     u = User.query.get_or_404(id)
     if current_user.id != u.id:
         return forbidden('Insufficient permissions')
-    professors = set([c.professor for c in u.courses.all()])
-    return jsonify({'feeds': [f.to_json() for p in professors
-                              for f in p.feeds]})
+    professor_ids = set([c.professor_id for c in u.courses])
+    lessons_ids = [l.id for c in u.courses for l in c.lessons]
+    feeds = Feed.query.filter(or_(Feed.professor_id.in_(professor_ids),
+                                 Feed.lesson_id.in_(lessons_ids))).all()
+    return jsonify({'feeds': [f.to_json() for f in feeds]})

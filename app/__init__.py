@@ -2,37 +2,57 @@ from flask import Flask
 
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
-from flask.ext.bootstrap import Bootstrap
-from flask.ext.babel import Babel
+from flask.ext.babel import Babel, lazy_gettext
 from flask.ext.moment import Moment
+from flask.ext.mail import Mail
 from flask_wtf.csrf import CsrfProtect
-
+from flask.json import JSONEncoder
+from telegram import Bot
 from config import config
 
 
-bootstrap = Bootstrap()
+class CustomJSONEncoder(JSONEncoder):
+    """This class adds support for lazy translation texts to Flask's
+    JSON encoder. This is necessary when flashing translated texts."""
+    def default(self, obj):
+        from speaklater import is_lazy_string
+        if is_lazy_string(obj):
+            try:
+                return unicode(obj)  # python 2
+            except NameError:
+                return str(obj)  # python 3
+        return super(CustomJSONEncoder, self).default(obj)
+
+
 babel = Babel()
 db = SQLAlchemy()
 csrf = CsrfProtect()
 moment = Moment()
+mail = Mail()
+telegram = None
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 login_manager.login_message_category = 'info'
+login_manager.login_message = lazy_gettext('Please login to access this page')
 
 
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
+    app.json_encoder = CustomJSONEncoder
     config[config_name].init_app(app)
 
     db.init_app(app)
     csrf.init_app(app)
     babel.init_app(app)
-    bootstrap.init_app(app)
+    mail.init_app(app)
     moment.init_app(app)
     login_manager.init_app(app)
+
+    global telegram
+    telegram = Bot(token=app.config['TELEGRAM_TOKEN'])
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)

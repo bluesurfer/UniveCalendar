@@ -1,0 +1,463 @@
+# Italian translations for PROJECT.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2015-10-01 14:22+0200\n"
+"PO-Revision-Date: 2015-10-01 14:05+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: it <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.0\n"
+
+#: __init__.py:36
+msgid "Please login to access this page"
+msgstr "Devi accedere per visitare questa pagina"
+
+#: auth/forms.py:13
+msgid "Keep me logged in"
+msgstr "Ricordami"
+
+#: auth/forms.py:23
+msgid "Username must have at least 6 characters"
+msgstr "Il nome utente deve contentere almeno 6 caratteri"
+
+#: auth/forms.py:24
+msgid "Usernames must have only letters, numbers, dots or underscores"
+msgstr "Il nome utente può contenere solo caratteri alfanumerici"
+
+#: auth/forms.py:28
+msgid "Password must have at least 6 characters"
+msgstr "La password deve contenere almeno 6 caratteri"
+
+#: auth/forms.py:29 auth/forms.py:55
+msgid "Passwords must match"
+msgstr "Le password non coincidono"
+
+#: auth/forms.py:30 templates/auth/register.html:43
+#: templates/auth/reset_password.html:49
+msgid "Confirm password"
+msgstr "Conferma password"
+
+#: auth/forms.py:31 templates/auth/register.html:46
+msgid "Register"
+msgstr "Registrati"
+
+#: auth/forms.py:35
+msgid "Email already registered"
+msgstr "Indirizzo email già esistente"
+
+#: auth/forms.py:39
+msgid "Username already in use"
+msgstr "Il nome utente esiste già"
+
+#: auth/forms.py:61
+msgid "Unknown email address"
+msgstr "Email sconosciuta"
+
+#: auth/views.py:31
+msgid "Invalid username or password."
+msgstr "Nome utente o password non validi"
+
+#: auth/views.py:39
+msgid "Logout successful."
+msgstr "Hai eseguito correttamente il logout"
+
+#: auth/views.py:61 auth/views.py:87
+msgid "Confirm Your Account"
+msgstr "Conferma il tuo Account"
+
+#: auth/views.py:65
+msgid "A confirmation email has been sent to you by email."
+msgstr "Una email di conferma è stata spedita al tuo indirizzo email."
+
+#: auth/views.py:76
+msgid "You have confirmed your account. Thanks!"
+msgstr "Hai confermato il tuo account. Grazie!"
+
+#: auth/views.py:78
+msgid "The confirmation link is invalid or has expired."
+msgstr "Il link di conferma non è valido o è scaduto."
+
+#: auth/views.py:91
+msgid "A new confirmation email has been sent to you by email."
+msgstr "Una nuovo email di conferma è stata inviata al tuo indirizzo email."
+
+#: auth/views.py:104
+msgid "Reset Your Password"
+msgstr "Resetta Password"
+
+#: auth/views.py:108
+msgid "An email with instructions to reset your password has been sent to you."
+msgstr ""
+"Ti abbiamo inviato una email con le istruzioni per resettare la tua "
+"password."
+
+#: auth/views.py:124
+msgid "Your password has been updated."
+msgstr "La tua password è stata cambiata."
+
+#: main/views.py:126 main/views.py:148
+msgid "No course selected"
+msgstr "Nessun corso selezionato"
+
+#: main/views.py:134
+#, python-format
+msgid "%(count)s new courses added"
+msgstr "Aggiunti %(count)s nuovi corsi"
+
+#: main/views.py:136
+msgid "1 new course added"
+msgstr "Aggiunto un nuovo corso"
+
+#: main/views.py:138
+msgid "No new course added"
+msgstr "Nessun corso è stato aggiunto"
+
+#: main/views.py:156
+#, python-format
+msgid "%(count)s courses deleted"
+msgstr "%(count)s corsi eliminati"
+
+#: main/views.py:158
+msgid "1 course deleted"
+msgstr "1 corso eliminato"
+
+#: main/views.py:160
+msgid "No course deleted"
+msgstr "Nessun corso è stato eliminato"
+
+#: templates/_macros.html:21 templates/_macros.html:51 templates/feeds.html:63
+msgid "No feed found"
+msgstr "Non ci sono avvisi"
+
+#: templates/_macros.html:36 templates/_macros.html:63
+#, python-format
+msgid "Published %(fromnow)s at %(date)s"
+msgstr "Postata %(fromnow)s il %(date)s"
+
+#: templates/_macros.html:42 templates/_macros.html:72
+msgid "Read all feeds"
+msgstr "Leggi tutti gli avvisi"
+
+#: templates/base.html:27
+msgid ""
+"This website uses cookies to ensure you get the best experience on our "
+"website"
+msgstr ""
+"Questo sito utilizza i cookie per garantire la migliore esperienza "
+"dell'utente nel nostro sito"
+
+#: templates/base.html:27
+msgid "Got it!"
+msgstr "Accetto"
+
+#: templates/base.html:27
+msgid "More info"
+msgstr "Saperne di più"
+
+#: templates/base.html:53 templates/courses.html:156
+msgid "Courses"
+msgstr "Corsi"
+
+#: templates/base.html:54
+msgid "Feeds"
+msgstr "Avvisi"
+
+#: templates/base.html:79
+msgid "Logout"
+msgstr "Esci"
+
+#: templates/courses.html:37
+msgid "My courses"
+msgstr "I miei Corsi"
+
+#: templates/courses.html:54
+msgid "Delete courses"
+msgstr "Elimina Corsi"
+
+#: templates/courses.html:71 templates/courses.html:176
+msgid "Follow"
+msgstr "Segui"
+
+#: templates/courses.html:73 templates/courses.html:178
+msgid "Code"
+msgstr "Codice"
+
+#: templates/courses.html:74 templates/courses.html:179
+msgid "Year"
+msgstr "Anno"
+
+#: templates/courses.html:75 templates/courses.html:180
+msgid "Name"
+msgstr "Insegnamento"
+
+#: templates/courses.html:77 templates/courses.html:182
+msgid "Partition"
+msgstr "Partizione"
+
+#: templates/courses.html:78 templates/courses.html:183
+msgid "Field"
+msgstr "Settore"
+
+#: templates/courses.html:79 templates/courses.html:184
+msgid "Period"
+msgstr "Periodo"
+
+#: templates/courses.html:80 templates/courses.html:185
+msgid "Professor"
+msgstr "Professore"
+
+#: templates/courses.html:95 templates/index.html:42
+msgid "Add courses"
+msgstr "Aggiungi Corsi"
+
+#: templates/courses.html:100
+msgid "Follow the wizard to add new courses."
+msgstr "Segui la procedura guidata per aggiungere nuovi corsi"
+
+#: templates/courses.html:106
+msgid "Category"
+msgstr "Categoria"
+
+#: templates/courses.html:108
+msgid "Select a category"
+msgstr "Seleziona una categoria di laurea"
+
+#: templates/courses.html:114
+msgid "Bachelor"
+msgstr "Triennale"
+
+#: templates/courses.html:115
+msgid "Master"
+msgstr "Magistrale"
+
+#: templates/courses.html:129
+msgid "Degree"
+msgstr "Laurea"
+
+#: templates/courses.html:132
+msgid "Find your degree course"
+msgstr "Trova il tuo corso di laurea"
+
+#: templates/courses.html:159
+msgid "Choose the courses you intend to follow."
+msgstr "Scegli i corsi che intendi seguire"
+
+#: templates/courses.html:257
+msgid "Current step"
+msgstr "Passo corrente"
+
+#: templates/courses.html:258
+msgid "Steps"
+msgstr "Passi"
+
+#: templates/courses.html:259
+msgid "Finish"
+msgstr "Fine"
+
+#: templates/courses.html:260
+msgid "Next"
+msgstr "Avanti"
+
+#: templates/courses.html:261
+msgid "Back"
+msgstr "Indietro"
+
+#: templates/courses.html:262
+msgid "Loading..."
+msgstr "Caricamento"
+
+#: templates/courses.html:338
+msgid "Total"
+msgstr "Totale"
+
+#: templates/feed.html:12
+msgid "Feed"
+msgstr "Avviso"
+
+#: templates/feed.html:21
+msgid "Subject:"
+msgstr "Oggetto"
+
+#: templates/feed.html:25
+msgid "From: "
+msgstr "Da: "
+
+#: templates/feeds.html:23
+msgid "All feeds"
+msgstr "Tutti gli Avvisi"
+
+#: templates/feeds.html:31
+msgid "Inbox"
+msgstr "In arrivo"
+
+#: templates/feeds.html:38
+msgid "Select/deselect all"
+msgstr "Selziona/deseleziona tutto"
+
+#: templates/feeds.html:42
+msgid "Check feeds"
+msgstr "Controlla avvisi"
+
+#: templates/feeds.html:43
+msgid "Refresh"
+msgstr "Aggiorna"
+
+#: templates/feeds.html:46
+msgid "Mark as read"
+msgstr "Segna come già letto"
+
+#: templates/index.html:35
+msgid "My calendar"
+msgstr "Il mio Calendario"
+
+#: templates/index.html:42
+msgid "You calendar is empty."
+msgstr "Il tuo calendario è vuoto"
+
+#: templates/index.html:51
+msgid "Download Calendar"
+msgstr "Scarica Calendario"
+
+#: templates/index.html:52
+msgid ""
+"Get your personal calendar in ICS format, compatible with the most common"
+" Calendar apps"
+msgstr ""
+"Scarica il tuo calendario personale in formata ICS, compatibile con le "
+"più comuni applicazioni Calendar."
+
+#: templates/index.html:55
+msgid "Sync with Google"
+msgstr "Sincronizza con Goodle"
+
+#: templates/index.html:56
+msgid "Sync calendar with your Google account. "
+msgstr "Sincronizza calendario con il tuo account di Google."
+
+#: templates/index.html:73
+msgid "Latest feeds"
+msgstr "Ultimi Avvisi"
+
+#: templates/auth/change_email.html:14 templates/auth/change_password.html:14
+#: templates/auth/reset_password.html:52
+msgid "Reset password"
+msgstr "Resetta Password"
+
+#: templates/auth/change_email.html:41 templates/auth/change_password.html:42
+#: templates/auth/login.html:55 templates/auth/register.html:50
+msgid "Login"
+msgstr "Accedi"
+
+#: templates/auth/change_email.html:44 templates/auth/change_password.html:45
+#: templates/auth/login.html:58
+msgid "Forgot password?"
+msgstr "Password dimenticata?"
+
+#: templates/auth/change_email.html:48 templates/auth/change_password.html:49
+#: templates/auth/login.html:62
+msgid "I don't have an account"
+msgstr "Non hai un account?"
+
+#: templates/auth/change_email.html:50 templates/auth/change_password.html:51
+#: templates/auth/login.html:65
+msgid "Create account"
+msgstr "Crea Account"
+
+#: templates/auth/login.html:24
+msgid "Login with your account"
+msgstr "Accedi con il tuo account"
+
+#: templates/auth/register.html:23
+msgid "Create new account"
+msgstr "Crea un nuovo account"
+
+#: templates/auth/register.html:40
+msgid "Username"
+msgstr "Nome utente"
+
+#: templates/auth/register.html:41 templates/auth/reset_password.html:45
+msgid "Email address"
+msgstr "Indirizzo email"
+
+#: templates/auth/register.html:42 templates/auth/reset_password.html:48
+msgid "Password"
+msgstr "Password"
+
+#: templates/auth/register.html:49
+msgid "Already have an account?"
+msgstr "Hai già un account?"
+
+#: templates/auth/reset_password.html:21
+msgid "Forgot password"
+msgstr "Password dimenticata"
+
+#: templates/auth/reset_password.html:26
+msgid ""
+"Enter your email address. We will sent you an email with instructions to "
+"reset your password."
+msgstr ""
+"Inserisci il tuo indirizzo email. Ti "
+"inviaremo una email con le istruzioni"
+" per resettare la tua password."
+
+#: templates/auth/unconfirmed.html:25
+#, python-format
+msgid "Hello, %(username)s"
+msgstr "Ciao, %(username)s"
+
+#: templates/auth/unconfirmed.html:28
+msgid "You have not confirmed your account yet."
+msgstr "Non hai ancora confermato il tuo account."
+
+#: templates/auth/unconfirmed.html:31
+msgid ""
+"Before you can access this site you need to confirm your account. Check "
+"your inbox, you should have received an email with a confirmation link."
+msgstr ""
+"Per potere accedere a questo sito devi prima confermare il tuo account. "
+"Controlla la tua casella di posta elettronica, dovresti avere ricevuto "
+"una email con un link di conferma."
+
+#: templates/auth/unconfirmed.html:36
+msgid "Need another confirmation email?"
+msgstr "Ti serve un'altra email di conferma?"
+
+#: templates/auth/unconfirmed.html:38
+msgid "Click here"
+msgstr "Clicca qui"
+
+#: templates/errors/404.html:25
+msgid "Page not found"
+msgstr "Pagina non trovata"
+
+#: templates/errors/404.html:28
+msgid "The page you are looking for could not be found."
+msgstr "La pagina che stai cercando non può essere trovata."
+
+#: templates/errors/404.html:32 templates/errors/500.html:30
+#: templates/errors/forbidden.html:31
+msgid "Back to home"
+msgstr "Torna alla Home."
+
+#: templates/errors/forbidden.html:27
+msgid "You are not allowed to visit this page."
+msgstr "Non sei autorizzato a visitare questa pagina."
+
+msgid ""
+"Enter your email address and your "
+"password will be reset and emailed "
+"to you."
+msgstr ""
+"Inserisci il tuo indirizzo email. Ti "
+"inviaremo una email con le istruzioni"
+" per resettare la tua password."
+

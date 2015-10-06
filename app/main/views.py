@@ -1,10 +1,12 @@
+from sqlalchemy import or_
 from ics import Calendar, Event
 from flask import render_template, redirect, url_for, request, \
     flash, make_response, current_app, g, jsonify
 from flask.ext.login import login_required, current_user
 from flask.ext.sqlalchemy import get_debug_queries
+from flask.ext.babel import gettext
 from . import main
-from .forms import SearchForm
+from forms import EditProfileForm
 from ..models import Course, Feed
 from .. import babel
 
@@ -31,27 +33,34 @@ def after_request(response):
 def before_request():
     g.unread = count_unread_feeds()
     g.latest = get_latest_feeds(3)
+    g.locale = get_locale()
+
+
+def user_feeds_query():
+    """The SQL query that retrieves user's related feeds."""
+    if not current_user.courses.count():
+        return
+    professor_ids = set([c.professor_id for c in current_user.courses])
+    lesson_ids = [l.id for c in current_user.courses for l in c.lessons]
+    return Feed.query.filter(or_(Feed.professor_id.in_(professor_ids),
+                                 Feed.lesson_id.in_(lesson_ids)))
 
 
 def get_latest_feeds(n=5):
-    if not current_user.courses:
-        return
-    ids = set([c.professor_id for c in current_user.courses])
-    feeds = Feed.query.filter(Feed.author_id.in_(ids))
-    return feeds.order_by(Feed.timestamp.desc()).limit(n).all()
+    query = user_feeds_query()
+    if query is not None:
+        return query.order_by(Feed.timestamp.desc()).limit(n).all()
 
 
 def count_unread_feeds():
-    if not current_user.courses:
-        return
-    ids = set([c.professor_id for c in current_user.courses])
-    return Feed.query.filter(Feed.author_id.in_(ids),
-                                 ~Feed.users.contains(current_user)).count()
+    query = user_feeds_query()
+    if query is not None:
+        return query.filter(~Feed.users.contains(current_user)).count()
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    if current_user.is_authenticated():
+    if current_user.is_authenticated:
         return render_template('index.html', feeds=get_latest_feeds(5))
     return redirect(url_for('auth.login'))
 
@@ -70,39 +79,42 @@ def feed(id):
     return render_template('feed.html', feed=feed)
 
 
-@main.route('/feed/<int:id>/read/', methods=['post'])
+@main.route('/_mark_as_read', methods=['post'])
 @login_required
-def read(id):
-    feed = Feed.query.get_or_404(id)
-    return jsonify({'success': current_user.read(feed)})
+def mark_as_read():
+    feed_ids = request.form.getlist('feed_id')
+    if feed_ids:
+        feeds = Feed.query.filter(Feed.id.in_(feed_ids))
+        for f in feeds:
+            current_user.read(f)
+    return redirect(url_for('main.feeds'))
 
 
 @main.route('/feeds')
 @login_required
 def feeds():
-    form = SearchForm()
     page = request.args.get('page', 1, type=int)
-    ids = set([c.professor_id for c in current_user.courses])
-    query = Feed.query.filter(Feed.author_id.in_(ids))
+    query = user_feeds_query()
+    if not query:
+        return render_template('feeds.html')
     pagination = query.order_by(Feed.timestamp.desc()).paginate(
         page, per_page=current_app.config['FEEDS_PER_PAGE'],
         error_out=False)
     feeds = pagination.items
-    return render_template('feeds.html', form=form, feeds=feeds, pagination=pagination)
+    return render_template('feeds.html', feeds=feeds, pagination=pagination)
 
 
 @main.route('/download')
 @login_required
 def download_calendar():
-    lessons = [l for c in current_user.courses.all()
-               for l in c.lessons.all()]
-    cal = Calendar()
+    lessons = [l for c in current_user.courses for l in c.lessons]
+    calendar = Calendar()
     for l in lessons:
-        cal.events.append(Event(name=l.title,
-                                begin=l.start,
-                                end=l.end,
-                                location=l.location.address))
-    response = make_response(str(cal))
+        calendar.events.append(Event(name=l.title,
+                                     begin=l.start,
+                                     end=l.end,
+                                     location=l.location.address))
+    response = make_response(str(calendar))
     response.headers["Content-Disposition"] = "attachment; filename=calendar.ics"
     return response
 
@@ -110,18 +122,21 @@ def download_calendar():
 @main.route('/follow', methods=['post'])
 @login_required
 def follow():
-    ids = request.form.getlist('course_id')
+    course_ids = request.form.getlist('course_id')
+    if not course_ids:
+        flash(gettext('No course selected'), 'warning')
+        return redirect(url_for('main.courses'))
+
     added = 0
+    for c in Course.query.filter(Course.id.in_(course_ids)).all():
+        added += current_user.follow(c)
 
-    if ids:
-        for c in Course.query.filter(Course.id.in_(ids)).all():
-            added += current_user.follow(c)
-
-    if added > 0:
-        flash('%s new course%s added' %
-              (added, 's' if added > 1 else ''), 'info')
+    if added > 1:
+        flash(gettext('%(count)s new courses added', count=added), 'info')
+    elif added == 1:
+        flash(gettext('1 new course added'), 'info')
     else:
-        flash('No new course added', 'danger')
+        flash(gettext('No new course added'), 'warning')
 
     return redirect(url_for('main.courses'))
 
@@ -129,17 +144,33 @@ def follow():
 @main.route('/unfollow', methods=['post'])
 @login_required
 def unfollow():
-    ids = request.form.getlist('course_id')
-    removed = 0
+    course_ids = request.form.getlist('course_id')
+    if not course_ids:
+        flash(gettext('No course selected'), 'warning')
+        return redirect(url_for('main.courses'))
 
-    if ids:
-        for c in Course.query.filter(Course.id.in_(ids)).all():
-            removed += current_user.unfollow(c)
+    deleted = 0
+    for c in Course.query.filter(Course.id.in_(course_ids)).all():
+        deleted += current_user.unfollow(c)
 
-    if removed > 0:
-        flash('%s course%s removed' %
-              (removed, 's' if removed > 1 else ''), 'danger')
+    if deleted > 1:
+        flash(gettext('%(count)s courses deleted', count=deleted), 'danger')
+    elif deleted == 1:
+        flash(gettext('1 course deleted'), 'danger')
     else:
-        flash('No course removed', 'warning')
+        flash(gettext('No course deleted'), 'info')
 
     return redirect(url_for('main.courses'))
+
+@main.route('/edit-profile')
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        flash('Your profile has been updated.')
+        return redirect(url_for('.user', username=current_user.username))
+    form.username.data = current_user.username
+    form.email.data = current_user.email
+    return render_template('edit_profile.html', form=form)

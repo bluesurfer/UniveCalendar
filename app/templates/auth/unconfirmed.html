@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>UniveCalendar | Confirm your accont</title>
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='css/animate.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+
+<div class="middle-box text-center animated fadeInDown">
+    <h1><i class="fa fa-hand-stop-o"></i></h1>
+
+    <h3 class="font-bold">{{ gettext('Hello, %(username)s', username=current_user.username) }}</h3>
+
+    <div class="error-desc">
+        <p>{{ gettext('You have not confirmed your account yet.') }}</p>
+
+        <p>
+            {{ gettext('Before you can access this site you need to confirm your account. Check your inbox, you should have received an email with a confirmation link.') }}
+        </p>
+
+    </div>
+    <div class="error-actions" style="padding-top: 20px;">
+         <p>{{ gettext('Need another confirmation email?') }}</p>
+        <a href="{{ url_for('auth.resend_confirmation') }}"  class="btn btn-primary btn-lg">
+            {{ gettext('Click here') }}
+        </a>
+    </div>
+</div>
+
+{% block scripts %}
+    <!-- Mainly scripts -->
+    <script src="{{ url_for('static', filename="js/jquery-2.1.1.js") }}"></script>
+    <script src="{{ url_for('static', filename="js/bootstrap.min.js") }}"></script>
+{% endblock %}
+</body>
+
+</html>

@@ -1,11 +1,11 @@
 Flask == 0.10.1
 Flask-SQLAlchemy == 2.0
-Flask-Login == 0.2.11
+Flask-Login == 0.3.1
 Flask-Moment == 0.5.1
 Flask-Babel == 0.9
-Flask-Bootstrap == 3.3.5.6
 Flask-WTF == 0.12
 Flask-Script == 2.0.5
+Flask-Mail == 0.9.1
 Flask-Migrate == 1.4.0
 Jinja2 == 2.8
 gunicorn == 19.3.0
@@ -15,4 +15,4 @@ WTForms == 2.0.2
 itsdangerous == 0.24
 ics == 0.3.1
 ForgeryPy == 0.1
-psycopg2 == 2.6.1
+Python-Telegram-Bot == 2.8.5
