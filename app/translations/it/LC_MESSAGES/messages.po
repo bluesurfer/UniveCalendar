@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-01 14:22+0200\n"
+"POT-Creation-Date: 2015-10-06 22:34+0200\n"
 "PO-Revision-Date: 2015-10-01 14:05+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: it <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.0\n"
 
-#: __init__.py:36
+#: __init__.py:38
 msgid "Please login to access this page"
 msgstr "Devi accedere per visitare questa pagina"
 
@@ -25,116 +25,144 @@ msgstr "Devi accedere per visitare questa pagina"
 msgid "Keep me logged in"
 msgstr "Ricordami"
 
-#: auth/forms.py:23
+#: auth/forms.py:23 main/forms.py:16
+msgid "Invalid phone number."
+msgstr "Numero di telefono non valido"
+
+#: auth/forms.py:27 main/forms.py:20
 msgid "Username must have at least 6 characters"
 msgstr "Il nome utente deve contentere almeno 6 caratteri"
 
-#: auth/forms.py:24
+#: auth/forms.py:28 main/forms.py:21
 msgid "Usernames must have only letters, numbers, dots or underscores"
 msgstr "Il nome utente può contenere solo caratteri alfanumerici"
 
-#: auth/forms.py:28
+#: auth/forms.py:33
 msgid "Password must have at least 6 characters"
 msgstr "La password deve contenere almeno 6 caratteri"
 
-#: auth/forms.py:29 auth/forms.py:55
+#: auth/forms.py:34 auth/forms.py:60 auth/forms.py:72
 msgid "Passwords must match"
 msgstr "Le password non coincidono"
 
-#: auth/forms.py:30 templates/auth/register.html:43
-#: templates/auth/reset_password.html:49
+#: auth/forms.py:35 templates/auth/change_password.html:21
+#: templates/auth/register.html:44 templates/auth/reset_password.html:49
 msgid "Confirm password"
 msgstr "Conferma password"
 
-#: auth/forms.py:31 templates/auth/register.html:46
+#: auth/forms.py:36 templates/auth/register.html:47
 msgid "Register"
 msgstr "Registrati"
 
-#: auth/forms.py:35
+#: auth/forms.py:40 main/forms.py:27
 msgid "Email already registered"
 msgstr "Indirizzo email già esistente"
 
-#: auth/forms.py:39
+#: auth/forms.py:44 main/forms.py:31
 msgid "Username already in use"
 msgstr "Il nome utente esiste già"
 
-#: auth/forms.py:61
+#: auth/forms.py:66
 msgid "Unknown email address"
 msgstr "Email sconosciuta"
 
-#: auth/views.py:31
+#: auth/forms.py:73
+msgid "Confirm new password"
+msgstr "Conferma nuova password"
+
+#: auth/views.py:32
 msgid "Invalid username or password."
 msgstr "Nome utente o password non validi"
 
-#: auth/views.py:39
+#: auth/views.py:40
 msgid "Logout successful."
 msgstr "Hai eseguito correttamente il logout"
 
-#: auth/views.py:61 auth/views.py:87
+#: auth/views.py:63 auth/views.py:89
 msgid "Confirm Your Account"
 msgstr "Conferma il tuo Account"
 
-#: auth/views.py:65
+#: auth/views.py:67
 msgid "A confirmation email has been sent to you by email."
 msgstr "Una email di conferma è stata spedita al tuo indirizzo email."
 
-#: auth/views.py:76
+#: auth/views.py:78
 msgid "You have confirmed your account. Thanks!"
 msgstr "Hai confermato il tuo account. Grazie!"
 
-#: auth/views.py:78
+#: auth/views.py:80
 msgid "The confirmation link is invalid or has expired."
 msgstr "Il link di conferma non è valido o è scaduto."
 
-#: auth/views.py:91
+#: auth/views.py:93
 msgid "A new confirmation email has been sent to you by email."
 msgstr "Una nuovo email di conferma è stata inviata al tuo indirizzo email."
 
-#: auth/views.py:104
+#: auth/views.py:106
 msgid "Reset Your Password"
 msgstr "Resetta Password"
 
-#: auth/views.py:108
+#: auth/views.py:110
 msgid "An email with instructions to reset your password has been sent to you."
 msgstr ""
 "Ti abbiamo inviato una email con le istruzioni per resettare la tua "
 "password."
 
-#: auth/views.py:124
+#: auth/views.py:126 auth/views.py:141
 msgid "Your password has been updated."
 msgstr "La tua password è stata cambiata."
 
-#: main/views.py:126 main/views.py:148
+#: auth/views.py:144
+msgid "Invalid password."
+msgstr "Password non valida"
+
+#: main/forms.py:11
+msgid "Change email"
+msgstr "Cambia indirizzo email"
+
+#: main/forms.py:14
+msgid "Change phone number"
+msgstr "Cambia numero di cellulare"
+
+#: main/forms.py:18
+msgid "Change username"
+msgstr "Cambia nome utente"
+
+#: main/forms.py:23
+msgid "Notify feeds on Telegram"
+msgstr "Invia gli avvisi su Telegram"
+
+#: main/views.py:127 main/views.py:149
 msgid "No course selected"
 msgstr "Nessun corso selezionato"
 
-#: main/views.py:134
+#: main/views.py:135
 #, python-format
 msgid "%(count)s new courses added"
 msgstr "Aggiunti %(count)s nuovi corsi"
 
-#: main/views.py:136
+#: main/views.py:137
 msgid "1 new course added"
 msgstr "Aggiunto un nuovo corso"
 
-#: main/views.py:138
+#: main/views.py:139
 msgid "No new course added"
 msgstr "Nessun corso è stato aggiunto"
 
-#: main/views.py:156
+#: main/views.py:157
 #, python-format
 msgid "%(count)s courses deleted"
 msgstr "%(count)s corsi eliminati"
 
-#: main/views.py:158
+#: main/views.py:159
 msgid "1 course deleted"
 msgstr "1 corso eliminato"
 
-#: main/views.py:160
+#: main/views.py:161
 msgid "No course deleted"
 msgstr "Nessun corso è stato eliminato"
 
-#: templates/_macros.html:21 templates/_macros.html:51 templates/feeds.html:63
+#: templates/_macros.html:21 templates/_macros.html:51 templates/feeds.html:68
 msgid "No feed found"
 msgstr "Non ci sono avvisi"
 
@@ -146,6 +174,27 @@ msgstr "Postata %(fromnow)s il %(date)s"
 #: templates/_macros.html:42 templates/_macros.html:72
 msgid "Read all feeds"
 msgstr "Leggi tutti gli avvisi"
+
+#: templates/_macros.html:107
+msgid "Profile Detail"
+msgstr "Dettagli Profilo"
+
+#: templates/_macros.html:116
+#, python-format
+msgid "Last seen: %(date)s"
+msgstr "Ultimo accesso: %(date)s"
+
+#: templates/_macros.html:121
+msgid "Followed Courses"
+msgstr "Corsi seguiti"
+
+#: templates/_macros.html:127 templates/edit_profile.html:14
+msgid "Edit Profile"
+msgstr "Modifica Profilo"
+
+#: templates/_macros.html:128 templates/auth/change_password.html:14
+msgid "Change Password"
+msgstr "Cambia Password"
 
 #: templates/base.html:27
 msgid ""
@@ -171,7 +220,11 @@ msgstr "Corsi"
 msgid "Feeds"
 msgstr "Avvisi"
 
-#: templates/base.html:79
+#: templates/base.html:80
+msgid "Profile"
+msgstr "Profilo"
+
+#: templates/base.html:84
 msgid "Logout"
 msgstr "Esci"
 
@@ -279,6 +332,23 @@ msgstr "Caricamento"
 msgid "Total"
 msgstr "Totale"
 
+#: templates/edit_profile.html:19 templates/auth/register.html:40
+msgid "Username"
+msgstr "Nome utente"
+
+#: templates/edit_profile.html:20 templates/auth/register.html:41
+#: templates/auth/reset_password.html:45
+msgid "Email address"
+msgstr "Indirizzo email"
+
+#: templates/edit_profile.html:21
+msgid "Phone number (Optional)"
+msgstr "Numero di cellulare (Opzionale)"
+
+#: templates/edit_profile.html:25 templates/auth/change_password.html:24
+msgid "Save"
+msgstr "Salva"
+
 #: templates/feed.html:12
 msgid "Feed"
 msgstr "Avviso"
@@ -291,27 +361,27 @@ msgstr "Oggetto"
 msgid "From: "
 msgstr "Da: "
 
-#: templates/feeds.html:23
+#: templates/feeds.html:28
 msgid "All feeds"
 msgstr "Tutti gli Avvisi"
 
-#: templates/feeds.html:31
+#: templates/feeds.html:36
 msgid "Inbox"
 msgstr "In arrivo"
 
-#: templates/feeds.html:38
+#: templates/feeds.html:43
 msgid "Select/deselect all"
 msgstr "Selziona/deseleziona tutto"
 
-#: templates/feeds.html:42
+#: templates/feeds.html:47
 msgid "Check feeds"
 msgstr "Controlla avvisi"
 
-#: templates/feeds.html:43
+#: templates/feeds.html:48
 msgid "Refresh"
 msgstr "Aggiorna"
 
-#: templates/feeds.html:46
+#: templates/feeds.html:51
 msgid "Mark as read"
 msgstr "Segna come già letto"
 
@@ -347,30 +417,34 @@ msgstr "Sincronizza calendario con il tuo account di Google."
 msgid "Latest feeds"
 msgstr "Ultimi Avvisi"
 
-#: templates/auth/change_email.html:14 templates/auth/change_password.html:14
-#: templates/auth/reset_password.html:52
+#: templates/auth/change_email.html:14 templates/auth/reset_password.html:52
 msgid "Reset password"
 msgstr "Resetta Password"
 
-#: templates/auth/change_email.html:41 templates/auth/change_password.html:42
-#: templates/auth/login.html:55 templates/auth/register.html:50
+#: templates/auth/change_email.html:41 templates/auth/login.html:55
+#: templates/auth/register.html:51
 msgid "Login"
 msgstr "Accedi"
 
-#: templates/auth/change_email.html:44 templates/auth/change_password.html:45
-#: templates/auth/login.html:58
+#: templates/auth/change_email.html:44 templates/auth/login.html:58
 msgid "Forgot password?"
 msgstr "Password dimenticata?"
 
-#: templates/auth/change_email.html:48 templates/auth/change_password.html:49
-#: templates/auth/login.html:62
+#: templates/auth/change_email.html:48 templates/auth/login.html:62
 msgid "I don't have an account"
 msgstr "Non hai un account?"
 
-#: templates/auth/change_email.html:50 templates/auth/change_password.html:51
-#: templates/auth/login.html:65
+#: templates/auth/change_email.html:50 templates/auth/login.html:65
 msgid "Create account"
 msgstr "Crea Account"
+
+#: templates/auth/change_password.html:19
+msgid "Old password"
+msgstr "Vecchia password"
+
+#: templates/auth/change_password.html:20
+msgid "New password"
+msgstr "Nuova password"
 
 #: templates/auth/login.html:24
 msgid "Login with your account"
@@ -380,19 +454,15 @@ msgstr "Accedi con il tuo account"
 msgid "Create new account"
 msgstr "Crea un nuovo account"
 
-#: templates/auth/register.html:40
-msgid "Username"
-msgstr "Nome utente"
+#: templates/auth/register.html:42
+msgid "Phone number (optional)"
+msgstr "Numbero di cellulare (opzionale)"
 
-#: templates/auth/register.html:41 templates/auth/reset_password.html:45
-msgid "Email address"
-msgstr "Indirizzo email"
-
-#: templates/auth/register.html:42 templates/auth/reset_password.html:48
+#: templates/auth/register.html:43 templates/auth/reset_password.html:48
 msgid "Password"
 msgstr "Password"
 
-#: templates/auth/register.html:49
+#: templates/auth/register.html:50
 msgid "Already have an account?"
 msgstr "Hai già un account?"
 
@@ -405,9 +475,8 @@ msgid ""
 "Enter your email address. We will sent you an email with instructions to "
 "reset your password."
 msgstr ""
-"Inserisci il tuo indirizzo email. Ti "
-"inviaremo una email con le istruzioni"
-" per resettare la tua password."
+"Inserisci il tuo indirizzo email. Ti inviaremo una email con le "
+"istruzioni per resettare la tua password."
 
 #: templates/auth/unconfirmed.html:25
 #, python-format
@@ -452,12 +521,6 @@ msgstr "Torna alla Home."
 msgid "You are not allowed to visit this page."
 msgstr "Non sei autorizzato a visitare questa pagina."
 
-msgid ""
-"Enter your email address and your "
-"password will be reset and emailed "
-"to you."
-msgstr ""
-"Inserisci il tuo indirizzo email. Ti "
-"inviaremo una email con le istruzioni"
-" per resettare la tua password."
+#~ msgid ""
+#~ msgstr ""
 

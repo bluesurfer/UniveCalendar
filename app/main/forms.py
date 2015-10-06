@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from flask.ext.babel import gettext
+from flask.ext.babel import gettext, lazy_gettext
 from wtforms import StringField, TextAreaField, BooleanField, \
     SubmitField, ValidationError
 from wtforms.validators import DataRequired, Length, Email, Regexp, Optional
@@ -8,18 +8,19 @@ from ..models import User
 
 
 class EditProfileForm(Form):
-    email = StringField('Email', validators=[DataRequired(),
+    email = StringField(lazy_gettext('Change email'), validators=[DataRequired(),
                                              Length(1, 64),
                                              Email()])
-    phone_number = StringField('Phone Number', validators=[
+    phone_number = StringField(lazy_gettext('Change phone number'), validators=[
         Optional(),
-        Regexp('^(?:\+?44)?[07]\d{9,13}$'), 0, gettext('Not a valid phone number')])
-
-    username = StringField('Username', validators=[
+        Regexp('^(\d{3})-(\d{3})-(\d{4})$', 0, gettext('Invalid phone number.'))
+    ])
+    username = StringField(lazy_gettext('Change username'), validators=[
         DataRequired(),
-        Length(6, 64, message=gettext('Username must have at least 6 characters')),
+        Length(6, 64, message=lazy_gettext('Username must have at least 6 characters')),
         Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0, gettext('Usernames must have only letters, '
                                                       'numbers, dots or underscores'))])
+    notify_me = BooleanField(lazy_gettext('Notify feeds on Telegram'))
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():

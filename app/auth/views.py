@@ -4,7 +4,8 @@ from flask.ext.login import login_user, logout_user, login_required, \
 from flask.ext.babel import gettext
 
 from . import auth
-from .forms import LoginForm, RegistrationForm, PasswordResetForm, PasswordResetRequestForm
+from .forms import LoginForm, RegistrationForm, PasswordResetForm, \
+    PasswordResetRequestForm, ChangePasswordForm
 
 from ..email import send_email
 from ..models import db, User
@@ -51,8 +52,9 @@ def unconfirmed():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(email=form.email.data,
-                    username=form.username.data,
+        user = User(username=form.username.data,
+                    email=form.email.data,
+                    phone_number=form.phone_number.data,
                     password=form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -127,3 +129,17 @@ def password_reset(token):
             return redirect(url_for('main.index'))
     return render_template('auth/reset_password.html', form=form)
 
+
+@auth.route('/change-password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.old_password.data):
+            current_user.password = form.password.data
+            db.session.add(current_user)
+            flash(gettext('Your password has been updated.'), 'success')
+            return redirect(url_for('main.index'))
+        else:
+            flash(gettext('Invalid password.'), 'danger')
+    return render_template("auth/change_password.html", form=form)

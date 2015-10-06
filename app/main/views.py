@@ -162,15 +162,19 @@ def unfollow():
 
     return redirect(url_for('main.courses'))
 
-@main.route('/edit-profile')
+@main.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     form = EditProfileForm()
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.email = form.email.data
+        current_user.phone_number = form.phone_number.data
         flash('Your profile has been updated.')
         return redirect(url_for('.user', username=current_user.username))
     form.username.data = current_user.username
     form.email.data = current_user.email
+    form.phone_number.data = current_user.phone_number
     return render_template('edit_profile.html', form=form)
+
+

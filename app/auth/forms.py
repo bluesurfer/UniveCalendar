@@ -2,7 +2,7 @@ from flask.ext.wtf import Form
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, Regexp, \
     ValidationError, EqualTo, Optional
-from flask.ext.babel import gettext
+from flask.ext.babel import lazy_gettext, gettext
 
 from ..models import User
 
@@ -10,7 +10,7 @@ from ..models import User
 class LoginForm(Form):
     email = StringField('Email', validators=[DataRequired(), Length(1, 64), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField(gettext('Keep me logged in'))
+    remember_me = BooleanField(lazy_gettext('Keep me logged in'))
     submit = SubmitField('Log In')
 
 
@@ -20,13 +20,14 @@ class RegistrationForm(Form):
                                              Email()])
     phone_number = StringField('Phone Number', validators=[
         Optional(),
-        Regexp('^(?:\+?44)?[07]\d{9,13}$'), 0, gettext('Not a valid phone number')])
-
+        Regexp('^(\d{3})-(\d{3})-(\d{4})$', 0, gettext('Invalid phone number.'))
+    ])
     username = StringField('Username', validators=[
         DataRequired(),
         Length(6, 64, message=gettext('Username must have at least 6 characters')),
         Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0, gettext('Usernames must have only letters, '
                                                       'numbers, dots or underscores'))])
+
     password = PasswordField('Password', validators=[
         DataRequired(),
         Length(6, 64, message=gettext('Password must have at least 6 characters')),
@@ -63,3 +64,11 @@ class PasswordResetForm(Form):
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first() is None:
             raise ValidationError(gettext('Unknown email address'))
+
+
+class ChangePasswordForm(Form):
+    old_password = PasswordField('Old password', validators=[DataRequired()])
+    password = PasswordField('New password', validators=[
+        DataRequired(), EqualTo('password2', message=gettext('Passwords must match'))])
+    password2 = PasswordField(gettext('Confirm new password'), validators=[DataRequired()])
+    submit = SubmitField('Update Password')

@@ -8,7 +8,11 @@
 
 
 {% block styles %}
+
     {{ super() }}
+    <!-- Toastr style -->
+    <link href="{{ url_for('static', filename='css/plugins/toastr/toastr.min.css' ) }}" rel="stylesheet">
+
     <link href="{{ url_for('static', filename='css/plugins/iCheck/custom.css') }}" rel="stylesheet">
 {% endblock %}
 
@@ -16,17 +20,6 @@
 {% block content %}
 
     <div class="row">
-        <div class="col-lg-12">
-            <div class="jumbotron">
-                <p class="lead text-center"><span class="text-navy">Novità!</span> Vuoi ricevere gli avvisi direttamente sul tuo cellulare?</p>
-
-                <p class="text-center">
-                    <button class="btn btn-info btn-w-m">
-                        {{ gettext('Click here') }}
-                    </button>
-                </p>
-            </div>
-        </div>
 
         <div class="col-lg-12 animated fadeInRight">
             <div class="ibox float-e-margins">
@@ -112,12 +105,26 @@
     {{ super() }}
     <!-- iCheck -->
     <script src="{{ url_for('static', filename='js/plugins/iCheck/icheck.min.js') }}"></script>
+
+    <!-- Toastr -->
+    <script src="{{ url_for('static', filename='js/plugins/toastr/toastr.min.js') }}"></script>
+
     <script>
         $(document).ready(function () {
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green'
             });
+            setTimeout(function () {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    positionClass: "toast-bottom-right",
+                    showMethod: 'slideDown',
+                    timeOut: 10000
+                };
+                toastr.info("Enable Telegram notifications clicke here", "Don't you want miss a feed?");
+            }, 1300);
         });
 
         var csrftoken = $('meta[name=csrf-token]').attr('content');
