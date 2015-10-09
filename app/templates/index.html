@@ -47,13 +47,9 @@
                     <div id="calendar"></div>
 
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-lg-12">
                             <a href="{{ url_for('main.download_calendar') }}" class="btn btn-success btn-block m-t"><i class="fa fa-download"></i> {{ gettext('Download Calendar') }}</a>
                             <small>{{ gettext('Get your personal calendar in ICS format, compatible with the most common Calendar apps') }}</small>
-                        </div>
-                        <div class="col-xs-6">
-                            <a href="#" class="btn btn-primary btn-block m-t"><i class="fa fa-refresh"></i> {{ gettext('Sync with Google') }}</a>
-                            <small>{{ gettext('Sync calendar with your Google account. ') }}</small>
                         </div>
                     </div>
                 </div>

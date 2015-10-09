@@ -16,13 +16,11 @@
                 <div class="ibox-content">
                     <form class="m-t" role="form" method='post' action="">
                         {{ form.csrf_token }}
-                        {{ form.username.label }}{{ render_field(form.username, type="text", class='form-control', placeholder=gettext('Username'), required=True) }}
-                        {{ form.email.label }} {{ render_field(form.email, type="email", class='form-control', placeholder=gettext('Email address'), required=True) }}
-                        {{ form.phone_number.label }} {{ render_field(form.phone_number, type="text", class='form-control', placeholder=gettext('Phone number (Optional)')) }}
-                        {{ form.notify_me.label }} {{ render_field(form.notify_me, type="checkbox", class='form-control') }}
+                        {{ render_field(form.username, type="text", required=True) }}
+                        {{ render_field(form.email, type="email", required=True) }}
 
                         <button type="submit" class="btn btn-primary">
-                            {{ gettext('Save') }}
+                            {{ form.submit.label.text }}
                         </button>
                     </form>
                 </div>

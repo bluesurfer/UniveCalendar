@@ -5,7 +5,7 @@ from flask.ext.babel import gettext
 
 from . import auth
 from .forms import LoginForm, RegistrationForm, PasswordResetForm, \
-    PasswordResetRequestForm, ChangePasswordForm
+    PasswordResetRequestForm, ChangePasswordForm, TelegramActivationForm
 
 from ..email import send_email
 from ..models import db, User
@@ -143,3 +143,11 @@ def change_password():
         else:
             flash(gettext('Invalid password.'), 'danger')
     return render_template("auth/change_password.html", form=form)
+
+
+@auth.route('/activate-telegram', methods=['GET', 'POST'])
+@login_required
+def activate_telegram():
+    form = TelegramActivationForm()
+    form.phone_number.data = current_user.phone_number
+    return render_template("auth/activate_telegram.html", form=form)

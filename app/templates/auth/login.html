@@ -52,7 +52,7 @@
                             {{ form.remember_me }} {{ form.remember_me.label }}
                         </div>
 
-                        <button type="submit" class="btn btn-primary block full-width m-b">{{ gettext('Login') }}</button>
+                        <button type="submit" class="btn btn-primary block full-width m-b">{{ form.submit.label.text }}</button>
 
                         <a href="{{ url_for('auth.password_reset_request') }}">
                             <small>{{ gettext('Forgot password?') }}</small>

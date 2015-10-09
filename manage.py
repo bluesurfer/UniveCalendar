@@ -1,4 +1,5 @@
 import os
+import sys
 
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager
@@ -40,7 +41,7 @@ def insertfeed(professor_id):
 @manager.command
 def addusers():
     u = models.User(email='bob@unive.it',
-                    username='bob',
+                    username='bobby85',
                     confirmed=True,
                     password='123456')
 
@@ -48,7 +49,7 @@ def addusers():
     db.session.commit()
 
     u = models.User(email='alice@unive.it',
-                    username='alice',
+                    username='alice95',
                     password='123456')
 
     db.session.add(u)
@@ -78,6 +79,40 @@ def profile(length=25, profile_dir=None):
                                       restrictions=[length],
                                       profile_dir=profile_dir)
     app.run()
+
+
+@manager.command
+def trcompile():
+    if sys.platform == 'win32':
+        pybabel = 'flask\\Scripts\\pybabel'
+    else:
+        pybabel = 'pybabel'
+    os.system(pybabel + ' compile -d app/translations')
+
+
+@manager.command
+def trupdate():
+    if sys.platform == 'win32':
+        pybabel = 'flask\\Scripts\\pybabel'
+    else:
+        pybabel = 'pybabel'
+    os.system(pybabel + ' extract -F babel.cfg -k lazy_gettext -o messages.pot app')
+    os.system(pybabel + ' update -i messages.pot -d app/translations')
+    os.unlink('messages.pot')
+
+
+@manager.command
+def trinit():
+    if sys.platform == 'win32':
+        pybabel = 'flask\\Scripts\\pybabel'
+    else:
+        pybabel = 'pybabel'
+    if len(sys.argv) != 2:
+        print "usage: tr_init <language-code>"
+        sys.exit(1)
+    os.system(pybabel + ' extract -F babel.cfg -k lazy_gettext -o messages.pot app')
+    os.system(pybabel + ' init -i messages.pot -d app/translations -l ' + sys.argv[1])
+    os.unlink('messages.pot')
 
 
 if __name__ == '__main__':

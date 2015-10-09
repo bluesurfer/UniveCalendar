@@ -1,7 +1,7 @@
 {% macro render_field(field) %}
     {% if field.errors %}
         <div class="form-group has-error ">
-            {{ field(**kwargs) }}
+            {{ field(class="form-control", placeholder=field.label.text, **kwargs) }}
             {% for error in field.errors %}
                 <div class="control-label has-error">
                     {{ error }}
@@ -10,7 +10,7 @@
         </div>
     {% else %}
         <div class="form-group">
-            {{ field(**kwargs) }}
+            {{ field(class="form-control", placeholder=field.label.text, **kwargs) }}
         </div>
     {% endif %}
 {% endmacro %}
@@ -118,7 +118,7 @@
 
                 <div class="row m-t">
                     <div class="col-lg-12">
-                        <h5><strong>{{ user.courses.count() }}</strong> {{ gettext('Followed Courses') }}</h5>
+                        <h5><strong>{{ user.courses.count() }}</strong> {{ ngettext('%(num)s Followed Course', '%(num)s Followed Courses', user.courses.count()) }}</h5>
                     </div>
                 </div>
                 <div class="row m-t">
@@ -126,6 +126,7 @@
                         <ul class="folder-list m-b-md" style="padding: 0">
                             <li><a href="{{ url_for('main.edit_profile') }}">{{ gettext('Edit Profile') }}</a></li>
                             <li><a href="{{ url_for('auth.change_password') }}">{{ gettext('Change Password') }}</a></li>
+                            <!-- <li><a href="{{ url_for('auth.activate_telegram') }}">{{ gettext('Activate/Deactivate Telegram notifications') }}</a></li> -->
                         </ul>
                     </div>
                 </div>

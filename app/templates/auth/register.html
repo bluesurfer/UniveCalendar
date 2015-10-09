@@ -37,14 +37,14 @@
 
                     <form class="m-t" role="form" method='post' action="{{ url_for('auth.register') }}">
                         {{ form.csrf_token }}
-                        {{ render_field(form.username, type="text", class='form-control', placeholder=gettext('Username'), required=True) }}
-                        {{ render_field(form.email, type="email", class='form-control', placeholder=gettext('Email address'), required=True) }}
-                        {{ render_field(form.phone_number, type="text", class='form-control', placeholder=gettext('Phone number (optional)')) }}
-                        {{ render_field(form.password, type="password", class='form-control', placeholder=gettext('Password'), required=True) }}
-                        {{ render_field(form.password2, type="password", class='form-control', placeholder=gettext('Confirm password'), required=True) }}
+                        {{ render_field(form.username, type="text", required=True) }}
+                        {{ render_field(form.email, type="email", required=True) }}
+                        {{ render_field(form.phone_number, type="text") }}
+                        {{ render_field(form.password, type="password", required=True) }}
+                        {{ render_field(form.password2, type="password", required=True) }}
 
                         <button type="submit" class="btn btn-primary block full-width m-b">
-                            <i class="fa fa-user-plus"></i> {{ gettext('Register') }}
+                            <i class="fa fa-user-plus"></i> {{ form.submit.label.text }}
                         </button>
 
                         <p>{{ gettext('Already have an account?') }}</p>

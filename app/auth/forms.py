@@ -8,32 +8,36 @@ from ..models import User
 
 
 class LoginForm(Form):
-    email = StringField('Email', validators=[DataRequired(), Length(1, 64), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    email = StringField(lazy_gettext('Email'), validators=[
+        DataRequired(),
+        Length(1, 64),
+        Email()])
+    password = PasswordField('Password', validators=[
+        DataRequired()])
     remember_me = BooleanField(lazy_gettext('Keep me logged in'))
-    submit = SubmitField('Log In')
+    submit = SubmitField(lazy_gettext('Log In'))
 
 
 class RegistrationForm(Form):
-    email = StringField('Email', validators=[DataRequired(),
-                                             Length(1, 64),
-                                             Email()])
-    phone_number = StringField('Phone Number', validators=[
+    email = StringField(lazy_gettext('Email'), validators=[
+        DataRequired(),
+        Length(1, 64),
+        Email()])
+    phone_number = StringField(lazy_gettext('Phone Number'), validators=[
         Optional(),
-        Regexp('^(\d{3})-(\d{3})-(\d{4})$', 0, gettext('Invalid phone number.'))
-    ])
-    username = StringField('Username', validators=[
+        Regexp('^(\d{3})-(\d{3})-(\d{4})$', 0, gettext('Invalid phone number.'))])
+    username = StringField(lazy_gettext('Username'), validators=[
         DataRequired(),
         Length(6, 64, message=gettext('Username must have at least 6 characters')),
         Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0, gettext('Usernames must have only letters, '
                                                       'numbers, dots or underscores'))])
-
     password = PasswordField('Password', validators=[
         DataRequired(),
         Length(6, 64, message=gettext('Password must have at least 6 characters')),
         EqualTo('password2', message=gettext('Passwords must match'))])
-    password2 = PasswordField(gettext('Confirm password'), validators=[DataRequired()])
-    submit = SubmitField(gettext('Register'))
+    password2 = PasswordField(lazy_gettext('Confirm password'), validators=[
+        DataRequired()])
+    submit = SubmitField(lazy_gettext('Register'))
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
@@ -45,17 +49,19 @@ class RegistrationForm(Form):
 
 
 class PasswordResetRequestForm(Form):
-    email = StringField('Email', validators=[DataRequired(),
-                                             Length(1, 64),
-                                             Email()])
-    submit = SubmitField('Reset Password')
+    email = StringField('Email', validators=[
+        DataRequired(),
+        Length(1, 64),
+        Email()])
+    submit = SubmitField(lazy_gettext('Reset Password'))
 
 
 class PasswordResetForm(Form):
-    email = StringField('Email', validators=[DataRequired(),
-                                             Length(1, 64),
-                                             Email()])
-    password = PasswordField('New Password', validators=[
+    email = StringField('Email', validators=[
+        DataRequired(),
+        Length(1, 64),
+        Email()])
+    password = PasswordField(lazy_gettext('New Password'), validators=[
         DataRequired(),
         EqualTo('password2', message=gettext('Passwords must match'))])
     password2 = PasswordField('Confirm password', validators=[DataRequired()])
@@ -67,8 +73,19 @@ class PasswordResetForm(Form):
 
 
 class ChangePasswordForm(Form):
-    old_password = PasswordField('Old password', validators=[DataRequired()])
-    password = PasswordField('New password', validators=[
-        DataRequired(), EqualTo('password2', message=gettext('Passwords must match'))])
-    password2 = PasswordField(gettext('Confirm new password'), validators=[DataRequired()])
-    submit = SubmitField('Update Password')
+    old_password = PasswordField(lazy_gettext('Old password'), validators=[
+        DataRequired()])
+    password = PasswordField(lazy_gettext('New password'), validators=[
+        DataRequired(),
+        EqualTo('password2', message=gettext('Passwords must match'))])
+    password2 = PasswordField(lazy_gettext('Confirm new password'), validators=[
+        DataRequired()])
+    submit = SubmitField(lazy_gettext('Update Password'))
+
+
+class TelegramActivationForm(Form):
+    phone_number = StringField(lazy_gettext('Phone Number'), validators=[
+        Optional(),
+        Regexp('^(\d{3})-(\d{3})-(\d{4})$', 0, gettext('Invalid phone number.'))])
+    submit = SubmitField(lazy_gettext('Activate Telegram'))
+

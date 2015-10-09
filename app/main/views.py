@@ -4,11 +4,12 @@ from flask import render_template, redirect, url_for, request, \
     flash, make_response, current_app, g, jsonify
 from flask.ext.login import login_required, current_user
 from flask.ext.sqlalchemy import get_debug_queries
-from flask.ext.babel import gettext
+from flask.ext.babel import gettext, ngettext
 from . import main
 from forms import EditProfileForm
 from ..models import Course, Feed
 from .. import babel
+from ..email import send_email
 
 
 @babel.localeselector
@@ -131,10 +132,9 @@ def follow():
     for c in Course.query.filter(Course.id.in_(course_ids)).all():
         added += current_user.follow(c)
 
-    if added > 1:
-        flash(gettext('%(count)s new courses added', count=added), 'info')
-    elif added == 1:
-        flash(gettext('1 new course added'), 'info')
+    if added > 0:
+        flash(ngettext('%(num)s new course added',
+                       '%(num)s new courses added', added), 'info')
     else:
         flash(gettext('No new course added'), 'warning')
 
@@ -153,14 +153,14 @@ def unfollow():
     for c in Course.query.filter(Course.id.in_(course_ids)).all():
         deleted += current_user.unfollow(c)
 
-    if deleted > 1:
-        flash(gettext('%(count)s courses deleted', count=deleted), 'danger')
-    elif deleted == 1:
-        flash(gettext('1 course deleted'), 'danger')
+    if deleted > 0:
+        flash(ngettext('%(num)s course deleted',
+                       '%(num)s courses deleted', deleted), 'danger')
     else:
         flash(gettext('No course deleted'), 'info')
 
     return redirect(url_for('main.courses'))
+
 
 @main.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
@@ -168,13 +168,18 @@ def edit_profile():
     form = EditProfileForm()
     if form.validate_on_submit():
         current_user.username = form.username.data
-        current_user.email = form.email.data
-        current_user.phone_number = form.phone_number.data
-        flash('Your profile has been updated.')
+        if current_user.email != form.email.data:
+            new_email = form.email.data
+            token = current_user.generate_email_change_token(new_email)
+            send_email(new_email,
+                       gettext('Confirm your email address'),
+                       'auth/email/en/change_email',
+                       user=current_user,
+                       token=token)
+            flash(gettext('An email with instructions to reset your '
+                          'password has been sent to you.'), 'success')
+        flash(gettext('Your profile has been updated.'), 'success')
         return redirect(url_for('.user', username=current_user.username))
     form.username.data = current_user.username
     form.email.data = current_user.email
-    form.phone_number.data = current_user.phone_number
     return render_template('edit_profile.html', form=form)
-
-
