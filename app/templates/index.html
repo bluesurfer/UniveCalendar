@@ -5,8 +5,14 @@
 {% block styles %}
     {{ super() }}
 
+    <!-- Full Calendar style -->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.css" rel="stylesheet">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.print.css" rel='stylesheet' media='print'>
+
+    <!-- Local
     <link href="{{ url_for('static',filename='css/plugins/fullcalendar/fullcalendar.css') }}" rel="stylesheet">
     <link href="{{ url_for('static',filename='css/plugins/fullcalendar/fullcalendar.print.css') }}" rel='stylesheet' media='print'>
+    -->
 
 {% endblock %}
 
@@ -86,10 +92,15 @@
     {{ super() }}
 
     <!-- Full Calendar -->
-    <script src="{{ url_for('static', filename='js/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.js"></script>
+
+    <!--<script src="{{ url_for('static', filename='js/plugins/fullcalendar/fullcalendar.min.js') }}"></script>-->
+
     {% if g.locale == 'it' %}
         <script src="{{ url_for('static', filename='js/plugins/fullcalendar/lang/it.js') }}"></script>
     {% endif %}
+
+
     <script>
         $(document).ready(function () {
 

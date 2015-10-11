@@ -3105,3 +3105,7 @@ body.modal-open {
     letter-spacing: -1px;
 }
 
+
+a {
+    word-wrap: break-word;
+}

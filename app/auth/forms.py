@@ -23,9 +23,6 @@ class RegistrationForm(Form):
         DataRequired(),
         Length(1, 64),
         Email()])
-    phone_number = StringField(lazy_gettext('Phone Number'), validators=[
-        Optional(),
-        Regexp('^(\d{3})-(\d{3})-(\d{4})$', 0, gettext('Invalid phone number.'))])
     username = StringField(lazy_gettext('Username'), validators=[
         DataRequired(),
         Length(6, 64, message=gettext('Username must have at least 6 characters')),
@@ -83,9 +80,15 @@ class ChangePasswordForm(Form):
     submit = SubmitField(lazy_gettext('Update Password'))
 
 
-class TelegramActivationForm(Form):
-    phone_number = StringField(lazy_gettext('Phone Number'), validators=[
-        Optional(),
-        Regexp('^(\d{3})-(\d{3})-(\d{4})$', 0, gettext('Invalid phone number.'))])
-    submit = SubmitField(lazy_gettext('Activate Telegram'))
+class ChangeEmailForm(Form):
+    email = StringField(lazy_gettext('New Email'), validators=[
+        DataRequired(),
+        Length(1, 64),
+        Email()])
+    password = PasswordField('Password', validators=[
+        DataRequired()])
+    submit = SubmitField(lazy_gettext('Update Email Address'))
 
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError(lazy_gettext('Email already registered.'))

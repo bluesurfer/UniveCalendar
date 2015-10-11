@@ -5,7 +5,7 @@ from flask.ext.babel import gettext
 
 from . import auth
 from .forms import LoginForm, RegistrationForm, PasswordResetForm, \
-    PasswordResetRequestForm, ChangePasswordForm, TelegramActivationForm
+    PasswordResetRequestForm, ChangePasswordForm, ChangeEmailForm
 
 from ..email import send_email
 from ..models import db, User
@@ -54,7 +54,6 @@ def register():
     if form.validate_on_submit():
         user = User(username=form.username.data,
                     email=form.email.data,
-                    phone_number=form.phone_number.data,
                     password=form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -145,9 +144,37 @@ def change_password():
     return render_template("auth/change_password.html", form=form)
 
 
-@auth.route('/activate-telegram', methods=['GET', 'POST'])
+@auth.route('/change-email', methods=['GET', 'POST'])
+@login_required
+def change_email_request():
+    form = ChangeEmailForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.password.data):
+            new_email = form.email.data
+            token = current_user.generate_email_change_token(new_email)
+            send_email(new_email, 'Confirm your email address',
+                       'auth/email/en/change_email',
+                       user=current_user, token=token)
+            flash(gettext('An email with instructions to confirm your new email '
+                  'address has been sent to you.'))
+            return redirect(url_for('main.index'))
+        else:
+            flash(gettext('Invalid email or password.'))
+    return render_template("auth/change_email.html", form=form)
+
+
+@auth.route('/change-email/<token>')
+@login_required
+def change_email(token):
+    if current_user.change_email(token):
+        flash(gettext('Your email address has been updated.'))
+    else:
+        flash(gettext('Invalid request.'))
+    return redirect(url_for('main.index'))
+
+
+@auth.route('/activate-telegram')
 @login_required
 def activate_telegram():
-    form = TelegramActivationForm()
-    form.phone_number.data = current_user.phone_number
-    return render_template("auth/activate_telegram.html", form=form)
+    token = current_user.generate_unique_code_token()
+    return render_template('auth/activate_telegram.html',token=token)

@@ -6,7 +6,9 @@ from flask.ext.script import Manager
 
 from app import create_app, db, models
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'production')
+
+app = create_app(os.getenv('FLASK_CONFIG') or 'development')
+
 migrate = Migrate(app, db)
 manager = Manager(app)
 
@@ -60,6 +62,12 @@ def addusers():
 def deleteusers():
     models.User.query.delete()
     db.session.commit()
+
+
+@manager.command
+def startbot():
+    from bot import bot
+    bot.polling()
 
 
 @manager.command

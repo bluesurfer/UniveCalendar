@@ -7,15 +7,16 @@ from flask.ext.moment import Moment
 from flask.ext.mail import Mail
 from flask_wtf.csrf import CsrfProtect
 from flask.json import JSONEncoder
-from telegram import Bot
 from config import config
 
 
 class CustomJSONEncoder(JSONEncoder):
     """This class adds support for lazy translation texts to Flask's
     JSON encoder. This is necessary when flashing translated texts."""
+
     def default(self, obj):
         from speaklater import is_lazy_string
+
         if is_lazy_string(obj):
             try:
                 return unicode(obj)  # python 2
@@ -29,7 +30,6 @@ db = SQLAlchemy()
 csrf = CsrfProtect()
 moment = Moment()
 mail = Mail()
-telegram = None
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
@@ -50,9 +50,6 @@ def create_app(config_name):
     mail.init_app(app)
     moment.init_app(app)
     login_manager.init_app(app)
-
-    global telegram
-    telegram = Bot(token=app.config['TELEGRAM_TOKEN'])
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)

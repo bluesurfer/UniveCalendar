@@ -15,5 +15,5 @@ WTForms == 2.0.2
 itsdangerous == 0.24
 ics == 0.3.1
 ForgeryPy == 0.1
-Python-Telegram-Bot == 2.8.5
 Psycopg2 == 2.6.1
+pyTelegramBotApi == 0.3.8

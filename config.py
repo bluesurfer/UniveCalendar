@@ -9,7 +9,8 @@ class Config:
     SQLALCHEMY_RECORD_QUERIES = True
     SLOW_DB_QUERY_TIME = 0.2
     FEEDS_PER_PAGE = 10
-    TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN')
+    BOT_NAME = 'UniveCalendarBot'
+    BOT_TOKEN = os.environ.get('BOT_TOKEN') or 'token'
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True

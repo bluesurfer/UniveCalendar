@@ -7,15 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-09 15:43+0200\n"
+"POT-Creation-Date: 2015-10-11 14:54+0200\n"
 "PO-Revision-Date: 2015-10-01 14:05+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: it\n"
 "Language-Team: it <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.0\n"
+"Generated-By: Babel 2.1.1\n"
 
 #: app/__init__.py:38
 msgid "Please login to access this page"
@@ -33,81 +34,81 @@ msgstr "Ricordami"
 msgid "Log In"
 msgstr "Accedi"
 
-#: app/auth/forms.py:26 app/auth/forms.py:87
-msgid "Phone Number"
-msgstr "Numero di cellulare (Opzionale)"
-
-#: app/auth/forms.py:28 app/auth/forms.py:89
-msgid "Invalid phone number."
-msgstr "Numero di telefono non valido"
-
-#: app/auth/forms.py:29 app/main/forms.py:16
+#: app/auth/forms.py:26 app/main/forms.py:16
 msgid "Username"
 msgstr "Nome utente"
 
-#: app/auth/forms.py:31 app/main/forms.py:18
+#: app/auth/forms.py:28 app/main/forms.py:18
 msgid "Username must have at least 6 characters"
 msgstr "Il nome utente deve contentere almeno 6 caratteri"
 
-#: app/auth/forms.py:32 app/main/forms.py:19
+#: app/auth/forms.py:29 app/main/forms.py:19
 msgid "Usernames must have only letters, numbers, dots or underscores"
 msgstr "Il nome utente può contenere solo caratteri alfanumerici"
 
-#: app/auth/forms.py:36
+#: app/auth/forms.py:33
 msgid "Password must have at least 6 characters"
 msgstr "La password deve contenere almeno 6 caratteri"
 
-#: app/auth/forms.py:37 app/auth/forms.py:66 app/auth/forms.py:80
+#: app/auth/forms.py:34 app/auth/forms.py:63 app/auth/forms.py:77
 msgid "Passwords must match"
 msgstr "Le password non coincidono"
 
-#: app/auth/forms.py:38 app/templates/auth/reset_password.html:49
+#: app/auth/forms.py:35 app/templates/auth/reset_password.html:49
 msgid "Confirm password"
 msgstr "Conferma password"
 
-#: app/auth/forms.py:40
+#: app/auth/forms.py:37
 msgid "Register"
 msgstr "Registrati"
 
-#: app/auth/forms.py:44 app/main/forms.py:25
+#: app/auth/forms.py:41 app/main/forms.py:25
 msgid "Email already registered"
 msgstr "Indirizzo email già esistente"
 
-#: app/auth/forms.py:48 app/main/forms.py:29
+#: app/auth/forms.py:45 app/main/forms.py:29
 msgid "Username already in use"
 msgstr "Il nome utente esiste già"
 
-#: app/auth/forms.py:56
+#: app/auth/forms.py:53
 msgid "Reset Password"
 msgstr "Resetta Password"
 
-#: app/auth/forms.py:64
+#: app/auth/forms.py:61
 msgid "New Password"
 msgstr "Nuova password"
 
-#: app/auth/forms.py:72
+#: app/auth/forms.py:69
 msgid "Unknown email address"
 msgstr "Email sconosciuta"
 
-#: app/auth/forms.py:76
+#: app/auth/forms.py:73
 msgid "Old password"
 msgstr "Vecchia password"
 
-#: app/auth/forms.py:78
+#: app/auth/forms.py:75
 msgid "New password"
 msgstr "Nuova password"
 
-#: app/auth/forms.py:81
+#: app/auth/forms.py:78
 msgid "Confirm new password"
 msgstr "Conferma nuova password"
 
-#: app/auth/forms.py:83
+#: app/auth/forms.py:80
 msgid "Update Password"
 msgstr "Aggiorna Password"
 
-#: app/auth/forms.py:90 app/templates/auth/activate_telegram.html:14
-msgid "Activate Telegram"
+#: app/auth/forms.py:84
+msgid "New Email"
 msgstr ""
+
+#: app/auth/forms.py:90
+msgid "Update Email Address"
+msgstr "Aggiorna Indirizzo email"
+
+#: app/auth/forms.py:94
+msgid "Email already registered."
+msgstr "Indirizzo email già esistente"
 
 #: app/auth/views.py:32
 msgid "Invalid username or password."
@@ -117,43 +118,63 @@ msgstr "Nome utente o password non validi"
 msgid "Logout successful."
 msgstr "Hai eseguito correttamente il logout"
 
-#: app/auth/views.py:63 app/auth/views.py:89
+#: app/auth/views.py:62 app/auth/views.py:88
 msgid "Confirm Your Account"
 msgstr "Conferma il tuo Account"
 
-#: app/auth/views.py:67
+#: app/auth/views.py:66
 msgid "A confirmation email has been sent to you by email."
 msgstr "Una email di conferma è stata spedita al tuo indirizzo email."
 
-#: app/auth/views.py:78
+#: app/auth/views.py:77
 msgid "You have confirmed your account. Thanks!"
 msgstr "Hai confermato il tuo account. Grazie!"
 
-#: app/auth/views.py:80
+#: app/auth/views.py:79
 msgid "The confirmation link is invalid or has expired."
 msgstr "Il link di conferma non è valido o è scaduto."
 
-#: app/auth/views.py:93
+#: app/auth/views.py:92
 msgid "A new confirmation email has been sent to you by email."
 msgstr "Una nuovo email di conferma è stata inviata al tuo indirizzo email."
 
-#: app/auth/views.py:106
+#: app/auth/views.py:105
 msgid "Reset Your Password"
 msgstr "Resetta Password"
 
-#: app/auth/views.py:110 app/main/views.py:179
+#: app/auth/views.py:109
 msgid "An email with instructions to reset your password has been sent to you."
 msgstr ""
 "Ti abbiamo inviato una email con le istruzioni per resettare la tua "
 "password."
 
-#: app/auth/views.py:126 app/auth/views.py:141
+#: app/auth/views.py:125 app/auth/views.py:140
 msgid "Your password has been updated."
 msgstr "La tua password è stata cambiata."
 
-#: app/auth/views.py:144
+#: app/auth/views.py:143
 msgid "Invalid password."
 msgstr "Password non valida"
+
+#: app/auth/views.py:158
+msgid ""
+"An email with instructions to confirm your new email address has been "
+"sent to you."
+msgstr ""
+"Ti abbiamo inviato una email con le istruzioni per resettare la tua "
+"password."
+
+#: app/auth/views.py:162
+msgid "Invalid email or password."
+msgstr "Nome utente o password non validi"
+
+#: app/auth/views.py:170
+msgid "Your email address has been updated."
+msgstr "La tua password è stata cambiata."
+
+#: app/auth/views.py:172
+msgid "Invalid request."
+msgstr ""
 
 #: app/main/forms.py:21
 msgid "Update Profile"
@@ -185,18 +206,8 @@ msgstr[1] "%(num)s corsi eliminati"
 msgid "No course deleted"
 msgstr "Nessun corso è stato eliminato"
 
-#: app/main/views.py:175
-#, fuzzy
-msgid "Confirm your email address"
-msgstr "Email sconosciuta"
-
-#: app/main/views.py:181
-#, fuzzy
-msgid "Your profile has been updated."
-msgstr "La tua password è stata cambiata."
-
 #: app/templates/_macros.html:21 app/templates/_macros.html:51
-#: app/templates/feeds.html:68
+#: app/templates/feeds.html:70
 msgid "No feed found"
 msgstr "Non ci sono avvisi"
 
@@ -225,19 +236,19 @@ msgid_plural "%(num)s Followed Courses"
 msgstr[0] "Corso seguito"
 msgstr[1] "Corsi seguiti"
 
-#: app/templates/_macros.html:127 app/templates/edit_profile.html:14
-msgid "Edit Profile"
-msgstr "Modifica Profilo"
+#: app/templates/_macros.html:127
+msgid "Change Email"
+msgstr "Cambia Email"
 
 #: app/templates/_macros.html:128 app/templates/auth/change_password.html:14
 msgid "Change Password"
 msgstr "Cambia Password"
 
-#: app/templates/_macros.html:129
-msgid "Activate/Deactivate Telegram notifications"
-msgstr ""
+#: app/templates/_macros.html:129 app/templates/auth/activate_telegram.html:14
+msgid "Activate Telegram"
+msgstr "Attiva Telegram"
 
-#: app/templates/base.html:27
+#: app/templates/base.html:33
 msgid ""
 "This website uses cookies to ensure you get the best experience on our "
 "website"
@@ -245,27 +256,27 @@ msgstr ""
 "Questo sito utilizza i cookie per garantire la migliore esperienza "
 "dell'utente nel nostro sito"
 
-#: app/templates/base.html:27
+#: app/templates/base.html:33
 msgid "Got it!"
 msgstr "Accetto"
 
-#: app/templates/base.html:27
+#: app/templates/base.html:33
 msgid "More info"
 msgstr "Saperne di più"
 
-#: app/templates/base.html:53 app/templates/courses.html:156
+#: app/templates/base.html:59 app/templates/courses.html:156
 msgid "Courses"
 msgstr "Corsi"
 
-#: app/templates/base.html:54
+#: app/templates/base.html:60
 msgid "Feeds"
 msgstr "Avvisi"
 
-#: app/templates/base.html:80
+#: app/templates/base.html:86
 msgid "Profile"
 msgstr "Profilo"
 
-#: app/templates/base.html:84
+#: app/templates/base.html:90
 msgid "Logout"
 msgstr "Esci"
 
@@ -309,7 +320,7 @@ msgstr "Periodo"
 msgid "Professor"
 msgstr "Professore"
 
-#: app/templates/courses.html:95 app/templates/index.html:42
+#: app/templates/courses.html:95 app/templates/index.html:48
 msgid "Add courses"
 msgstr "Aggiungi Corsi"
 
@@ -385,43 +396,43 @@ msgstr "Oggetto"
 msgid "From: "
 msgstr "Da: "
 
-#: app/templates/feeds.html:28
+#: app/templates/feeds.html:30
 msgid "All feeds"
 msgstr "Tutti gli Avvisi"
 
-#: app/templates/feeds.html:36
+#: app/templates/feeds.html:38
 msgid "Inbox"
 msgstr "In arrivo"
 
-#: app/templates/feeds.html:43
+#: app/templates/feeds.html:45
 msgid "Select/deselect all"
 msgstr "Selziona/deseleziona tutto"
 
-#: app/templates/feeds.html:47
+#: app/templates/feeds.html:49
 msgid "Check feeds"
 msgstr "Controlla avvisi"
 
-#: app/templates/feeds.html:48
+#: app/templates/feeds.html:50
 msgid "Refresh"
 msgstr "Aggiorna"
 
-#: app/templates/feeds.html:51
+#: app/templates/feeds.html:53
 msgid "Mark as read"
 msgstr "Segna come già letto"
 
-#: app/templates/index.html:35
+#: app/templates/index.html:41
 msgid "My calendar"
 msgstr "Il mio Calendario"
 
-#: app/templates/index.html:42
+#: app/templates/index.html:48
 msgid "You calendar is empty."
 msgstr "Il tuo calendario è vuoto"
 
-#: app/templates/index.html:51
+#: app/templates/index.html:57
 msgid "Download Calendar"
 msgstr "Scarica Calendario"
 
-#: app/templates/index.html:52
+#: app/templates/index.html:58
 msgid ""
 "Get your personal calendar in ICS format, compatible with the most common"
 " Calendar apps"
@@ -429,17 +440,27 @@ msgstr ""
 "Scarica il tuo calendario personale in formata ICS, compatibile con le "
 "più comuni applicazioni Calendar."
 
-#: app/templates/index.html:55
-msgid "Sync with Google"
-msgstr "Sincronizza con Goodle"
-
-#: app/templates/index.html:56
-msgid "Sync calendar with your Google account. "
-msgstr "Sincronizza calendario con il tuo account di Google."
-
-#: app/templates/index.html:73
+#: app/templates/index.html:75
 msgid "Latest feeds"
 msgstr "Ultimi Avvisi"
+
+#: app/templates/auth/activate_telegram.html:20
+msgid "Stay up to date!"
+msgstr "Rimani aggiornato!"
+
+#: app/templates/auth/activate_telegram.html:22
+msgid "Don't you want to miss a feed?"
+msgstr "Non vuoi perdere nessun avviso?"
+
+#: app/templates/auth/activate_telegram.html:24
+msgid ""
+"Click the following link to connect your Telegram account and start "
+"receiving updates."
+msgstr "Clicca il link seguente per collegare il tuo account Telegram e iniziare a ricevere gli aggiornamenti"
+
+#: app/templates/auth/change_email.html:14
+msgid "Change Email Address"
+msgstr "Cambia Indirizzo Email"
 
 #: app/templates/auth/login.html:24
 msgid "Login with your account"
@@ -461,11 +482,11 @@ msgstr "Crea Account"
 msgid "Create new account"
 msgstr "Crea un nuovo account"
 
-#: app/templates/auth/register.html:50
+#: app/templates/auth/register.html:49
 msgid "Already have an account?"
 msgstr "Hai già un account?"
 
-#: app/templates/auth/register.html:51
+#: app/templates/auth/register.html:50
 msgid "Login"
 msgstr "Accedi"
 
@@ -535,10 +556,3 @@ msgstr "Torna alla Home."
 #: app/templates/errors/forbidden.html:27
 msgid "You are not allowed to visit this page."
 msgstr "Non sei autorizzato a visitare questa pagina."
-
-#~ msgid "Notify feeds on Telegram"
-#~ msgstr "Invia gli avvisi su Telegram"
-
-#~ msgid "Save"
-#~ msgstr "Salva"
-
