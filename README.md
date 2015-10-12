@@ -1,5 +1,5 @@
 # UniveCalendar
 
-A Flask powered Web application to manage feeds and a calendar of courses at University.
+A Flask powered Web application to assist the hard student life at University.
 
 See it in action [here](http://univecalendar.herokuapp.com).
