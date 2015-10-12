@@ -25,13 +25,13 @@ class RegistrationForm(Form):
         Email()])
     username = StringField(lazy_gettext('Username'), validators=[
         DataRequired(),
-        Length(6, 64, message=gettext('Username must have at least 6 characters')),
-        Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0, gettext('Usernames must have only letters, '
-                                                      'numbers, dots or underscores'))])
+        Length(6, 64, message=lazy_gettext('Username must have at least 6 characters')),
+        Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0, lazy_gettext('Usernames must have only letters, '
+                                                           'numbers, dots or underscores'))])
     password = PasswordField('Password', validators=[
         DataRequired(),
-        Length(6, 64, message=gettext('Password must have at least 6 characters')),
-        EqualTo('password2', message=gettext('Passwords must match'))])
+        Length(6, 64, message=lazy_gettext('Password must have at least 6 characters')),
+        EqualTo('password2', message=lazy_gettext('Passwords must match'))])
     password2 = PasswordField(lazy_gettext('Confirm password'), validators=[
         DataRequired()])
     submit = SubmitField(lazy_gettext('Register'))
@@ -60,9 +60,9 @@ class PasswordResetForm(Form):
         Email()])
     password = PasswordField(lazy_gettext('New Password'), validators=[
         DataRequired(),
-        EqualTo('password2', message=gettext('Passwords must match'))])
-    password2 = PasswordField('Confirm password', validators=[DataRequired()])
-    submit = SubmitField('Reset Password')
+        EqualTo('password2', message=lazy_gettext('Passwords must match'))])
+    password2 = PasswordField(lazy_gettext('Confirm password'), validators=[DataRequired()])
+    submit = SubmitField(lazy_gettext('Reset Password'))
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first() is None:
@@ -74,7 +74,7 @@ class ChangePasswordForm(Form):
         DataRequired()])
     password = PasswordField(lazy_gettext('New password'), validators=[
         DataRequired(),
-        EqualTo('password2', message=gettext('Passwords must match'))])
+        EqualTo('password2', message=lazy_gettext('Passwords must match'))])
     password2 = PasswordField(lazy_gettext('Confirm new password'), validators=[
         DataRequired()])
     submit = SubmitField(lazy_gettext('Update Password'))
@@ -91,4 +91,4 @@ class ChangeEmailForm(Form):
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
-            raise ValidationError(lazy_gettext('Email already registered.'))
+            raise ValidationError(gettext('Email already registered.'))

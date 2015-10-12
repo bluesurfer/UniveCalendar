@@ -17,5 +17,3 @@ ics == 0.3.1
 ForgeryPy == 0.1
 Psycopg2 == 2.6.1
 pyTelegramBotApi == 0.3.8
-celery
-redis == 2.10.3

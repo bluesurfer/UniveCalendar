@@ -22,7 +22,7 @@ def send_welcome(msg):
             u = models.User.load_user_from_unique_code(token)
             if u is not None:
                 u.set_chat_id(msg.chat.id)
-                reply = "Congratulation {0}, you successfully connect your account.".format(u.username)
+                reply = "Congratulations {0}, you successfully connect your account.".format(u.username)
             else:
                 reply = "I have no clue who you are..."
     else:
@@ -33,7 +33,7 @@ def send_welcome(msg):
 @bot.message_handler(commands=['help'])
 def send_welcome(msg):
     reply = "UniveCalendarBot can notify you about events of " \
-            "in your university calendar. Visit our page for more info."
+            "your university calendar. Visit our page for more info."
     bot.reply_to(msg, reply)
 
 

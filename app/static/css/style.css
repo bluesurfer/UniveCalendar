@@ -6,7 +6,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-weight: 100;
+    font-weight: 300;
 }
 
 h1 {
@@ -43,7 +43,7 @@ h5 {
 .nav > li > a {
     color: #a7b1c2;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 18px;
     padding: 14px 20px 14px 25px;
 }
 
@@ -238,7 +238,7 @@ body.body-small .navbar-top-links li:last-child {
 }
 
 .nav.navbar-top-links a {
-    font-size: 14px;
+    font-size: 18px;
 }
 
 .navbar-form-custom .form-control {
@@ -2150,6 +2150,14 @@ table.table-mail tr td {
 
 }
 
+.dark-bg {
+    background: #3e444e;
+    background: -webkit-linear-gradient(top, #454B56, #393F48);
+    background: -moz-linear-gradient(top, #454B56, #393F48);
+    background: -o-linear-gradient(top, #454B56, #393F48);
+    background-image: -ms-linear-gradient(#454B56, #393F48);
+}
+
 .navy-bg {
     background-color: #519088;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#519088), to(#41736D));
@@ -2757,7 +2765,7 @@ body.modal-open {
 }
 
 .logo-name {
-    color: #ffffff;
+    color: #8A8A8A;
     font-weight: 800;
     letter-spacing: -5px;
     margin-bottom: 40px;

@@ -1,4 +1,3 @@
-# coding=utf-8
 import hashlib
 
 from sqlalchemy import event, inspect
@@ -11,6 +10,7 @@ from flask.ext.sqlalchemy import SignallingSession
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db, login_manager, bot
+
 
 follows = db.Table('follows', db.Model.metadata,
                    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
@@ -446,6 +446,7 @@ def trigger_lesson_change_events(lesson):
                             end=end_state.value.strftime('%H:%M %d.%m.%Y')),
                         professor=professor)
         db.session.add(new_feed)
+
 
 @event.listens_for(SignallingSession, 'after_flush')
 def receive_after_flush(session, flush_context):

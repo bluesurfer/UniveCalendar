@@ -6,7 +6,6 @@ from flask.ext.babel import gettext
 from . import auth
 from .forms import LoginForm, RegistrationForm, PasswordResetForm, \
     PasswordResetRequestForm, ChangePasswordForm, ChangeEmailForm
-
 from ..email import send_email
 from ..models import db, User
 

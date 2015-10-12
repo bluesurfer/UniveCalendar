@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-11 14:54+0200\n"
+"POT-Creation-Date: 2015-10-12 22:13+0200\n"
 "PO-Revision-Date: 2015-10-01 14:05+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.1.1\n"
 
-#: app/__init__.py:38
+#: app/__init__.py:42
 msgid "Please login to access this page"
 msgstr "Devi accedere per visitare questa pagina"
 
-#: app/auth/forms.py:11 app/auth/forms.py:22 app/main/forms.py:12
+#: app/auth/forms.py:11 app/auth/forms.py:22
 msgid "Email"
 msgstr "Indirizzo Email"
 
@@ -34,15 +34,15 @@ msgstr "Ricordami"
 msgid "Log In"
 msgstr "Accedi"
 
-#: app/auth/forms.py:26 app/main/forms.py:16
+#: app/auth/forms.py:26
 msgid "Username"
 msgstr "Nome utente"
 
-#: app/auth/forms.py:28 app/main/forms.py:18
+#: app/auth/forms.py:28
 msgid "Username must have at least 6 characters"
 msgstr "Il nome utente deve contentere almeno 6 caratteri"
 
-#: app/auth/forms.py:29 app/main/forms.py:19
+#: app/auth/forms.py:29
 msgid "Usernames must have only letters, numbers, dots or underscores"
 msgstr "Il nome utente può contenere solo caratteri alfanumerici"
 
@@ -54,7 +54,7 @@ msgstr "La password deve contenere almeno 6 caratteri"
 msgid "Passwords must match"
 msgstr "Le password non coincidono"
 
-#: app/auth/forms.py:35 app/templates/auth/reset_password.html:49
+#: app/auth/forms.py:35 app/templates/auth/reset_password.html:50
 msgid "Confirm password"
 msgstr "Conferma password"
 
@@ -62,11 +62,11 @@ msgstr "Conferma password"
 msgid "Register"
 msgstr "Registrati"
 
-#: app/auth/forms.py:41 app/main/forms.py:25
+#: app/auth/forms.py:41
 msgid "Email already registered"
 msgstr "Indirizzo email già esistente"
 
-#: app/auth/forms.py:45 app/main/forms.py:29
+#: app/auth/forms.py:45
 msgid "Username already in use"
 msgstr "Il nome utente esiste già"
 
@@ -100,7 +100,7 @@ msgstr "Aggiorna Password"
 
 #: app/auth/forms.py:84
 msgid "New Email"
-msgstr ""
+msgstr "Nuovo indirizzo email"
 
 #: app/auth/forms.py:90
 msgid "Update Email Address"
@@ -110,53 +110,53 @@ msgstr "Aggiorna Indirizzo email"
 msgid "Email already registered."
 msgstr "Indirizzo email già esistente"
 
-#: app/auth/views.py:32
+#: app/auth/views.py:31
 msgid "Invalid username or password."
 msgstr "Nome utente o password non validi"
 
-#: app/auth/views.py:40
+#: app/auth/views.py:39
 msgid "Logout successful."
 msgstr "Hai eseguito correttamente il logout"
 
-#: app/auth/views.py:62 app/auth/views.py:88
+#: app/auth/views.py:61 app/auth/views.py:87
 msgid "Confirm Your Account"
 msgstr "Conferma il tuo Account"
 
-#: app/auth/views.py:66
+#: app/auth/views.py:65
 msgid "A confirmation email has been sent to you by email."
 msgstr "Una email di conferma è stata spedita al tuo indirizzo email."
 
-#: app/auth/views.py:77
+#: app/auth/views.py:76
 msgid "You have confirmed your account. Thanks!"
 msgstr "Hai confermato il tuo account. Grazie!"
 
-#: app/auth/views.py:79
+#: app/auth/views.py:78
 msgid "The confirmation link is invalid or has expired."
 msgstr "Il link di conferma non è valido o è scaduto."
 
-#: app/auth/views.py:92
+#: app/auth/views.py:91
 msgid "A new confirmation email has been sent to you by email."
 msgstr "Una nuovo email di conferma è stata inviata al tuo indirizzo email."
 
-#: app/auth/views.py:105
+#: app/auth/views.py:104
 msgid "Reset Your Password"
 msgstr "Resetta Password"
 
-#: app/auth/views.py:109
+#: app/auth/views.py:108
 msgid "An email with instructions to reset your password has been sent to you."
 msgstr ""
 "Ti abbiamo inviato una email con le istruzioni per resettare la tua "
 "password."
 
-#: app/auth/views.py:125 app/auth/views.py:140
+#: app/auth/views.py:124 app/auth/views.py:139
 msgid "Your password has been updated."
 msgstr "La tua password è stata cambiata."
 
-#: app/auth/views.py:143
+#: app/auth/views.py:142
 msgid "Invalid password."
 msgstr "Password non valida"
 
-#: app/auth/views.py:158
+#: app/auth/views.py:157
 msgid ""
 "An email with instructions to confirm your new email address has been "
 "sent to you."
@@ -164,50 +164,46 @@ msgstr ""
 "Ti abbiamo inviato una email con le istruzioni per resettare la tua "
 "password."
 
-#: app/auth/views.py:162
+#: app/auth/views.py:161
 msgid "Invalid email or password."
 msgstr "Nome utente o password non validi"
 
-#: app/auth/views.py:170
+#: app/auth/views.py:169
 msgid "Your email address has been updated."
 msgstr "La tua password è stata cambiata."
 
-#: app/auth/views.py:172
+#: app/auth/views.py:171
 msgid "Invalid request."
-msgstr ""
+msgstr "Richiesta non valida."
 
-#: app/main/forms.py:21
-msgid "Update Profile"
-msgstr "Aggiorna Profilo"
-
-#: app/main/views.py:128 app/main/views.py:149
+#: app/main/views.py:123 app/main/views.py:144
 msgid "No course selected"
 msgstr "Nessun corso selezionato"
 
-#: app/main/views.py:136
+#: app/main/views.py:131
 #, python-format
 msgid "%(num)s new course added"
 msgid_plural "%(num)s new courses added"
 msgstr[0] "Aggiunto %(num)s nuovo corso"
 msgstr[1] "Aggiunti %(num)s nuovi corsi"
 
-#: app/main/views.py:139
+#: app/main/views.py:134
 msgid "No new course added"
 msgstr "Nessun corso è stato aggiunto"
 
-#: app/main/views.py:157
+#: app/main/views.py:152
 #, python-format
 msgid "%(num)s course deleted"
 msgid_plural "%(num)s courses deleted"
 msgstr[0] "%(num)s corso eliminato"
 msgstr[1] "%(num)s corsi eliminati"
 
-#: app/main/views.py:160
+#: app/main/views.py:155
 msgid "No course deleted"
 msgstr "Nessun corso è stato eliminato"
 
 #: app/templates/_macros.html:21 app/templates/_macros.html:51
-#: app/templates/feeds.html:70
+#: app/templates/feeds.html:68
 msgid "No feed found"
 msgstr "Non ci sono avvisi"
 
@@ -396,29 +392,38 @@ msgstr "Oggetto"
 msgid "From: "
 msgstr "Da: "
 
-#: app/templates/feeds.html:30
+#: app/templates/feeds.html:28
 msgid "All feeds"
 msgstr "Tutti gli Avvisi"
 
-#: app/templates/feeds.html:38
+#: app/templates/feeds.html:36
 msgid "Inbox"
 msgstr "In arrivo"
 
-#: app/templates/feeds.html:45
+#: app/templates/feeds.html:43
 msgid "Select/deselect all"
 msgstr "Selziona/deseleziona tutto"
 
-#: app/templates/feeds.html:49
+#: app/templates/feeds.html:47
 msgid "Check feeds"
 msgstr "Controlla avvisi"
 
-#: app/templates/feeds.html:50
+#: app/templates/feeds.html:48
 msgid "Refresh"
 msgstr "Aggiorna"
 
-#: app/templates/feeds.html:53
+#: app/templates/feeds.html:51
 msgid "Mark as read"
 msgstr "Segna come già letto"
+
+#: app/templates/feeds.html:107 app/templates/auth/activate_telegram.html:20
+msgid "Stay up to date!"
+msgstr "Rimani aggiornato!"
+
+#: app/templates/feeds.html:109
+#, python-format
+msgid "Connect your Telegram account, click <a href='%(link)s'>here</a>"
+msgstr "Collega il tuo account Telegram, clicca <a href='%(link)s'>qui</a>"
 
 #: app/templates/index.html:41
 msgid "My calendar"
@@ -444,10 +449,6 @@ msgstr ""
 msgid "Latest feeds"
 msgstr "Ultimi Avvisi"
 
-#: app/templates/auth/activate_telegram.html:20
-msgid "Stay up to date!"
-msgstr "Rimani aggiornato!"
-
 #: app/templates/auth/activate_telegram.html:22
 msgid "Don't you want to miss a feed?"
 msgstr "Non vuoi perdere nessun avviso?"
@@ -456,7 +457,9 @@ msgstr "Non vuoi perdere nessun avviso?"
 msgid ""
 "Click the following link to connect your Telegram account and start "
 "receiving updates."
-msgstr "Clicca il link seguente per collegare il tuo account Telegram e iniziare a ricevere gli aggiornamenti"
+msgstr ""
+"Clicca il link seguente per collegare il tuo account Telegram e iniziare "
+"a ricevere gli aggiornamenti"
 
 #: app/templates/auth/change_email.html:14
 msgid "Change Email Address"
@@ -494,7 +497,7 @@ msgstr "Accedi"
 msgid "Forgot password"
 msgstr "Password dimenticata"
 
-#: app/templates/auth/reset_password.html:26
+#: app/templates/auth/reset_password.html:27
 msgid ""
 "Enter your email address. We will sent you an email with instructions to "
 "reset your password."
@@ -502,15 +505,15 @@ msgstr ""
 "Inserisci il tuo indirizzo email. Ti inviaremo una email con le "
 "istruzioni per resettare la tua password."
 
-#: app/templates/auth/reset_password.html:45
+#: app/templates/auth/reset_password.html:46
 msgid "Email address"
 msgstr "Indirizzo email"
 
-#: app/templates/auth/reset_password.html:48
+#: app/templates/auth/reset_password.html:49
 msgid "Password"
 msgstr "Password"
 
-#: app/templates/auth/reset_password.html:52
+#: app/templates/auth/reset_password.html:53
 msgid "Reset password"
 msgstr "Resetta Password"
 
@@ -551,7 +554,7 @@ msgstr "La pagina che stai cercando non può essere trovata."
 #: app/templates/errors/404.html:32 app/templates/errors/500.html:30
 #: app/templates/errors/forbidden.html:31
 msgid "Back to home"
-msgstr "Torna alla Home."
+msgstr "Torna alla Home"
 
 #: app/templates/errors/forbidden.html:27
 msgid "You are not allowed to visit this page."
