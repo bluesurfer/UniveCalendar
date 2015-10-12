@@ -1,3 +1,5 @@
+import telebot
+
 from flask import Flask
 
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -7,7 +9,8 @@ from flask.ext.moment import Moment
 from flask.ext.mail import Mail
 from flask_wtf.csrf import CsrfProtect
 from flask.json import JSONEncoder
-from config import config
+
+from config import config, Config
 
 
 class CustomJSONEncoder(JSONEncoder):
@@ -30,6 +33,7 @@ db = SQLAlchemy()
 csrf = CsrfProtect()
 moment = Moment()
 mail = Mail()
+bot = telebot.TeleBot(Config.BOT_TOKEN)
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'

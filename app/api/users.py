@@ -7,6 +7,14 @@ from . import api
 from .errors import forbidden
 
 
+@api.route('/users/<int:id>/')
+def get_user(id):
+    u = User.query.get_or_404(id)
+    if current_user.id != u.id:
+        return forbidden('Insufficient permissions')
+    return jsonify({'user': u.to_json()})
+
+
 @api.route('/users/<int:id>/courses/')
 def get_user_courses(id):
     u = User.query.get_or_404(id)

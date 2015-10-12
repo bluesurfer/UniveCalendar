@@ -10,8 +10,6 @@
 {% block styles %}
 
     {{ super() }}
-    <!-- Toastr style -->
-    <link href="{{ url_for('static', filename='css/plugins/toastr/toastr.min.css' ) }}" rel="stylesheet">
 
     <!-- iCheck style -->
     <link href="{{ url_for('static', filename='css/plugins/iCheck/custom.css') }}" rel="stylesheet">
@@ -108,25 +106,12 @@
     <!-- iCheck -->
     <script src="{{ url_for('static', filename='js/plugins/iCheck/icheck.min.js') }}"></script>
 
-    <!-- Toastr -->
-    <script src="{{ url_for('static', filename='js/plugins/toastr/toastr.min.js') }}"></script>
-
     <script>
         $(document).ready(function () {
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',
                 radioClass: 'iradio_square-green'
             });
-            setTimeout(function () {
-                toastr.options = {
-                    closeButton: true,
-                    progressBar: true,
-                    positionClass: "toast-bottom-right",
-                    showMethod: 'slideDown',
-                    timeOut: 10000
-                };
-                toastr.info("Enable Telegram notifications clicke here", "Don't you want miss a feed?");
-            }, 1300);
         });
 
         var csrftoken = $('meta[name=csrf-token]').attr('content');

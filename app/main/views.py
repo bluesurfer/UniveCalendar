@@ -1,15 +1,12 @@
-from sqlalchemy import or_
 from ics import Calendar, Event
 from flask import render_template, redirect, url_for, request, \
-    flash, make_response, current_app, g, jsonify
+    flash, make_response, current_app, g
 from flask.ext.login import login_required, current_user
 from flask.ext.sqlalchemy import get_debug_queries
 from flask.ext.babel import gettext, ngettext
 from . import main
-from forms import EditProfileForm
 from ..models import Course, Feed
 from .. import babel
-from ..email import send_email
 
 
 @babel.localeselector
@@ -42,9 +39,7 @@ def user_feeds_query():
     if not current_user.courses.count():
         return
     professor_ids = set([c.professor_id for c in current_user.courses])
-    lesson_ids = [l.id for c in current_user.courses for l in c.lessons]
-    return Feed.query.filter(or_(Feed.professor_id.in_(professor_ids),
-                                 Feed.lesson_id.in_(lesson_ids)))
+    return Feed.query.filter(Feed.professor_id.in_(professor_ids))
 
 
 def get_latest_feeds(n=5):

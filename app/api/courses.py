@@ -14,8 +14,7 @@ def get_courses():
 @api.route('/courses/<int:id>/lessons/')
 def get_course_lessons(id):
     c = Course.query.get_or_404(id)
-    lessons = c.lessons.all()
-    return jsonify({'lessons': [l.to_json() for l in lessons]})
+    return jsonify({'lessons': [l.to_json() for l in c.lessons]})
 
 
 @api.route('/courses/<int:id>/users/')

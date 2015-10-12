@@ -4,8 +4,7 @@ import sys
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager
 
-from app import create_app, db, models
-
+from app import create_app, db, models, bot
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'development')
 
@@ -13,6 +12,34 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 
 manager.add_command('db', MigrateCommand)
+
+
+@bot.message_handler(commands=['start', 'connect'])
+def send_welcome(msg):
+    token = msg.text.split()[1] if len(msg.text.split()) > 1 else None
+    if token:
+        with app.app_context():
+            u = models.User.load_user_from_unique_code(token)
+            if u is not None:
+                u.set_chat_id(msg.chat.id)
+                reply = "Congratulation {0}, you successfully connect your account.".format(u.username)
+            else:
+                reply = "I have no clue who you are..."
+    else:
+        reply = "Please visit me via a provided URL from the website."
+    bot.reply_to(msg, reply)
+
+
+@bot.message_handler(commands=['help'])
+def send_welcome(msg):
+    reply = "UniveCalendarBot can notify you about events of " \
+            "in your university calendar. Visit our page for more info."
+    bot.reply_to(msg, reply)
+
+
+@manager.command
+def startbot():
+    bot.polling()
 
 
 @manager.command
@@ -26,14 +53,20 @@ def populatedb():
 
 
 @manager.command
+def cleardb():
+    """Delete all tables records."""
+    for table in reversed(db.metadata.sorted_tables):
+        db.session.execute(table.delete())
+    db.session.commit()
+
+
+@manager.command
 def insertfeed(professor_id):
-    import datetime
     import forgery_py
 
     p = models.Professor.query.get(professor_id)
     f = models.Feed(title=forgery_py.lorem_ipsum.title(),
                     body=forgery_py.lorem_ipsum.paragraphs(2),
-                    timestamp=datetime.datetime.now(),
                     professor=p)
 
     db.session.add(f)
@@ -41,19 +74,21 @@ def insertfeed(professor_id):
 
 
 @manager.command
-def addusers():
+def delaylesson(lesson_id, hours=1):
+    from datetime import timedelta
+
+    l = models.Lesson.query.get(lesson_id)
+    l.start += timedelta(hours=hours)
+    l.end += timedelta(hours=hours)
+    db.session.commit()
+
+
+@manager.command
+def adduser():
     u = models.User(email='bob@unive.it',
                     username='bobby85',
                     confirmed=True,
                     password='123456')
-
-    db.session.add(u)
-    db.session.commit()
-
-    u = models.User(email='alice@unive.it',
-                    username='alice95',
-                    password='123456')
-
     db.session.add(u)
     db.session.commit()
 
@@ -61,20 +96,6 @@ def addusers():
 @manager.command
 def deleteusers():
     models.User.query.delete()
-    db.session.commit()
-
-
-@manager.command
-def startbot():
-    from bot import bot
-    bot.polling()
-
-
-@manager.command
-def cleardb():
-    """Delete all tables records."""
-    for table in reversed(db.metadata.sorted_tables):
-        db.session.execute(table.delete())
     db.session.commit()
 
 

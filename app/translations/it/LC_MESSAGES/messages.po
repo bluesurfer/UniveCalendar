@@ -214,7 +214,7 @@ msgstr "Non ci sono avvisi"
 #: app/templates/_macros.html:36 app/templates/_macros.html:63
 #, python-format
 msgid "Published %(fromnow)s at %(date)s"
-msgstr "Postata %(fromnow)s il %(date)s"
+msgstr "Postato %(fromnow)s il %(date)s"
 
 #: app/templates/_macros.html:42 app/templates/_macros.html:72
 msgid "Read all feeds"
