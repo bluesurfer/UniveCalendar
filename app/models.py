@@ -1,7 +1,7 @@
 import hashlib
 
 from sqlalchemy import event, inspect
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, URLSafeTimedSerializer
 
 from datetime import datetime, timedelta
 from flask import request, current_app
@@ -10,7 +10,6 @@ from flask.ext.sqlalchemy import SignallingSession
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db, login_manager, bot
-
 
 follows = db.Table('follows', db.Model.metadata,
                    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
@@ -71,7 +70,6 @@ class User(UserMixin, db.Model):
         if not self.is_following(course):
             self.courses.append(course)
             db.session.add(course)
-            db.session.commit()
             return True
         return False
 
@@ -79,7 +77,6 @@ class User(UserMixin, db.Model):
         c = self.courses.filter_by(id=course.id).first()
         if c:
             self.courses.remove(c)
-            db.session.commit()
             return True
         return False
 
@@ -90,7 +87,6 @@ class User(UserMixin, db.Model):
         if not self.has_read(feed):
             self.feeds.append(feed)
             db.session.add(feed)
-            db.session.commit()
             return True
         return False
 
@@ -98,7 +94,6 @@ class User(UserMixin, db.Model):
         f = self.feeds.filter_by(id=feed.id).first()
         if f:
             self.feeds.remove(f)
-            db.session.commit()
             return True
         return False
 
@@ -160,22 +155,18 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
-    def generate_unique_code_token(self, expiration=3600):
-        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+    def generate_unique_code_token(self):
+        s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         return s.dumps({'unique_code': self.id})
 
     @staticmethod
     def load_user_from_unique_code(token):
-        s = Serializer(current_app.config['SECRET_KEY'])
+        s = URLSafeTimedSerializer(current_app.config['SECRET_KEY'])
         try:
             data = s.loads(token)
         except:
             return
         return User.query.get(data.get('unique_code'))
-
-    def set_chat_id(self, chat_id):
-        self.telegram_chat_id = chat_id
-        db.session.commit()
 
     def ping(self):
         self.last_seen = datetime.utcnow()

@@ -7,7 +7,7 @@ from . import api
 from .errors import forbidden
 
 
-@api.route('/users/<int:id>/')
+@api.route('/users/<int:id>')
 def get_user(id):
     u = User.query.get_or_404(id)
     if current_user.id != u.id:

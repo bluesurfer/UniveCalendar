@@ -9,8 +9,6 @@ class Config:
     SQLALCHEMY_RECORD_QUERIES = True
     SLOW_DB_QUERY_TIME = 0.2
     FEEDS_PER_PAGE = 10
-    CELERY_BROKER_URL = 'redis://localhost:6379/0'
-    CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
     BOT_NAME = 'UniveCalendarBot'
     BOT_TOKEN = os.environ.get('BOT_TOKEN') or 'token'
     MAIL_SERVER = 'smtp.googlemail.com'

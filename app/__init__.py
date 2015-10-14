@@ -16,7 +16,6 @@ from config import config, Config
 class CustomJSONEncoder(JSONEncoder):
     """This class adds support for lazy translation texts to Flask's
     JSON encoder. This is necessary when flashing translated texts."""
-
     def default(self, obj):
         from speaklater import is_lazy_string
 

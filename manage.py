@@ -1,5 +1,7 @@
 import os
 import sys
+import logging
+import telebot
 
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager
@@ -14,31 +16,45 @@ manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 
-@bot.message_handler(commands=['start', 'connect'])
-def send_welcome(msg):
+@bot.message_handler(commands=['start'])
+def connect_user(msg):
     token = msg.text.split()[1] if len(msg.text.split()) > 1 else None
     if token:
         with app.app_context():
             u = models.User.load_user_from_unique_code(token)
-            if u is not None:
-                u.set_chat_id(msg.chat.id)
+            if u:
+                u.telegram_chat_id = msg.chat.id
+                db.session.commit()
                 reply = "Congratulations {0}, you successfully connect your account.".format(u.username)
             else:
                 reply = "I have no clue who you are..."
     else:
-        reply = "Please visit me via a provided URL from the website."
+        reply = """
+        Hi! I'm UniveCalendar Bot. I can notify you about events of
+        your university's calendar. Visit our page for more info.
+
+        Available Commands
+        /start <TOKEN> - Authorize bot
+        /stop - Disconnect your connect"""
     bot.reply_to(msg, reply)
 
 
-@bot.message_handler(commands=['help'])
-def send_welcome(msg):
-    reply = "UniveCalendarBot can notify you about events of " \
-            "your university calendar. Visit our page for more info."
+@bot.message_handler(commands=['stop'])
+def stop(msg):
+    with app.app_context():
+        u = models.User.query.filter(models.User.telegram_chat_id == msg.chat.id).first()
+        if u:
+            u.telegram_chat_id = None
+            db.session.commit()
+            reply = "Ok, I will not send you any notifications."
+        else:
+            reply = "I have no clue who you are..."
     bot.reply_to(msg, reply)
 
 
 @manager.command
-def startbot():
+def runbot():
+    telebot.logger.setLevel(logging.INFO)
     bot.polling()
 
 

@@ -136,7 +136,7 @@ msgstr "Il link di conferma non è valido o è scaduto."
 
 #: app/auth/views.py:91
 msgid "A new confirmation email has been sent to you by email."
-msgstr "Una nuovo email di conferma è stata inviata al tuo indirizzo email."
+msgstr "Una nuova email di conferma è stata inviata al tuo indirizzo email."
 
 #: app/auth/views.py:104
 msgid "Reset Your Password"

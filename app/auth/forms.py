@@ -60,6 +60,7 @@ class PasswordResetForm(Form):
         Email()])
     password = PasswordField(lazy_gettext('New Password'), validators=[
         DataRequired(),
+        Length(6, 64, message=lazy_gettext('Password must have at least 6 characters')),
         EqualTo('password2', message=lazy_gettext('Passwords must match'))])
     password2 = PasswordField(lazy_gettext('Confirm password'), validators=[DataRequired()])
     submit = SubmitField(lazy_gettext('Reset Password'))

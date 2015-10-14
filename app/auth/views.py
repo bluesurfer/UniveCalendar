@@ -85,11 +85,11 @@ def resend_confirmation():
     token = current_user.generate_confirmation_token()
     send_email(current_user.email,
                gettext('Confirm Your Account'),
-               'auth/email/confirm',
+               'auth/email/en/confirm',
                user=current_user,
                token=token)
-    flash(gettext('A new confirmation email has been sent to you by email.'))
-    return redirect(url_for('main.index'))
+    flash(gettext('A new confirmation email has been sent to you by email.'), 'success')
+    return redirect(url_for('auth.login'))
 
 
 @auth.route('/reset', methods=['GET', 'POST'])
@@ -114,17 +114,18 @@ def password_reset_request():
 @auth.route('/reset/<token>', methods=['GET', 'POST'])
 def password_reset(token):
     if not current_user.is_anonymous:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('auth.login'))
     form = PasswordResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None:
-            return redirect(url_for('main.index'))
+            return redirect(url_for('auth.login'))
         if user.reset_password(token, form.password.data):
             flash(gettext('Your password has been updated.'), 'success')
             return redirect(url_for('auth.login'))
         else:
-            return redirect(url_for('main.index'))
+            flash(gettext('Password reset has failed.'), 'danger')
+            return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)
 
 
