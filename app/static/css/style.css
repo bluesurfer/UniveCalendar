@@ -1563,7 +1563,6 @@ label.error {
     border: 1px dotted #cc5965;
 }
 
-
 body {
     font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     background-color: #ebeced;
@@ -1581,7 +1580,6 @@ body.full-height-layout #wrapper,
 body.full-height-layout #page-wrapper {
     height: 100%;
 }
-
 
 body.boxed-layout #wrapper {
     background-color: #2f4050;
@@ -1650,7 +1648,6 @@ a:focus {
     margin-top: 15px;
     margin-bottom: 15px;
 }
-
 
 /* WRAPPERS */
 #wrapper {
@@ -2733,7 +2730,6 @@ body.modal-open {
     padding-right: inherit !important;
 }
 
-
 /* ERROR & LOGIN & LOCKSCREEN*/
 .middle-box {
     max-width: 400px;
@@ -3083,7 +3079,6 @@ body.modal-open {
     border-radius: 5px;
 }
 
-
 .input-group-addon {
     border-radius: 5px;
 }
@@ -3097,19 +3092,21 @@ body.modal-open {
     background: #fcfcfc;
 }
 
-
 .folder-list li a {
-  display: block;
-  padding: 5px 0;
+    display: block;
+    padding: 5px 0;
 }
+
 .folder-list li {
-  border-bottom: 1px solid #e7eaec;
-  display: block;
+    border-bottom: 1px solid #e7eaec;
+    display: block;
 }
+
 .folder-list li i {
-  margin-right: 8px;
-  color: #3d4d5d;
+    margin-right: 8px;
+    color: #3d4d5d;
 }
+
 .alert-danger {
     background-color: #D64242;
     color: #fff;
@@ -3120,7 +3117,21 @@ body.modal-open {
     letter-spacing: -1px;
 }
 
-
 a {
     word-wrap: break-word;
+}
+
+.wizard > .steps > ul > li {
+    width: 33%;
+}
+
+@media (max-width: 768px) {
+    .ibox-content {
+        padding: 5px;
+    }
+
+    .container {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
 }

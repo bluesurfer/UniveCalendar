@@ -2,9 +2,9 @@ $(document).ready(function () {
 
     // Add body-small class if window less than 768px
     if ($(this).width() < 769) {
-        $('body').addClass('body-small')
+        $('body').addClass('body-small');
     } else {
-        $('body').removeClass('body-small')
+        $('body').removeClass('body-small');
     }
 
     // MetsiMenu
@@ -115,7 +115,7 @@ $(document).ready(function () {
                 railOpacity: 0.9
             });
         }
-    })
+    });
 
     // Move right sidebar top after scroll
     $(window).scroll(function () {
