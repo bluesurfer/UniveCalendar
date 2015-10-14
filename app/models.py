@@ -70,6 +70,7 @@ class User(UserMixin, db.Model):
         if not self.is_following(course):
             self.courses.append(course)
             db.session.add(course)
+            db.session.commit()
             return True
         return False
 
@@ -77,6 +78,7 @@ class User(UserMixin, db.Model):
         c = self.courses.filter_by(id=course.id).first()
         if c:
             self.courses.remove(c)
+            db.session.commit()
             return True
         return False
 
@@ -87,6 +89,7 @@ class User(UserMixin, db.Model):
         if not self.has_read(feed):
             self.feeds.append(feed)
             db.session.add(feed)
+            db.session.commit()
             return True
         return False
 
@@ -94,6 +97,7 @@ class User(UserMixin, db.Model):
         f = self.feeds.filter_by(id=feed.id).first()
         if f:
             self.feeds.remove(f)
+            db.session.commit()
             return True
         return False
 
@@ -114,6 +118,7 @@ class User(UserMixin, db.Model):
             return False
         self.password = new_password
         db.session.add(self)
+        db.session.commit()
         return True
 
     def generate_confirmation_token(self, expiration=3600):
@@ -130,6 +135,7 @@ class User(UserMixin, db.Model):
             return False
         self.confirmed = True
         db.session.add(self)
+        db.session.commit()
         return True
 
     def generate_email_change_token(self, new_email, expiration=3600):
@@ -153,6 +159,7 @@ class User(UserMixin, db.Model):
         self.avatar_hash = hashlib.md5(
             self.email.encode('utf-8')).hexdigest()
         db.session.add(self)
+        db.session.commit()
         return True
 
     def generate_unique_code_token(self):
@@ -171,6 +178,7 @@ class User(UserMixin, db.Model):
     def ping(self):
         self.last_seen = datetime.utcnow()
         db.session.add(self)
+        db.session.commit()
 
     def to_json(self):
         json_user = {
@@ -215,10 +223,6 @@ class Professor(db.Model):
             self.email.encode('utf-8')).hexdigest()
         return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
             url=url, hash=hash, size=size, default=default, rating=rating)
-
-    @staticmethod
-    def on_append_feed(target, value, initiator):
-        print 'new feed'
 
     @staticmethod
     def generate_fake(count=100):
