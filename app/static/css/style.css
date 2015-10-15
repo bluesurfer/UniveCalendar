@@ -2157,7 +2157,7 @@ table.table-mail tr td {
 }
 
 .navy-bg {
-    background-color: #519088;
+    background-color: #009688;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#519088), to(#41736D));
     background-image: -webkit-linear-gradient(top, #519088 0%, #41736D 100%);
     background-image: -o-linear-gradient(top, #519088 0%, #41736D 100%);
@@ -2299,7 +2299,7 @@ table.table-mail tr td {
 
 /* COLORS */
 .text-navy {
-    color: #65B4A9;
+    color: #579b91;
 }
 
 .text-primary {
@@ -2762,7 +2762,7 @@ body.modal-open {
 }
 
 .logo-name {
-    color: #8A8A8A;
+    color: #fff;
     font-weight: 800;
     letter-spacing: -5px;
     margin-bottom: 40px;
@@ -3127,11 +3127,17 @@ a {
 
 @media (max-width: 768px) {
     .ibox-content {
-        padding: 5px;
+        padding: 10px;
     }
 
     .container {
         padding: 0 !important;
         margin: 0 !important;
     }
+}
+
+.no-shadow {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
