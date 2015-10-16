@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% set active_page='Profile' %}
+{% from '_macros.html' import render_field, profile_detail_widget %}
+
+
+{% block content %}
+    <div class="row animated fadeInRight">
+        <div class="col-md-4">
+            {{ profile_detail_widget(current_user, moment) }}
+        </div>
+        <div class="col-md-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{{ gettext('Activate Telegram') }}</h5>
+                </div>
+                <div class="ibox-content text-center">
+                    <div class="text-center">
+                        <h1 style="font-size: 180px"><i class="fa fa-paper-plane"></i></h1>
+
+                        <h1>{{ gettext("Stay up to date!") }}</h1>
+
+                        <p>{{ gettext("Don't you want to miss a feed?") }}</p>
+
+                        <p>{{ gettext("Click the following link to connect your Telegram account and start receiving updates.") }}</p>
+                        <a class="lead" href="https://telegram.me/{{ config['BOT_NAME'] }}?start={{ token }}">https://telegram.me/{{ config['BOT_NAME'] }}?start={{ token }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

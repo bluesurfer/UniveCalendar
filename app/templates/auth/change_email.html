@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% set active_page='Profile' %}
+{% from '_macros.html' import render_field, profile_detail_widget %}
+
+
+{% block content %}
+    <div class="row animated fadeInRight">
+        <div class="col-md-4">
+            {{ profile_detail_widget(current_user, moment) }}
+        </div>
+        <div class="col-md-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{{ gettext('Change Email Address') }}</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="m-t" role="form" method='post' action="">
+                        {{ form.csrf_token }}
+                        {{ render_field(form.email, type="text", required=True) }}
+                        {{ render_field(form.password, type="password", required=True) }}
+
+                        <button type="submit" class="btn btn-primary">
+                            {{ form.submit.label.text }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
