@@ -383,9 +383,9 @@ class Lesson(db.Model):
         json_lesson = {
             'id': self.id,
             'title': self.title,
-            'start': self.start,
-            'url': self.course.url,
-            'end': self.end
+            'start': self.start.strftime('%Y-%m-%d %H:%M:00'),
+            'end': self.end.strftime('%Y-%m-%d %H:%M:00'),
+            'url': self.course.url
         }
         return json_lesson
 

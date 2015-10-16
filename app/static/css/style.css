@@ -2134,13 +2134,7 @@ table.table-mail tr td {
 
 /* BACKGROUNDS */
 .gray-bg {
-    background-color: #fdfeff;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#fdfeff), to(#ebeced));
-    background-image: -webkit-linear-gradient(top, #fdfeff 0%, #ebeced 100%);
-    background-image: -o-linear-gradient(top, #fdfeff 0%, #ebeced 100%);
-    background-image: linear-gradient(to bottom, #fdfeff 0%, #ebeced 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ebeced', endColorstr='#c7c7c7', GradientType=0);
-    background-repeat: repeat-x;
+    background-color: #ebeced;
 }
 
 .white-bg {
@@ -2157,13 +2151,7 @@ table.table-mail tr td {
 }
 
 .navy-bg {
-    background-color: #009688;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#519088), to(#41736D));
-    background-image: -webkit-linear-gradient(top, #519088 0%, #41736D 100%);
-    background-image: -o-linear-gradient(top, #519088 0%, #41736D 100%);
-    background-image: linear-gradient(to bottom, #519088 0%, #41736D 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#519088', endColorstr='#41736D', GradientType=0);
-    background-repeat: repeat-x;
+    background-color: #41736D;
 }
 
 .blue-bg {
