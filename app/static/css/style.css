@@ -44,7 +44,6 @@ h5 {
     color: #a7b1c2;
     font-weight: 400;
     font-size: 14px;
-    text-transform: uppercase;
     padding: 14px 20px 14px 25px;
 }
 
@@ -1664,7 +1663,7 @@ a:focus {
 }
 
 #page-wrapper {
-    padding: 0;
+    padding: 0 15px;
     min-height: 568px;
     position: relative !important;
 }
@@ -2723,7 +2722,7 @@ body.modal-open {
     max-width: 400px;
     z-index: 100;
     margin: 0 auto;
-    padding-top: 40px;
+    padding: 40px 15px 0;
 }
 
 .lockscreen.middle-box {
