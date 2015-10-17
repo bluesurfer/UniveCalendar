@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-12 22:13+0200\n"
+"POT-Creation-Date: 2015-10-17 19:07+0200\n"
 "PO-Revision-Date: 2015-10-01 14:05+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.1.1\n"
 
-#: app/__init__.py:42
+#: app/__init__.py:43
 msgid "Please login to access this page"
 msgstr "Devi accedere per visitare questa pagina"
 
@@ -46,15 +46,16 @@ msgstr "Il nome utente deve contentere almeno 6 caratteri"
 msgid "Usernames must have only letters, numbers, dots or underscores"
 msgstr "Il nome utente può contenere solo caratteri alfanumerici"
 
-#: app/auth/forms.py:33
+#: app/auth/forms.py:33 app/auth/forms.py:63
 msgid "Password must have at least 6 characters"
 msgstr "La password deve contenere almeno 6 caratteri"
 
-#: app/auth/forms.py:34 app/auth/forms.py:63 app/auth/forms.py:77
+#: app/auth/forms.py:34 app/auth/forms.py:64 app/auth/forms.py:78
 msgid "Passwords must match"
 msgstr "Le password non coincidono"
 
-#: app/auth/forms.py:35 app/templates/auth/reset_password.html:50
+#: app/auth/forms.py:35 app/auth/forms.py:65
+#: app/templates/auth/reset_password.html:50
 msgid "Confirm password"
 msgstr "Conferma password"
 
@@ -70,7 +71,7 @@ msgstr "Indirizzo email già esistente"
 msgid "Username already in use"
 msgstr "Il nome utente esiste già"
 
-#: app/auth/forms.py:53
+#: app/auth/forms.py:53 app/auth/forms.py:66
 msgid "Reset Password"
 msgstr "Resetta Password"
 
@@ -78,35 +79,35 @@ msgstr "Resetta Password"
 msgid "New Password"
 msgstr "Nuova password"
 
-#: app/auth/forms.py:69
+#: app/auth/forms.py:70
 msgid "Unknown email address"
 msgstr "Email sconosciuta"
 
-#: app/auth/forms.py:73
+#: app/auth/forms.py:74
 msgid "Old password"
 msgstr "Vecchia password"
 
-#: app/auth/forms.py:75
+#: app/auth/forms.py:76
 msgid "New password"
 msgstr "Nuova password"
 
-#: app/auth/forms.py:78
+#: app/auth/forms.py:79
 msgid "Confirm new password"
 msgstr "Conferma nuova password"
 
-#: app/auth/forms.py:80
+#: app/auth/forms.py:81
 msgid "Update Password"
 msgstr "Aggiorna Password"
 
-#: app/auth/forms.py:84
+#: app/auth/forms.py:85
 msgid "New Email"
 msgstr "Nuovo indirizzo email"
 
-#: app/auth/forms.py:90
+#: app/auth/forms.py:91
 msgid "Update Email Address"
 msgstr "Aggiorna Indirizzo email"
 
-#: app/auth/forms.py:94
+#: app/auth/forms.py:95
 msgid "Email already registered."
 msgstr "Indirizzo email già esistente"
 
@@ -148,15 +149,33 @@ msgstr ""
 "Ti abbiamo inviato una email con le istruzioni per resettare la tua "
 "password."
 
-#: app/auth/views.py:124 app/auth/views.py:139
+#: app/auth/views.py:124 app/auth/views.py:142
 msgid "Your password has been updated."
 msgstr "La tua password è stata cambiata."
 
-#: app/auth/views.py:142
+#: app/auth/views.py:127
+msgid "Password reset has failed."
+msgstr ""
+
+#: app/auth/views.py:135 app/templates/_macros.html:128
+#: app/templates/base.html:86
+msgid "Change Password"
+msgstr "Cambia Password"
+
+#: app/auth/views.py:145
 msgid "Invalid password."
 msgstr "Password non valida"
 
-#: app/auth/views.py:157
+#: app/auth/views.py:151 app/templates/base.html:77
+msgid "Profile"
+msgstr "Profilo"
+
+#: app/auth/views.py:159 app/templates/_macros.html:127
+#: app/templates/base.html:83
+msgid "Change Email"
+msgstr "Cambia Email"
+
+#: app/auth/views.py:169
 msgid ""
 "An email with instructions to confirm your new email address has been "
 "sent to you."
@@ -164,46 +183,56 @@ msgstr ""
 "Ti abbiamo inviato una email con le istruzioni per resettare la tua "
 "password."
 
-#: app/auth/views.py:161
+#: app/auth/views.py:173
 msgid "Invalid email or password."
 msgstr "Nome utente o password non validi"
 
-#: app/auth/views.py:169
+#: app/auth/views.py:181
 msgid "Your email address has been updated."
 msgstr "La tua password è stata cambiata."
 
-#: app/auth/views.py:171
+#: app/auth/views.py:183
 msgid "Invalid request."
 msgstr "Richiesta non valida."
 
-#: app/main/views.py:123 app/main/views.py:144
+#: app/auth/views.py:190 app/templates/_macros.html:129
+#: app/templates/base.html:89
+msgid "Activate Telegram"
+msgstr "Attiva Telegram"
+
+#: app/main/views.py:68 app/templates/base.html:67
+#: app/templates/courses.html:155
+msgid "Courses"
+msgstr "Corsi"
+
+#: app/main/views.py:126 app/main/views.py:147
 msgid "No course selected"
 msgstr "Nessun corso selezionato"
 
-#: app/main/views.py:131
+#: app/main/views.py:134
 #, python-format
 msgid "%(num)s new course added"
 msgid_plural "%(num)s new courses added"
 msgstr[0] "Aggiunto %(num)s nuovo corso"
 msgstr[1] "Aggiunti %(num)s nuovi corsi"
 
-#: app/main/views.py:134
+#: app/main/views.py:137
 msgid "No new course added"
 msgstr "Nessun corso è stato aggiunto"
 
-#: app/main/views.py:152
+#: app/main/views.py:155
 #, python-format
 msgid "%(num)s course deleted"
 msgid_plural "%(num)s courses deleted"
 msgstr[0] "%(num)s corso eliminato"
 msgstr[1] "%(num)s corsi eliminati"
 
-#: app/main/views.py:155
+#: app/main/views.py:158
 msgid "No course deleted"
 msgstr "Nessun corso è stato eliminato"
 
 #: app/templates/_macros.html:21 app/templates/_macros.html:51
-#: app/templates/feeds.html:68
+#: app/templates/feeds.html:63
 msgid "No feed found"
 msgstr "Non ci sono avvisi"
 
@@ -216,7 +245,7 @@ msgstr "Postato %(fromnow)s il %(date)s"
 msgid "Read all feeds"
 msgstr "Leggi tutti gli avvisi"
 
-#: app/templates/_macros.html:107
+#: app/templates/_macros.html:107 app/templates/base.html:80
 msgid "Profile Detail"
 msgstr "Dettagli Profilo"
 
@@ -225,26 +254,14 @@ msgstr "Dettagli Profilo"
 msgid "Last seen: %(date)s"
 msgstr "Ultimo accesso: %(date)s"
 
-#: app/templates/_macros.html:121
+#: app/templates/_macros.html:121 app/templates/profile.html:24
 #, python-format
 msgid "%(num)s Followed Course"
 msgid_plural "%(num)s Followed Courses"
 msgstr[0] "Corso seguito"
 msgstr[1] "Corsi seguiti"
 
-#: app/templates/_macros.html:127
-msgid "Change Email"
-msgstr "Cambia Email"
-
-#: app/templates/_macros.html:128 app/templates/auth/change_password.html:14
-msgid "Change Password"
-msgstr "Cambia Password"
-
-#: app/templates/_macros.html:129 app/templates/auth/activate_telegram.html:14
-msgid "Activate Telegram"
-msgstr "Attiva Telegram"
-
-#: app/templates/base.html:33
+#: app/templates/base.html:28
 msgid ""
 "This website uses cookies to ensure you get the best experience on our "
 "website"
@@ -252,27 +269,23 @@ msgstr ""
 "Questo sito utilizza i cookie per garantire la migliore esperienza "
 "dell'utente nel nostro sito"
 
-#: app/templates/base.html:33
+#: app/templates/base.html:28
 msgid "Got it!"
 msgstr "Accetto"
 
-#: app/templates/base.html:33
+#: app/templates/base.html:28
 msgid "More info"
 msgstr "Saperne di più"
 
-#: app/templates/base.html:59 app/templates/courses.html:156
-msgid "Courses"
-msgstr "Corsi"
+#: app/templates/base.html:62
+msgid "Home"
+msgstr ""
 
-#: app/templates/base.html:60
+#: app/templates/base.html:72
 msgid "Feeds"
 msgstr "Avvisi"
 
-#: app/templates/base.html:86
-msgid "Profile"
-msgstr "Profilo"
-
-#: app/templates/base.html:90
+#: app/templates/base.html:121
 msgid "Logout"
 msgstr "Esci"
 
@@ -284,176 +297,193 @@ msgstr "I miei Corsi"
 msgid "Delete courses"
 msgstr "Elimina Corsi"
 
-#: app/templates/courses.html:71 app/templates/courses.html:176
+#: app/templates/courses.html:70 app/templates/courses.html:174
 msgid "Follow"
 msgstr "Segui"
 
-#: app/templates/courses.html:73 app/templates/courses.html:178
+#: app/templates/courses.html:72 app/templates/courses.html:176
 msgid "Code"
 msgstr "Codice"
 
-#: app/templates/courses.html:74 app/templates/courses.html:179
+#: app/templates/courses.html:73 app/templates/courses.html:177
 msgid "Year"
 msgstr "Anno"
 
-#: app/templates/courses.html:75 app/templates/courses.html:180
+#: app/templates/courses.html:74 app/templates/courses.html:178
 msgid "Name"
 msgstr "Insegnamento"
 
-#: app/templates/courses.html:77 app/templates/courses.html:182
+#: app/templates/courses.html:76 app/templates/courses.html:180
 msgid "Partition"
 msgstr "Partizione"
 
-#: app/templates/courses.html:78 app/templates/courses.html:183
+#: app/templates/courses.html:77 app/templates/courses.html:181
 msgid "Field"
 msgstr "Settore"
 
-#: app/templates/courses.html:79 app/templates/courses.html:184
+#: app/templates/courses.html:78 app/templates/courses.html:182
 msgid "Period"
 msgstr "Periodo"
 
-#: app/templates/courses.html:80 app/templates/courses.html:185
+#: app/templates/courses.html:79 app/templates/courses.html:183
 msgid "Professor"
 msgstr "Professore"
 
-#: app/templates/courses.html:95 app/templates/index.html:48
+#: app/templates/courses.html:94 app/templates/index.html:68
 msgid "Add courses"
 msgstr "Aggiungi Corsi"
 
-#: app/templates/courses.html:100
+#: app/templates/courses.html:99
 msgid "Follow the wizard to add new courses."
 msgstr "Segui la procedura guidata per aggiungere nuovi corsi"
 
-#: app/templates/courses.html:106
+#: app/templates/courses.html:105
 msgid "Category"
 msgstr "Categoria"
 
-#: app/templates/courses.html:108
+#: app/templates/courses.html:107
 msgid "Select a category"
 msgstr "Seleziona una categoria di laurea"
 
-#: app/templates/courses.html:114
+#: app/templates/courses.html:113
 msgid "Bachelor"
 msgstr "Triennale"
 
-#: app/templates/courses.html:115
+#: app/templates/courses.html:114
 msgid "Master"
 msgstr "Magistrale"
 
-#: app/templates/courses.html:129
+#: app/templates/courses.html:128
 msgid "Degree"
 msgstr "Laurea"
 
-#: app/templates/courses.html:132
+#: app/templates/courses.html:131
 msgid "Find your degree course"
 msgstr "Trova il tuo corso di laurea"
 
-#: app/templates/courses.html:159
+#: app/templates/courses.html:158
 msgid "Choose the courses you intend to follow."
 msgstr "Scegli i corsi che intendi seguire"
 
-#: app/templates/courses.html:257
+#: app/templates/courses.html:258
 msgid "Current step"
 msgstr "Passo corrente"
 
-#: app/templates/courses.html:258
+#: app/templates/courses.html:259
 msgid "Steps"
 msgstr "Passi"
 
-#: app/templates/courses.html:259
+#: app/templates/courses.html:260
 msgid "Finish"
 msgstr "Fine"
 
-#: app/templates/courses.html:260
+#: app/templates/courses.html:261
 msgid "Next"
 msgstr "Avanti"
 
-#: app/templates/courses.html:261
+#: app/templates/courses.html:262
 msgid "Back"
 msgstr "Indietro"
 
-#: app/templates/courses.html:262
+#: app/templates/courses.html:263
 msgid "Loading..."
 msgstr "Caricamento"
 
-#: app/templates/courses.html:338
-msgid "Total"
-msgstr "Totale"
-
-#: app/templates/feed.html:12
-msgid "Feed"
-msgstr "Avviso"
-
-#: app/templates/feed.html:21
-msgid "Subject:"
-msgstr "Oggetto"
-
-#: app/templates/feed.html:25
-msgid "From: "
-msgstr "Da: "
-
-#: app/templates/feeds.html:28
-msgid "All feeds"
-msgstr "Tutti gli Avvisi"
-
-#: app/templates/feeds.html:36
+#: app/templates/feeds.html:31
 msgid "Inbox"
 msgstr "In arrivo"
 
-#: app/templates/feeds.html:43
+#: app/templates/feeds.html:38
 msgid "Select/deselect all"
 msgstr "Selziona/deseleziona tutto"
 
-#: app/templates/feeds.html:47
+#: app/templates/feeds.html:42
 msgid "Check feeds"
 msgstr "Controlla avvisi"
 
-#: app/templates/feeds.html:48
+#: app/templates/feeds.html:43
 msgid "Refresh"
 msgstr "Aggiorna"
 
-#: app/templates/feeds.html:51
+#: app/templates/feeds.html:46
 msgid "Mark as read"
 msgstr "Segna come già letto"
 
-#: app/templates/feeds.html:107 app/templates/auth/activate_telegram.html:20
+#: app/templates/feeds.html:99 app/templates/auth/activate_telegram.html:18
 msgid "Stay up to date!"
 msgstr "Rimani aggiornato!"
 
-#: app/templates/feeds.html:109
+#: app/templates/feeds.html:102
 #, python-format
 msgid "Connect your Telegram account, click <a href='%(link)s'>here</a>"
 msgstr "Collega il tuo account Telegram, clicca <a href='%(link)s'>qui</a>"
 
-#: app/templates/index.html:41
-msgid "My calendar"
-msgstr "Il mio Calendario"
+#: app/templates/index.html:22
+#, python-format
+msgid "Welcome %(username)s"
+msgstr "Benvenuto, %(username)s"
 
-#: app/templates/index.html:48
-msgid "You calendar is empty."
-msgstr "Il tuo calendario è vuoto"
+#: app/templates/index.html:24
+#, python-format
+msgid "You have %(num)s unread feed."
+msgid_plural "You have %(num)s unread feeds."
+msgstr[0] "Hai %(num)s avviso non letto"
+msgstr[1] "Hai %(num)s avvisi non letti"
 
-#: app/templates/index.html:57
-msgid "Download Calendar"
-msgstr "Scarica Calendario"
-
-#: app/templates/index.html:58
-msgid ""
-"Get your personal calendar in ICS format, compatible with the most common"
-" Calendar apps"
-msgstr ""
-"Scarica il tuo calendario personale in formata ICS, compatibile con le "
-"più comuni applicazioni Calendar."
-
-#: app/templates/index.html:75
+#: app/templates/index.html:50
 msgid "Latest feeds"
 msgstr "Ultimi Avvisi"
 
-#: app/templates/auth/activate_telegram.html:22
+#: app/templates/index.html:63
+msgid "My calendar"
+msgstr "Il mio Calendario"
+
+#: app/templates/index.html:68
+msgid "You calendar is empty."
+msgstr "Il tuo calendario è vuoto"
+
+#: app/templates/index.html:74
+msgid "Download Calendar"
+msgstr "Scarica Calendario"
+
+#: app/templates/index.html:75
+msgid ""
+"Get your personal calendar in ICS format, compatible with the most common"
+" Calendar apps"
+msgstr "Scarica il tuo calendario personale in formato ICS, compatibile con"
+" le più comuni applicazioni Calendar"
+
+#: app/templates/profile.html:18
+#, python-format
+msgid "Member since %(member_since)s"
+msgstr "Iscritto dal %(member_since)s"
+
+#: app/templates/profile.html:21
+#, python-format
+msgid "Last seen: %(last_seen)s"
+msgstr "Ultimo accesso: %(last_seen)s"
+
+#: app/templates/view_feed.html:16
+msgid "View Feed"
+msgstr "Vedi Avviso"
+
+#: app/templates/view_feed.html:20
+msgid "Subject:"
+msgstr "Oggetto"
+
+#: app/templates/view_feed.html:24
+msgid "From: "
+msgstr "Da: "
+
+#: app/templates/auth/activate_telegram.html:12
+msgid "Telegram Activation Link"
+msgstr "Link di Attivazione Telegram"
+
+#: app/templates/auth/activate_telegram.html:20
 msgid "Don't you want to miss a feed?"
 msgstr "Non vuoi perdere nessun avviso?"
 
-#: app/templates/auth/activate_telegram.html:24
+#: app/templates/auth/activate_telegram.html:22
 msgid ""
 "Click the following link to connect your Telegram account and start "
 "receiving updates."
@@ -461,23 +491,27 @@ msgstr ""
 "Clicca il link seguente per collegare il tuo account Telegram e iniziare "
 "a ricevere gli aggiornamenti"
 
-#: app/templates/auth/change_email.html:14
-msgid "Change Email Address"
-msgstr "Cambia Indirizzo Email"
+#: app/templates/auth/change_email.html:12
+msgid "Type here your new email adress"
+msgstr "Inserisci il tuo nuovo indirizzo email"
 
-#: app/templates/auth/login.html:24
+#: app/templates/auth/change_password.html:12
+msgid "Type here your new password"
+msgstr "Inserisci la tua nuova password"
+
+#: app/templates/auth/login.html:26
 msgid "Login with your account"
 msgstr "Accedi con il tuo account"
 
-#: app/templates/auth/login.html:58
+#: app/templates/auth/login.html:60
 msgid "Forgot password?"
 msgstr "Password dimenticata?"
 
-#: app/templates/auth/login.html:62
+#: app/templates/auth/login.html:64
 msgid "I don't have an account"
 msgstr "Non hai un account?"
 
-#: app/templates/auth/login.html:65
+#: app/templates/auth/login.html:67
 msgid "Create account"
 msgstr "Crea Account"
 
@@ -559,3 +593,4 @@ msgstr "Torna alla Home"
 #: app/templates/errors/forbidden.html:27
 msgid "You are not allowed to visit this page."
 msgstr "Non sei autorizzato a visitare questa pagina."
+

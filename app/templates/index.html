@@ -16,9 +16,19 @@
 
 {% endblock %}
 
+{% block heading %}
+    <div class="row  border-bottom white-bg dashboard-header">
+        <div class="col-lg-12">
+            <h2>{{ gettext('Welcome %(username)s', username=current_user.username) }}</h2>
+            {% if g.unread %}
+                <small>{{ ngettext('You have %(num)s unread feed.', 'You have %(num)s unread feeds.', g.unread) }}</small>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
 
 {% block content %}
-
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="row">
@@ -33,25 +43,32 @@
         {% endif %}
     {% endwith %}
 
-    <div class="row">
+    <div class="row animated fadeInDown">
+        <div class="col-lg-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{{ gettext('Latest feeds') }}</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="feed-activity-list">
+                        {{ macros.feeds_widget(feeds, moment) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-lg-8">
             <div class="ibox float-e-margins">
-
                 <div class="ibox-title">
-                    <h5>{{ gettext('My calendar') }}</h5>
+                    <h5>{{ gettext('My calendar') }} </h5>
                 </div>
-
                 <div class="ibox-content">
                     {% if not current_user.courses.first() %}
-
                         <div class="alert alert-warning">
                             {{ gettext('You calendar is empty.') }} <a class="alert-link" href="{{ url_for('main.courses') }}">{{ gettext('Add courses') }}</a>.
                         </div>
-
                     {% endif %}
-
                     <div id="calendar"></div>
-
                     <div class="row">
                         <div class="col-lg-12">
                             <a href="{{ url_for('main.download_calendar') }}" class="btn btn-success btn-block m-t"><i class="fa fa-download"></i> {{ gettext('Download Calendar') }}</a>
@@ -60,30 +77,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-lg-4">
-
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h5>{{ gettext('Latest feeds') }}</h5>
-                </div>
-
-                <div class="ibox-content" style="background-color: #f3f6fb">
-                    <div class="feed-activity-list">
-                        {{ macros.feeds_widget(feeds, moment) }}
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
-
 
 {% endblock %}
 
@@ -99,7 +94,6 @@
     {% if g.locale == 'it' %}
         <script src="{{ url_for('static', filename='js/plugins/fullcalendar/lang/it.js') }}"></script>
     {% endif %}
-
 
     <script>
         $(document).ready(function () {

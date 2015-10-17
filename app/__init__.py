@@ -8,6 +8,7 @@ from flask.ext.babel import Babel, lazy_gettext
 from flask.ext.moment import Moment
 from flask.ext.mail import Mail
 from flask_wtf.csrf import CsrfProtect
+from flask.ext.breadcrumbs import Breadcrumbs
 from flask.json import JSONEncoder
 
 from config import config, Config
@@ -30,6 +31,7 @@ class CustomJSONEncoder(JSONEncoder):
 babel = Babel()
 db = SQLAlchemy()
 csrf = CsrfProtect()
+breadcrumbs = Breadcrumbs()
 moment = Moment()
 mail = Mail()
 bot = telebot.TeleBot(Config.BOT_TOKEN)
@@ -51,6 +53,7 @@ def create_app(config_name):
     csrf.init_app(app)
     babel.init_app(app)
     mail.init_app(app)
+    breadcrumbs.init_app(app)
     moment.init_app(app)
     login_manager.init_app(app)
 

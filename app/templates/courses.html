@@ -63,14 +63,13 @@
                                data-id-field="id"
                                data-minimum-count-columns="2"
                                data-show-pagination-switch="true"
-                               data-show-footer="true"
                                data-pagination="true"
                                data-page-list="[10, 25, 50, 100, ALL]">
                             <thead>
                             <tr>
                                 <th data-checkbox="true">{{ gettext('Follow') }}</th>
                                 <th data-field="id" data-visible="false">Id</th>
-                                <th data-field="code" data-align="left" data-sortable="true" data-footer-formatter="totalTextFormatter">{{ gettext('Code') }}</th>
+                                <th data-field="code" data-align="left" data-sortable="true">{{ gettext('Code') }}</th>
                                 <th data-field="year" data-align="left" data-sortable="true" data-searchable="false">{{ gettext('Year') }}</th>
                                 <th data-field="name" data-align="left" data-sortable="true" data-formatter="urlFormatter">{{ gettext('Name') }}</th>
                                 <th data-field="url" data-visible="false">Url</th>
@@ -78,7 +77,7 @@
                                 <th data-field="field" data-align="left" data-sortable="true">{{ gettext('Field') }}</th>
                                 <th data-field="period" data-align="left" data-sortable="true">{{ gettext('Period') }}</th>
                                 <th data-field="professor" data-align="left" data-sortable="true">{{ gettext('Professor') }}</th>
-                                <th data-field="credit" data-align="left" data-searchable="false" data-footer-formatter="totalCreditFormatter">CFU</th>
+                                <th data-field="credit" data-align="left" data-searchable="false">CFU</th>
                             </tr>
                             </thead>
                         </table>
@@ -168,14 +167,13 @@
                                            data-id-field="id"
                                            data-minimum-count-columns="2"
                                            data-show-pagination-switch="true"
-                                           data-show-footer="true"
                                            data-pagination="true"
                                            data-page-list="[10, 25, 50, 100, ALL]">
                                         <thead>
                                         <tr>
                                             <th data-checkbox="true">{{ gettext('Follow') }}</th>
                                             <th data-field="id" data-visible="false">Id</th>
-                                            <th data-field="code" data-align="left" data-sortable="true" data-footer-formatter="totalTextFormatter">{{ gettext('Code') }}</th>
+                                            <th data-field="code" data-align="left" data-sortable="true">{{ gettext('Code') }}</th>
                                             <th data-field="year" data-align="left" data-sortable="true" data-searchable="false">{{ gettext('Year') }}</th>
                                             <th data-field="name" data-align="left" data-sortable="true" data-formatter="urlFormatter">{{ gettext('Name') }}</th>
                                             <th data-field="url" data-visible="false">Url</th>
@@ -183,7 +181,7 @@
                                             <th data-field="field" data-align="left" data-sortable="true">{{ gettext('Field') }}</th>
                                             <th data-field="period" data-align="left" data-sortable="true">{{ gettext('Period') }}</th>
                                             <th data-field="professor" data-align="left" data-sortable="true">{{ gettext('Professor') }}</th>
-                                            <th data-field="credit" data-align="left" data-searchable="false" data-footer-formatter="totalCreditFormatter">CFU</th>
+                                            <th data-field="credit" data-align="left" data-searchable="false">CFU</th>
                                         </tr>
                                         </thead>
                                     </table>
@@ -212,10 +210,13 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/plugins/bootstrap-select/bootstrap-select.min.js') }}"></script>
 
     <!-- Bootstrap Table -->
-    <script type="text/javascript" src="{{ url_for('static', filename='js/plugins/bootstrap-table/bootstrap-table.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/plugins/bootstrap-table/bootstrap-table.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/plugins/bootstrap-table/extensions/mobile/bootstrap-table-mobile.js') }}"></script>
+
     {% if g.locale == 'it' %}
         <script type="text/javascript" src="{{ url_for('static', filename='js/plugins/bootstrap-table/bootstrap-table-it-IT.min.js') }}"></script>
     {% endif %}
+
 
     <!-- Tinycon -->
     <script src="{{ url_for('static', filename='js/plugins/tinycon/tinycon.min.js') }}"></script>
@@ -326,21 +327,9 @@
             return '<a href="' + row['url'] + '" target="_blank">' + value + '</a>';
         }
 
-        function totalCreditFormatter(data) {
-            var total = 0;
-            $.each(data, function (i, row) {
-                total += +(row.credit);
-            });
-            return total;
-        }
-
-        function totalTextFormatter(data) {
-            return '{{ gettext('Total') }}';
-        }
 
     </script>
 
 {% endblock %}
-
 
 

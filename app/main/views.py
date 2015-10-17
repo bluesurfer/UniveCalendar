@@ -3,7 +3,8 @@ from flask import render_template, redirect, url_for, request, \
     flash, make_response, current_app, g
 from flask.ext.login import login_required, current_user
 from flask.ext.sqlalchemy import get_debug_queries
-from flask.ext.babel import gettext, ngettext
+from flask.ext.babel import gettext, ngettext, lazy_gettext
+from flask.ext import breadcrumbs
 from . import main
 from ..models import Course, Feed
 from .. import babel
@@ -55,6 +56,7 @@ def count_unread_feeds():
 
 
 @main.route('/', methods=['GET', 'POST'])
+@breadcrumbs.register_breadcrumb(main, '.', 'Home')
 def index():
     if current_user.is_authenticated:
         return render_template('index.html', feeds=get_latest_feeds(5))
@@ -63,6 +65,7 @@ def index():
 
 @main.route('/courses')
 @login_required
+@breadcrumbs.register_breadcrumb(main, '.Courses', lazy_gettext('Courses'))
 def courses():
     return render_template('courses.html')
 
@@ -72,7 +75,7 @@ def courses():
 def feed(id):
     feed = Feed.query.get_or_404(id)
     current_user.read(feed)
-    return render_template('feed.html', feed=feed)
+    return render_template('view_feed.html', feed=feed)
 
 
 @main.route('/_mark_as_read', methods=['post'])

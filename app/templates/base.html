@@ -8,18 +8,13 @@
     {% block head %}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>UniveCalendar | {{ active_page|capitalize }}</title>
+        <title>UniveCalendar</title>
     {% endblock %}
 
     {% block styles %}
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" >
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-        <!--- Local sources
-        <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.css') }}" rel="stylesheet">
-        -->
 
         <link href="{{ url_for('static', filename='css/animate.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
@@ -39,88 +34,132 @@
 
 {% block body %}
 
-    <body class="top-navigation">
+    <body>
+
     <div id="wrapper">
+        <!-- Vertical Sidebar -->
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+
+                    <!-- Profile element -->
+                    <li class="nav-header">
+                        <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-circle" src="{{ current_user.gravatar() }}"/>
+                             </span>
+                            <a href="{{ url_for('auth.profile') }}">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ current_user.username }}</strong>
+                             </span> <span class="text-muted text-xs block">{{ current_user.email }} </span> </span>
+                            </a>
+                        </div>
+                        <div class="logo-element">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                    </li>
+
+                    <!-- Sidebar menu options -->
+                    <li {% if 'home' == active_page %} class="active"{% endif %}>
+                        <a href="{{ url_for('main.index') }}"><i class="fa fa-home"></i> <span class="nav-label">{{ gettext('Home') }}</span> </a>
+                    </li>
+
+
+                    <li {% if 'courses' == active_page %} class="active"{% endif %}>
+                        <a href="{{ url_for('main.courses') }}"><i class="fa fa-graduation-cap"></i> <span class="nav-label">{{ gettext('Courses') }}</span> </a>
+                    </li>
+
+
+                    <li {% if 'feeds' == active_page %} class="active"{% endif %}>
+                        <a href="{{ url_for('main.feeds') }}"><i class="fa fa-envelope-o"></i> <span class="nav-label">{{ gettext('Feeds') }}</span> </a>
+                    </li>
+
+
+                    <li {% if active_page in ['change_email_request', 'change_password', 'activate_telegram', 'profile'] %} class="active"{% endif %}>
+                        <a href="#"><i class="fa fa-user"></i> <span class="nav-label">{{ gettext('Profile') }}</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li {% if 'profile' == active_page %} class="active"{% endif %}>
+                                <a href="{{ url_for('auth.profile') }}">{{ gettext('Profile Detail') }}</a>
+                            </li>
+                            <li {% if 'change_email_request' == active_page %} class="active"{% endif %}>
+                                <a href="{{ url_for('auth.change_email_request') }}">{{ gettext('Change Email') }}</a>
+                            </li>
+                            <li {% if 'change_password' == active_page %} class="active"{% endif %}>
+                                <a href="{{ url_for('auth.change_password') }}">{{ gettext('Change Password') }}</a>
+                            </li>
+                            <li {% if 'activate_telegram' == active_page %} class="active"{% endif %}>
+                                <a href="{{ url_for('auth.activate_telegram') }}">{{ gettext('Activate Telegram') }}</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Horizontal Navbar -->
         <div id="page-wrapper" class="gray-bg">
-            <div class="row border-bottom fancy-bg">
-                <nav class="navbar navbar-static-top" role="navigation">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top {% if active_page in ['feeds', 'feed'] %}white-bg{% endif %}" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
-                        <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
-                            <i class="fa fa-reorder"></i>
-                        </button>
-                        <a href="{{ url_for('main.index') }}" class="navbar-brand" style="font-size: 30px">
-                            <span class="text-navy">Unive</span>Calendar
-                        </a>
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                     </div>
-                    <div class="navbar-collapse collapse" id="navbar">
+                    <ul class="nav navbar-top-links navbar-right">
 
-                        {% set navigation_bar = [
-                            (url_for('main.index'), 'home', 'Home'),
-                            (url_for('main.courses'), 'courses', gettext('Courses')),
-                            (url_for('main.feeds'), 'feeds', gettext('Feeds'))
-                        ] -%}
+                        <li class="dropdown">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                <i class="fa fa-envelope"></i>
+                                {% if g.unread %}
+                                    <span class="label label-warning">{{ g.unread }}</span>
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu dropdown-messages">
+                                {{ macros.feeds_navbar_widget(g.latest, moment) }}
+                            </ul>
+                        </li>
 
-                        <ul class="nav navbar-nav">
-                            {% for href, id, caption in navigation_bar %}
-                                <li{% if id == active_page %} class="active"{% endif %}>
-                                    <a aria-expanded="false" role="button" href="{{ href|e }}">{{ caption|e }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                        <ul class="nav navbar-top-links navbar-right">
-                            <li class="dropdown">
-                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                    <i class="fa fa-envelope"></i>
-                                    {% if g.unread %}
-                                        <span class="label label-warning">{{ g.unread }}</span>
-                                    {% endif %}
-                                </a>
-                                <ul class="dropdown-menu dropdown-messages">
-                                    {{ macros.feeds_navbar_widget(g.latest, moment) }}
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">{{ current_user.username }} <span class="caret"></span></a>
-                                <ul role="menu" class="dropdown-menu">
-                                    <li><a href="{{ url_for('auth.change_email_request') }}">{{ gettext('Profile') }}</a></li>
+                        <li>
+                            <a href="{{ url_for('auth.logout') }}">
+                                <i class="fa fa-sign-out"></i>{{ gettext('Logout') }}
+                            </a>
+                        </li>
+                    </ul>
 
-                                    <li>
-                                        <a href="{{ url_for('auth.logout') }}">
-                                            <i class="fa fa-sign-out"></i> {{ gettext('Logout') }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
                 </nav>
             </div>
 
+            {% block heading %}
+                <div class="row wrapper border-bottom white-bg page-heading">
+                    <div class="col-lg-8">
+                        <h2>{{ (breadcrumbs|last).text }}</h2>
+
+                        <ol class="breadcrumb">
+                            {%- for breadcrumb in breadcrumbs -%}
+                                <li{% if breadcrumb.text|lower == active_page %} class="active"{% endif %}>
+                                    {% if loop.last %}
+                                        <b>{{ breadcrumb.text }}</b>
+                                    {% else %}
+                                        <a href="{{ breadcrumb.url }}">{{ breadcrumb.text }}</a>
+                                    {% endif %}
+                                </li>
+                            {%- endfor -%}
+                        </ol>
+                    </div>
+                </div>
+            {% endblock %}
 
             <div class="wrapper wrapper-content">
-                <div class="container">
-                    {% block content %}
+                {% block content %}
 
-                    {% endblock %}
-                </div>
+                {% endblock %}
             </div>
-
 
         </div>
     </div>
-
 
     {% block scripts %}
 
         <!-- Mainly scripts -->
         <script src="http://code.jquery.com/jquery-latest.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-        <!-- Local sources
-        <script src="{{ url_for('static', filename='js/jquery-2.1.1.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-        -->
 
         <script src="{{ url_for('static', filename='js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
         <script src="{{ url_for('static', filename='js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>

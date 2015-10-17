@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% set active_page='profile' %}
+
+
+{% block heading %}
+    <div class="row  border-bottom white-bg dashboard-header">
+
+        <div class="col-sm-4">
+            <img class="img-rounded profile-thumbnail" src="{{ current_user.gravatar(size=256) }}">
+        </div>
+        <div class="col-sm-8">
+            <h2>{{ current_user.username }}</h2>
+            <ul class="list-group clear-list m-t">
+                <li class="list-group-item">
+                    <a href="mailto:{{ current_user.email }}">{{ current_user.email }}</a>
+                </li>
+                <li class="list-group-item">
+                    {{ gettext('Member since %(member_since)s', member_since=moment(current_user.member_since).format('L')) }}
+                </li>
+                <li class="list-group-item">
+                    {{ gettext('Last seen: %(last_seen)s', last_seen=moment(current_user.last_seen).fromNow()) }}
+                </li>
+                <li class="list-group-item">
+                    {{ ngettext('%(num)s Followed Course', '%(num)s Followed Courses', current_user.courses.count()) }}
+                </li>
+            </ul>
+        </div>
+
+    </div>
+{% endblock %}

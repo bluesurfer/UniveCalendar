@@ -1,8 +1,8 @@
 from flask import render_template, redirect, request, url_for, flash
 from flask.ext.login import login_user, logout_user, login_required, \
     current_user
-from flask.ext.babel import gettext
-
+from flask.ext.babel import gettext, lazy_gettext
+from flask.ext import breadcrumbs
 from . import auth
 from .forms import LoginForm, RegistrationForm, PasswordResetForm, \
     PasswordResetRequestForm, ChangePasswordForm, ChangeEmailForm
@@ -131,6 +131,8 @@ def password_reset(token):
 
 @auth.route('/change-password', methods=['GET', 'POST'])
 @login_required
+@breadcrumbs.register_breadcrumb(auth, '.profile.change_password',
+                                 lazy_gettext('Change Password'))
 def change_password():
     form = ChangePasswordForm()
     if form.validate_on_submit():
@@ -144,8 +146,17 @@ def change_password():
     return render_template("auth/change_password.html", form=form)
 
 
+@auth.route('/profile')
+@login_required
+@breadcrumbs.register_breadcrumb(auth, '.profile', lazy_gettext('Profile'))
+def profile():
+    return render_template('profile.html')
+
+
 @auth.route('/change-email', methods=['GET', 'POST'])
 @login_required
+@breadcrumbs.register_breadcrumb(auth, '.profile.change_email',
+                                 lazy_gettext('Change Email'))
 def change_email_request():
     form = ChangeEmailForm()
     if form.validate_on_submit():
@@ -175,6 +186,8 @@ def change_email(token):
 
 @auth.route('/activate-telegram')
 @login_required
+@breadcrumbs.register_breadcrumb(auth, '.profile.activate_telegram',
+                                 lazy_gettext('Activate Telegram'))
 def activate_telegram():
     token = current_user.generate_unique_code_token()
     return render_template('auth/activate_telegram.html',token=token)
