@@ -74,9 +74,9 @@ def courses():
 @main.route('/feed/<int:id>')
 @login_required
 def feed(id):
-    feed = Feed.query.get_or_404(id)
-    current_user.read(feed)
-    return render_template('view_feed.html', feed=feed)
+    f = Feed.query.get_or_404(id)
+    current_user.read(f)
+    return render_template('view_feed.html', feed=f)
 
 
 @main.route('/_mark_as_read', methods=['post'])
@@ -84,15 +84,14 @@ def feed(id):
 def mark_as_read():
     feed_ids = request.form.getlist('feed_id')
     if feed_ids:
-        feeds = Feed.query.filter(Feed.id.in_(feed_ids))
-        for f in feeds:
+        for f in Feed.query.filter(Feed.id.in_(feed_ids)):
             current_user.read(f)
     return redirect(url_for('main.feeds'))
 
 
 @main.route('/feeds')
 @login_required
-def feeds():
+def show_feeds():
     page = request.args.get('page', 1, type=int)
     query = user_feeds_query()
     if not query:
@@ -126,7 +125,6 @@ def follow():
     if not course_ids:
         flash(gettext('No course selected'), 'warning')
         return redirect(url_for('main.courses'))
-
     added = 0
     for c in Course.query.filter(Course.id.in_(course_ids)).all():
         added += current_user.follow(c)
@@ -147,7 +145,6 @@ def unfollow():
     if not course_ids:
         flash(gettext('No course selected'), 'warning')
         return redirect(url_for('main.courses'))
-
     deleted = 0
     for c in Course.query.filter(Course.id.in_(course_ids)).all():
         deleted += current_user.unfollow(c)

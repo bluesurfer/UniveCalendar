@@ -4,11 +4,12 @@
 <html>
 
 <head>
-
     {% block head %}
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>UniveCalendar</title>
+
     {% endblock %}
 
     {% block styles %}
@@ -20,7 +21,6 @@
         <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 
     {% endblock %}
-
 </head>
 
 <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
@@ -35,8 +35,8 @@
 {% block body %}
 
     <body>
-
     <div id="wrapper">
+
         <!-- Vertical Sidebar -->
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
@@ -61,18 +61,12 @@
                     <li {% if 'home' == active_page %} class="active"{% endif %}>
                         <a href="{{ url_for('main.index') }}"><i class="fa fa-home"></i> <span class="nav-label">{{ gettext('Home') }}</span> </a>
                     </li>
-
-
                     <li {% if 'courses' == active_page %} class="active"{% endif %}>
                         <a href="{{ url_for('main.courses') }}"><i class="fa fa-graduation-cap"></i> <span class="nav-label">{{ gettext('Courses') }}</span> </a>
                     </li>
-
-
                     <li {% if 'feeds' == active_page %} class="active"{% endif %}>
                         <a href="{{ url_for('main.feeds') }}"><i class="fa fa-envelope-o"></i> <span class="nav-label">{{ gettext('Feeds') }}</span> </a>
                     </li>
-
-
                     <li {% if active_page in ['change_email_request', 'change_password', 'activate_telegram', 'profile'] %} class="active"{% endif %}>
                         <a href="#"><i class="fa fa-user"></i> <span class="nav-label">{{ gettext('Profile') }}</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -103,7 +97,6 @@
                         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
-
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                 <i class="fa fa-envelope"></i>
@@ -115,7 +108,6 @@
                                 {{ macros.feeds_navbar_widget(g.latest, moment) }}
                             </ul>
                         </li>
-
                         <li>
                             <a href="{{ url_for('auth.logout') }}">
                                 <i class="fa fa-sign-out"></i>{{ gettext('Logout') }}
@@ -148,10 +140,8 @@
 
             <div class="wrapper wrapper-content">
                 {% block content %}
-
                 {% endblock %}
             </div>
-
         </div>
     </div>
 
@@ -176,7 +166,6 @@
         </script>
 
     {% endblock %}
-
     </body>
 {% endblock %}
 </html>
