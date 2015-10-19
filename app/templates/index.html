@@ -9,11 +9,6 @@
     <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.css" rel="stylesheet">
     <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.print.css" rel='stylesheet' media='print'>
 
-    <!-- Local
-    <link href="{{ url_for('static',filename='css/plugins/fullcalendar/fullcalendar.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static',filename='css/plugins/fullcalendar/fullcalendar.print.css') }}" rel='stylesheet' media='print'>
-    -->
-
 {% endblock %}
 
 {% block heading %}
@@ -51,7 +46,32 @@
                 </div>
                 <div class="ibox-content">
                     <div class="feed-activity-list">
-                        {{ macros.feeds_widget(feeds, moment) }}
+                        {% if not feeds %}
+                            <p class="text-center">{{ gettext('No feed found') }}</p>
+                        {% else %}
+                            {% for feed in feeds %}
+                                <div class="feed-element">
+                                    <a href="#" class="pull-left">
+                                        <img alt="image" class="img-circle" src="{{ feed.gravatar }}">
+                                    </a>
+
+                                    <div class="media-body ">
+                                        <small class="pull-right">{{ moment(feed.timestamp).fromNow() }}</small>
+                                        <strong>{{ feed.author }}</strong><br> {{ feed.title }}<br>
+
+                                        <div class="well">
+                                            {{ feed.body }}
+                                        </div>
+                                        <small class="text-muted">{{ gettext('Published %(fromnow)s at %(date)s', fromnow=moment(feed.timestamp).fromNow(), date=moment(feed.timestamp).format('HH:MM - D.M.YYYY')) }}</small>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="text-center link-block m-t">
+                                <a href="{{ url_for('main.feeds') }}">
+                                    <i class="fa fa-envelope"></i> <strong>{{ gettext('Read all feeds') }}</strong>
+                                </a>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -89,8 +109,6 @@
     <!-- Full Calendar -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.js"></script>
 
-    <!--<script src="{{ url_for('static', filename='js/plugins/fullcalendar/fullcalendar.min.js') }}"></script>-->
-
     {% if g.locale == 'it' %}
         <script src="{{ url_for('static', filename='js/plugins/fullcalendar/lang/it.js') }}"></script>
     {% endif %}
@@ -127,5 +145,4 @@
         });
 
     </script>
-
 {% endblock %}

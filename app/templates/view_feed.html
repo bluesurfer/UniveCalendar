@@ -1,24 +1,16 @@
 {% extends 'base.html' %}
 {% set active_page='feeds' %}
 
-
 {% block heading %}
 {% endblock %}
 
 {% block content %}
-
     <div class="row">
-
         <div class="col-lg-12 animated fadeInRight">
             <div class="mail-box-header">
-
-                <h2>
-                    {{ gettext('View Feed') }}
-                </h2>
+                <h2>{{ gettext('View Feed') }}</h2>
                 <div class="mail-tools tooltip-demo">
-                    <h3>
-                        <span class="font-noraml">{{ gettext('Subject:') }} {{ feed.title }} </span>
-                    </h3>
+                    <h3><span class="font-noraml">{{ gettext('Subject:') }} {{ feed.title }}</span></h3>
                     <h5>
                         <span class="pull-right font-noraml">{{ moment(feed.timestamp).format('D MMMM YYYY, hh:mm ') }}</span>
                         <span class="font-noraml">{{ gettext('From: ') }} </span>{{ feed.contact }}

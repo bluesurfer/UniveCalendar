@@ -2,8 +2,11 @@
 {% set active_page='feeds' %}
 
 {% block head %}
+
     {{ super() }}
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
 {% endblock %}
 
 
@@ -22,51 +25,34 @@
 {% block content %}
 
     <div class="row">
-
         <div class="col-lg-12 animated fadeInRight">
-
             <div class="mail-box-header">
-
                 <h2>
                     {{ gettext('Inbox') }} {% if g.unread > 0 %}({{ g.unread }}) {% else %} (0) {% endif %}
                 </h2>
-
                 <div class="mail-tools tooltip-demo m-t-md">
-
                     {% if feeds %}
-
                         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="{{ gettext('Select/deselect all') }}">
                             <input type="checkbox" id="checkAll" onchange="selectAll()"/>
                         </button>
-
                         <a href="{{ url_for('main.feeds') }}" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="{{ gettext('Check feeds') }}">
                             <i class="fa fa-refresh"></i> {{ gettext('Refresh') }}
                         </a>
-
                         <button class="btn btn-white btn-sm" onclick="markAsRead()" data-toggle="tooltip" data-placement="top" title="{{ gettext('Mark as read') }}">
                             <i class="fa fa-eye"></i>
                         </button>
-
                         {{ macros.pagination_widget(pagination, 'main.feeds') }}
-
                     {% endif %}
                 </div>
             </div>
 
             <div class="mail-box">
-
                 <table class="table table-hover table-mail">
                     <tbody>
-
                     {% if not feeds %}
-                        <p class="text-center">
-                            {{ gettext('No feed found') }}
-                        </p>
-
+                        <p class="text-center">{{ gettext('No feed found') }}</p>
                     {% else %}
-
                         {% for feed in feeds %}
-
                             <tr class="{% if current_user.has_read(feed) %}read{% else %}unread{% endif %}">
                                 <td class="check-mail">
                                     <input type="checkbox" class="i-checks" value="{{ feed.id }}">
@@ -82,10 +68,8 @@
 
                                 <td class="text-right mail-date">{{ moment(feed.timestamp).fromNow() }}</td>
                             </tr>
-
                         {% endfor %}
                     {% endif %}
-
                     </tbody>
                 </table>
             </div>
@@ -109,11 +93,14 @@
 {% endblock %}
 
 {% block scripts %}
+
     {{ super() }}
+
     <!-- iCheck -->
     <script src="{{ url_for('static', filename='js/plugins/iCheck/icheck.min.js') }}"></script>
 
     <script>
+
         $(document).ready(function () {
             $('.i-checks').iCheck({
                 checkboxClass: 'icheckbox_square-green',

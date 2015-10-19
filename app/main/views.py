@@ -6,8 +6,18 @@ from flask.ext.sqlalchemy import get_debug_queries
 from flask.ext.babel import gettext, ngettext, lazy_gettext
 from flask.ext import breadcrumbs
 from . import main
+from ..auth import auth
 from ..models import Course, Feed
 from .. import babel
+
+
+@main.before_request
+@auth.before_request
+def add_user_info():
+    if current_user.is_authenticated:
+        g.unread = count_unread_feeds()
+        g.latest = get_latest_feeds(3)
+        g.locale = get_locale()
 
 
 @babel.localeselector
@@ -27,16 +37,7 @@ def after_request(response):
     return response
 
 
-@main.before_request
-@login_required
-def before_request():
-    g.unread = count_unread_feeds()
-    g.latest = get_latest_feeds(3)
-    g.locale = get_locale()
-
-
 def user_feeds_query():
-    """The SQL query that retrieves user's related feeds."""
     if not current_user.courses.count():
         return
     professor_ids = set([c.professor_id for c in current_user.courses])
