@@ -65,7 +65,7 @@
                         <a href="{{ url_for('main.courses') }}"><i class="fa fa-graduation-cap"></i> <span class="nav-label">{{ gettext('Courses') }}</span> </a>
                     </li>
                     <li {% if 'feeds' == active_page %} class="active"{% endif %}>
-                        <a href="{{ url_for('main.feeds') }}"><i class="fa fa-envelope-o"></i> <span class="nav-label">{{ gettext('Feeds') }}</span> </a>
+                        <a href="{{ url_for('main.show_feeds') }}"><i class="fa fa-envelope-o"></i> <span class="nav-label">{{ gettext('Feeds') }}</span> </a>
                     </li>
                     <li {% if active_page in ['change_email_request', 'change_password', 'activate_telegram', 'profile'] %} class="active"{% endif %}>
                         <a href="#"><i class="fa fa-user"></i> <span class="nav-label">{{ gettext('Profile') }}</span><span class="fa arrow"></span></a>
