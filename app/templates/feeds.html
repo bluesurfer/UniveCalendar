@@ -12,10 +12,10 @@
 
 {% block styles %}
 
-    {{ super() }}
-
     <!-- iCheck style -->
     <link href="{{ url_for('static', filename='css/plugins/iCheck/custom.css') }}" rel="stylesheet">
+
+    {{ super() }}
 
 {% endblock %}
 
@@ -35,13 +35,13 @@
                         <button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="{{ gettext('Select/deselect all') }}">
                             <input type="checkbox" id="checkAll" onchange="selectAll()"/>
                         </button>
-                        <a href="{{ url_for('main.feeds') }}" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="{{ gettext('Check feeds') }}">
+                        <a href="{{ url_for('main.show_feeds') }}" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="{{ gettext('Check feeds') }}">
                             <i class="fa fa-refresh"></i> {{ gettext('Refresh') }}
                         </a>
                         <button class="btn btn-white btn-sm" onclick="markAsRead()" data-toggle="tooltip" data-placement="top" title="{{ gettext('Mark as read') }}">
                             <i class="fa fa-eye"></i>
                         </button>
-                        {{ macros.pagination_widget(pagination, 'main.feeds') }}
+                        {{ macros.pagination_widget(pagination, 'main.show_feeds') }}
                     {% endif %}
                 </div>
             </div>

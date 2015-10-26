@@ -108,6 +108,13 @@
                                 {{ macros.feeds_navbar_widget(g.latest, moment) }}
                             </ul>
                         </li>
+                        <li class="dropdown">
+                            <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ gettext('Language') }} <span class="caret"></span></a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li><a href="{{ url_for('main.change_language', lang='it') }}">{{ gettext('Italian') }}</a></li>
+                                <li><a href="{{ url_for('main.change_language', lang='en') }}">{{ gettext('English') }}</a></li>
+                            </ul>
+                        </li>
                         <li>
                             <a href="{{ url_for('auth.logout') }}">
                                 <i class="fa fa-sign-out"></i>{{ gettext('Logout') }}
@@ -142,7 +149,9 @@
                 {% block content %}
                 {% endblock %}
             </div>
+
         </div>
+
     </div>
 
     {% block scripts %}

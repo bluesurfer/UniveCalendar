@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-17 19:07+0200\n"
+"POT-Creation-Date: 2015-10-26 21:05+0100\n"
 "PO-Revision-Date: 2015-10-01 14:05+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -157,8 +157,7 @@ msgstr "La tua password è stata cambiata."
 msgid "Password reset has failed."
 msgstr ""
 
-#: app/auth/views.py:135 app/templates/_macros.html:128
-#: app/templates/base.html:86
+#: app/auth/views.py:135 app/templates/base.html:80
 msgid "Change Password"
 msgstr "Cambia Password"
 
@@ -166,12 +165,11 @@ msgstr "Cambia Password"
 msgid "Invalid password."
 msgstr "Password non valida"
 
-#: app/auth/views.py:151 app/templates/base.html:77
+#: app/auth/views.py:151 app/templates/base.html:71
 msgid "Profile"
 msgstr "Profilo"
 
-#: app/auth/views.py:159 app/templates/_macros.html:127
-#: app/templates/base.html:83
+#: app/auth/views.py:159 app/templates/base.html:77
 msgid "Change Email"
 msgstr "Cambia Email"
 
@@ -195,71 +193,54 @@ msgstr "La tua password è stata cambiata."
 msgid "Invalid request."
 msgstr "Richiesta non valida."
 
-#: app/auth/views.py:190 app/templates/_macros.html:129
-#: app/templates/base.html:89
+#: app/auth/views.py:190 app/templates/base.html:83
 msgid "Activate Telegram"
 msgstr "Attiva Telegram"
 
-#: app/main/views.py:68 app/templates/base.html:67
-#: app/templates/courses.html:155
+#: app/main/views.py:79 app/templates/base.html:65
+#: app/templates/courses.html:183
 msgid "Courses"
 msgstr "Corsi"
 
-#: app/main/views.py:126 app/main/views.py:147
+#: app/main/views.py:136 app/main/views.py:156
 msgid "No course selected"
 msgstr "Nessun corso selezionato"
 
-#: app/main/views.py:134
+#: app/main/views.py:143
 #, python-format
 msgid "%(num)s new course added"
 msgid_plural "%(num)s new courses added"
 msgstr[0] "Aggiunto %(num)s nuovo corso"
 msgstr[1] "Aggiunti %(num)s nuovi corsi"
 
-#: app/main/views.py:137
+#: app/main/views.py:146
 msgid "No new course added"
 msgstr "Nessun corso è stato aggiunto"
 
-#: app/main/views.py:155
+#: app/main/views.py:163
 #, python-format
 msgid "%(num)s course deleted"
 msgid_plural "%(num)s courses deleted"
 msgstr[0] "%(num)s corso eliminato"
 msgstr[1] "%(num)s corsi eliminati"
 
-#: app/main/views.py:158
+#: app/main/views.py:166
 msgid "No course deleted"
 msgstr "Nessun corso è stato eliminato"
 
-#: app/templates/_macros.html:21 app/templates/_macros.html:51
-#: app/templates/feeds.html:63
+#: app/templates/_macros.html:21 app/templates/feeds.html:53
+#: app/templates/index.html:72
 msgid "No feed found"
 msgstr "Non ci sono avvisi"
 
-#: app/templates/_macros.html:36 app/templates/_macros.html:63
+#: app/templates/_macros.html:32 app/templates/index.html:87
 #, python-format
 msgid "Published %(fromnow)s at %(date)s"
 msgstr "Postato %(fromnow)s il %(date)s"
 
-#: app/templates/_macros.html:42 app/templates/_macros.html:72
+#: app/templates/_macros.html:41 app/templates/index.html:93
 msgid "Read all feeds"
 msgstr "Leggi tutti gli avvisi"
-
-#: app/templates/_macros.html:107 app/templates/base.html:80
-msgid "Profile Detail"
-msgstr "Dettagli Profilo"
-
-#: app/templates/_macros.html:116
-#, python-format
-msgid "Last seen: %(date)s"
-msgstr "Ultimo accesso: %(date)s"
-
-#: app/templates/_macros.html:121 app/templates/profile.html:24
-#, python-format
-msgid "%(num)s Followed Course"
-msgid_plural "%(num)s Followed Courses"
-msgstr[0] "Corso seguito"
-msgstr[1] "Corsi seguiti"
 
 #: app/templates/base.html:28
 msgid ""
@@ -281,77 +262,101 @@ msgstr "Saperne di più"
 msgid "Home"
 msgstr ""
 
-#: app/templates/base.html:72
+#: app/templates/base.html:68
 msgid "Feeds"
 msgstr "Avvisi"
 
-#: app/templates/base.html:121
+#: app/templates/base.html:74
+msgid "Profile Detail"
+msgstr "Dettagli Profilo"
+
+#: app/templates/base.html:112
+msgid "Language"
+msgstr "Lingua"
+
+#: app/templates/base.html:114
+msgid "Italian"
+msgstr "Italiano"
+
+#: app/templates/base.html:115
+msgid "English"
+msgstr "Inglese"
+
+#: app/templates/base.html:120
 msgid "Logout"
 msgstr "Esci"
 
-#: app/templates/courses.html:37
+#: app/templates/courses.html:28
 msgid "My courses"
 msgstr "I miei Corsi"
 
-#: app/templates/courses.html:54
+#: app/templates/courses.html:46
 msgid "Delete courses"
 msgstr "Elimina Corsi"
 
-#: app/templates/courses.html:70 app/templates/courses.html:174
+#: app/templates/courses.html:50 app/templates/courses.html:191
+msgid "Loading table"
+msgstr "Caricamento tabella"
+
+#: app/templates/courses.html:68 app/templates/courses.html:209
 msgid "Follow"
 msgstr "Segui"
 
-#: app/templates/courses.html:72 app/templates/courses.html:176
+#: app/templates/courses.html:70 app/templates/courses.html:211
 msgid "Code"
 msgstr "Codice"
 
-#: app/templates/courses.html:73 app/templates/courses.html:177
+#: app/templates/courses.html:71 app/templates/courses.html:212
 msgid "Year"
 msgstr "Anno"
 
-#: app/templates/courses.html:74 app/templates/courses.html:178
+#: app/templates/courses.html:72 app/templates/courses.html:213
 msgid "Name"
 msgstr "Insegnamento"
 
-#: app/templates/courses.html:76 app/templates/courses.html:180
+#: app/templates/courses.html:74 app/templates/courses.html:215
 msgid "Partition"
 msgstr "Partizione"
 
-#: app/templates/courses.html:77 app/templates/courses.html:181
+#: app/templates/courses.html:75 app/templates/courses.html:216
 msgid "Field"
 msgstr "Settore"
 
-#: app/templates/courses.html:78 app/templates/courses.html:182
+#: app/templates/courses.html:76 app/templates/courses.html:217
 msgid "Period"
 msgstr "Periodo"
 
-#: app/templates/courses.html:79 app/templates/courses.html:183
+#: app/templates/courses.html:77 app/templates/courses.html:218
 msgid "Professor"
 msgstr "Professore"
 
-#: app/templates/courses.html:94 app/templates/index.html:68
+#: app/templates/courses.html:93 app/templates/index.html:110
 msgid "Add courses"
 msgstr "Aggiungi Corsi"
 
-#: app/templates/courses.html:99
+#: app/templates/courses.html:98
 msgid "Follow the wizard to add new courses."
 msgstr "Segui la procedura guidata per aggiungere nuovi corsi"
 
-#: app/templates/courses.html:105
+#: app/templates/courses.html:104
 msgid "Category"
 msgstr "Categoria"
 
-#: app/templates/courses.html:107
+#: app/templates/courses.html:106
 msgid "Select a category"
 msgstr "Seleziona una categoria di laurea"
 
-#: app/templates/courses.html:113
+#: app/templates/courses.html:112
 msgid "Bachelor"
 msgstr "Triennale"
 
-#: app/templates/courses.html:114
+#: app/templates/courses.html:113
 msgid "Master"
 msgstr "Magistrale"
+
+#: app/templates/courses.html:114
+msgid "PAS"
+msgstr ""
 
 #: app/templates/courses.html:128
 msgid "Degree"
@@ -361,119 +366,151 @@ msgstr "Laurea"
 msgid "Find your degree course"
 msgstr "Trova il tuo corso di laurea"
 
-#: app/templates/courses.html:158
+#: app/templates/courses.html:156
+msgid "Curriculum"
+msgstr ""
+
+#: app/templates/courses.html:159
+msgid "Choose your curriculum"
+msgstr "Scegli un piano di studi"
+
+#: app/templates/courses.html:186
 msgid "Choose the courses you intend to follow."
 msgstr "Scegli i corsi che intendi seguire"
 
-#: app/templates/courses.html:258
+#: app/templates/courses.html:298
 msgid "Current step"
 msgstr "Passo corrente"
 
-#: app/templates/courses.html:259
+#: app/templates/courses.html:299
 msgid "Steps"
 msgstr "Passi"
 
-#: app/templates/courses.html:260
+#: app/templates/courses.html:300
 msgid "Finish"
 msgstr "Fine"
 
-#: app/templates/courses.html:261
+#: app/templates/courses.html:301
 msgid "Next"
 msgstr "Avanti"
 
-#: app/templates/courses.html:262
+#: app/templates/courses.html:302
 msgid "Back"
 msgstr "Indietro"
 
-#: app/templates/courses.html:263
+#: app/templates/courses.html:303
 msgid "Loading..."
 msgstr "Caricamento"
+
+#: app/templates/feed.html:12
+msgid "Feed"
+msgstr "Avviso"
+
+#: app/templates/feed.html:21 app/templates/view_feed.html:13
+msgid "Subject:"
+msgstr "Oggetto"
+
+#: app/templates/feed.html:25 app/templates/view_feed.html:16
+msgid "From: "
+msgstr "Da: "
 
 #: app/templates/feeds.html:31
 msgid "Inbox"
 msgstr "In arrivo"
 
-#: app/templates/feeds.html:38
+#: app/templates/feeds.html:35
 msgid "Select/deselect all"
 msgstr "Selziona/deseleziona tutto"
 
-#: app/templates/feeds.html:42
+#: app/templates/feeds.html:38
 msgid "Check feeds"
 msgstr "Controlla avvisi"
 
-#: app/templates/feeds.html:43
+#: app/templates/feeds.html:39
 msgid "Refresh"
 msgstr "Aggiorna"
 
-#: app/templates/feeds.html:46
+#: app/templates/feeds.html:41
 msgid "Mark as read"
 msgstr "Segna come già letto"
 
-#: app/templates/feeds.html:99 app/templates/auth/activate_telegram.html:18
+#: app/templates/feeds.html:83 app/templates/auth/activate_telegram.html:18
 msgid "Stay up to date!"
 msgstr "Rimani aggiornato!"
 
-#: app/templates/feeds.html:102
+#: app/templates/feeds.html:86
 #, python-format
 msgid "Connect your Telegram account, click <a href='%(link)s'>here</a>"
 msgstr "Collega il tuo account Telegram, clicca <a href='%(link)s'>qui</a>"
 
-#: app/templates/index.html:22
+#: app/templates/index.html:20
 #, python-format
 msgid "Welcome %(username)s"
 msgstr "Benvenuto, %(username)s"
 
-#: app/templates/index.html:24
+#: app/templates/index.html:22
 #, python-format
 msgid "You have %(num)s unread feed."
 msgid_plural "You have %(num)s unread feeds."
 msgstr[0] "Hai %(num)s avviso non letto"
 msgstr[1] "Hai %(num)s avvisi non letti"
 
-#: app/templates/index.html:50
+#: app/templates/index.html:30 app/templates/profile.html:26
+#, python-format
+msgid "%(num)s Followed Course"
+msgid_plural "%(num)s Followed Courses"
+msgstr[0] "Corso seguito"
+msgstr[1] "Corsi seguiti"
+
+#: app/templates/index.html:35
+msgid "Total credits"
+msgstr "Totale crediti"
+
+#: app/templates/index.html:39
+msgid "Lessons to attend"
+msgstr "Lezioni da seguire"
+
+#: app/templates/index.html:67
 msgid "Latest feeds"
 msgstr "Ultimi Avvisi"
 
-#: app/templates/index.html:63
+#: app/templates/index.html:105
 msgid "My calendar"
 msgstr "Il mio Calendario"
 
-#: app/templates/index.html:68
+#: app/templates/index.html:110
 msgid "You calendar is empty."
 msgstr "Il tuo calendario è vuoto"
 
-#: app/templates/index.html:74
+#: app/templates/index.html:116
 msgid "Download Calendar"
 msgstr "Scarica Calendario"
 
-#: app/templates/index.html:75
+#: app/templates/index.html:117
 msgid ""
 "Get your personal calendar in ICS format, compatible with the most common"
 " Calendar apps"
-msgstr "Scarica il tuo calendario personale in formato ICS, compatibile con"
-" le più comuni applicazioni Calendar"
+msgstr ""
+"Scarica il tuo calendario personale in formato ICS, compatibile con le "
+"più comuni applicazioni Calendar"
 
-#: app/templates/profile.html:18
+#: app/templates/profile.html:17
 #, python-format
 msgid "Member since %(member_since)s"
 msgstr "Iscritto dal %(member_since)s"
 
-#: app/templates/profile.html:21
+#: app/templates/profile.html:20
 #, python-format
 msgid "Last seen: %(last_seen)s"
 msgstr "Ultimo accesso: %(last_seen)s"
 
-#: app/templates/view_feed.html:16
+#: app/templates/profile.html:23
+msgid "Disabled"
+msgstr "Disabilitato"
+
+#: app/templates/view_feed.html:11
 msgid "View Feed"
 msgstr "Vedi Avviso"
-
-#: app/templates/view_feed.html:20
-msgid "Subject:"
-msgstr "Oggetto"
-
-#: app/templates/view_feed.html:24
-msgid "From: "
-msgstr "Da: "
 
 #: app/templates/auth/activate_telegram.html:12
 msgid "Telegram Activation Link"
@@ -593,4 +630,7 @@ msgstr "Torna alla Home"
 #: app/templates/errors/forbidden.html:27
 msgid "You are not allowed to visit this page."
 msgstr "Non sei autorizzato a visitare questa pagina."
+
+#~ msgid "Last seen: %(date)s"
+#~ msgstr "Ultimo accesso: %(date)s"
 

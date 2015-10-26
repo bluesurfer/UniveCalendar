@@ -17,13 +17,23 @@ def add_user_info():
     if current_user.is_authenticated:
         g.unread = count_unread_feeds()
         g.latest = get_latest_feeds(3)
-        g.locale = get_locale()
+    g.languages = current_app.config['LANGUAGES'].keys()
 
 
 @babel.localeselector
 def get_locale():
+    cookie = request.cookies.get("language")
+    if cookie in current_app.config['LANGUAGES'].keys():
+        return cookie
     return request.accept_languages.best_match(
         current_app.config['LANGUAGES'].keys())
+
+
+@main.route('/change-language/<lang>')
+def change_language(lang):
+    response = current_app.make_response(redirect(url_for('main.index')))
+    response.set_cookie('language',value=lang)
+    return response
 
 
 @main.after_app_request

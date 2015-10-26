@@ -10,10 +10,10 @@
             return 'Caricamento in corso...';
         },
         formatRecordsPerPage: function (pageNumber) {
-            return pageNumber + ' records per pagina';
+            return pageNumber + ' righe per pagina';
         },
         formatShowingRows: function (pageFrom, pageTo, totalRows) {
-            return 'Pagina ' + pageFrom + ' di ' + pageTo + ' (' + totalRows + ' records)';
+            return 'Righe da ' + pageFrom + ' a ' + pageTo + ' (' + totalRows + ' totali)';
         },
         formatSearch: function () {
             return 'Cerca';

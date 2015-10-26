@@ -12,7 +12,8 @@ Flask-Migrate==1.4.0
 Jinja2==2.8
 gunicorn==19.3.0
 Werkzeug==0.10.4
-SQLAlchemy==1.0.8
+SQLAlchemy==1.0.9
+alembic==0.8.3
 WTForms==2.0.2
 itsdangerous==0.24
 ics==0.3.1

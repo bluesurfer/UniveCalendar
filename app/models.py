@@ -9,7 +9,9 @@ from flask.ext.login import UserMixin
 from flask.ext.sqlalchemy import SignallingSession
 
 from werkzeug.security import generate_password_hash, check_password_hash
+
 from . import db, login_manager, bot
+
 
 follows = db.Table('follows', db.Model.metadata,
                    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
@@ -180,6 +182,12 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def total_credits(self):
+        return sum(c.credit for c in self.courses)
+
+    def number_of_lessons(self):
+        return sum(len(c.calendar.lessons) for c in self.courses)
+
     def to_json(self):
         json_user = {
             'id': self.id,
@@ -198,8 +206,8 @@ def load_user(user_id):
 class Professor(db.Model):
     __tablename__ = 'professors'
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(64))
-    last_name = db.Column(db.String(64))
+    first_name = db.Column(db.String(64), nullable=False)
+    last_name = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), unique=True)
     avatar_hash = db.Column(db.String(32))
     courses = db.relationship('Course',
@@ -256,12 +264,13 @@ class Professor(db.Model):
 class Degree(db.Model):
     __tablename__ = 'degrees'
     id = db.Column(db.Integer, primary_key=True)
-    code = db.Column(db.String(32), unique=True)
+    code = db.Column(db.String(32), unique=True, index=True)
     name = db.Column(db.String(64))
-    category = db.Column(db.Enum('bachelor', 'master', name='categories'))
-    courses = db.relationship('Course',
-                              backref='degree',
-                              lazy='dynamic')
+    category = db.Column(db.Enum('LM', 'L', 'D2', 'PAS', name='categories'),
+                         nullable=False)
+    curriculums = db.relationship('Curriculum',
+                                  backref='degree',
+                                  lazy='joined')
 
     @staticmethod
     def generate_fake(count=100):
@@ -291,51 +300,78 @@ class Degree(db.Model):
         return json_degree
 
 
+class Curriculum(db.Model):
+    __tablename__ = 'curriculums'
+    __table_args__ = (db.UniqueConstraint('code',
+                                          'degree_id'),)
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(32))
+    name = db.Column(db.String(64))
+    degree_id = db.Column(db.Integer, db.ForeignKey('degrees.id'))
+    courses = db.relationship('Course',
+                              backref='curriculum',
+                              lazy='dynamic')
+
+    def to_json(self):
+        json_curriculum = {
+            'id': self.id,
+            'degree': self.degree.name,
+            'code': self.code,
+            'name': self.name
+        }
+        return json_curriculum
+
+
+class Calendar(db.Model):
+    __tablename__ = 'calendars'
+    id = db.Column(db.Integer, primary_key=True)
+    courses = db.relationship('Course',
+                              backref='calendar',
+                              lazy='dynamic')
+    lessons = db.relationship('Lesson',
+                              backref='calendar',
+                              lazy='joined')
+
+    @property
+    def url(self):
+        return 'http://www.unive.it/data/insegnamento/%s' % self.id
+
+    def to_json(self):
+        json_calendar = {
+            'id': self.id,
+            'url': self.url,
+        }
+        return json_calendar
+
+
 class Course(db.Model):
     __tablename__ = 'courses'
-    __table_args__ = (db.UniqueConstraint('id',
-                                          'code',
+    __table_args__ = (db.UniqueConstraint('code',
                                           'name',
+                                          'curriculum_id',
                                           'professor_id',
                                           'partition'),)
     id = db.Column(db.Integer, primary_key=True)
+    id_hash = db.Column(db.String(128), unique=True)
     code = db.Column(db.String(16))
-    url = db.Column(db.String(64))
     name = db.Column(db.String(64))
-    academic_year = db.Column(db.String(32))
     field = db.Column(db.String(16))
     credit = db.Column(db.Integer)
+    total_credit = db.Column(db.Integer)
     period = db.Column(db.String(32))
     year = db.Column(db.Integer)
     partition = db.Column(db.String(32))
-    professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'))
-    degree_id = db.Column(db.Integer, db.ForeignKey('degrees.id'))
-    lessons = db.relationship('Lesson',
-                              backref='course',
-                              lazy='joined')
+    curriculum_id = db.Column(db.Integer, db.ForeignKey('curriculums.id'))
+    professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'), )
+    calendar_id = db.Column(db.Integer, db.ForeignKey('calendars.id'))
     users = db.relationship('User',
                             secondary=follows,
                             backref=db.backref('course_id', lazy='dynamic'),
                             lazy='joined')
 
-    def to_json(self):
-        json_degree = {
-            'id': self.id,
-            'code': self.code,
-            'url': self.url,
-            'name': self.name,
-            'academic_year': self.academic_year,
-            'field': self.field,
-            'credit': self.credit,
-            'period': self.period,
-            'year': self.year,
-            'degree': self.degree.name,
-            'partition': self.partition,
-            'professor': '{first_name} {last_name}'.format(
-                first_name=self.professor.first_name,
-                last_name=self.professor.last_name)
-        }
-        return json_degree
+    @property
+    def url(self):
+        return self.calendar.url
 
     @staticmethod
     def generate_fake(count=100):
@@ -354,7 +390,6 @@ class Course(db.Model):
             c = Course(code=forgery_py.basic.text(5).upper(),
                        url=forgery_py.internet.domain_name(),
                        name=forgery_py.lorem_ipsum.title(),
-                       academic_year='2015/2016',
                        field=forgery_py.basic.text(5).upper(),
                        credit=randint(0, 12),
                        period='1',
@@ -368,26 +403,40 @@ class Course(db.Model):
             except IntegrityError:
                 db.session.rollback()
 
+    def to_json(self):
+        json_course = {
+            'id': self.id,
+            'code': self.code,
+            'url': self.url,
+            'name': self.name,
+            'degree': self.curriculum.degree.name,
+            'curriculum': self.curriculum.code,
+            'field': self.field,
+            'credit': self.credit,
+            'total_credit': self.total_credit,
+            'period': self.period,
+            'year': self.year,
+            'calendar': self.calendar_id,
+            'partition': self.partition,
+            'professor': u'{first_name} {last_name}'.format(
+                first_name=self.professor.first_name,
+                last_name=self.professor.last_name)
+        }
+        return json_course
+
 
 class Lesson(db.Model):
     __tablename__ = 'lessons'
+    __table_args__ = (db.UniqueConstraint('start',
+                                          'end',
+                                          'calendar_id',
+                                          'location'),)
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text)
-    start = db.Column(db.DateTime())
-    end = db.Column(db.DateTime())
-    url = db.Column(db.String(64))
-    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
-    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
-
-    def to_json(self):
-        json_lesson = {
-            'id': self.id,
-            'title': self.title,
-            'start': self.start.strftime('%Y-%m-%d %H:%M:00'),
-            'end': self.end.strftime('%Y-%m-%d %H:%M:00'),
-            'url': self.course.url
-        }
-        return json_lesson
+    start = db.Column(db.DateTime(), nullable=False)
+    end = db.Column(db.DateTime(), nullable=False)
+    location = db.Column(db.String(64), nullable=False)
+    calendar_id = db.Column(db.Integer, db.ForeignKey('calendars.id'))
 
     @staticmethod
     def generate_fake(count=100):
@@ -416,6 +465,17 @@ class Lesson(db.Model):
                 db.session.commit()
             except IntegrityError:
                 db.session.rollback()
+
+    def to_json(self):
+        json_lesson = {
+            'id': self.id,
+            'title': self.title,
+            'start': self.start.strftime('%Y-%m-%d %H:%M:00'),
+            'end': self.end.strftime('%Y-%m-%d %H:%M:00'),
+            'location': self.location,
+            'url': self.calendar.url,
+        }
+        return json_lesson
 
 
 def get_old_value(attr_state):
@@ -456,9 +516,6 @@ class Location(db.Model):
     city = db.Column(db.String(64))
     address = db.Column(db.String(64))
     coordinates = db.Column(db.String(64))
-    lessons = db.relationship('Lesson',
-                              backref='location',
-                              lazy='dynamic')
 
     @staticmethod
     def generate_fake(count=100):

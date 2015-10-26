@@ -77,6 +77,14 @@ def cleardb():
 
 
 @manager.command
+def cleartable(tablename):
+    """Delete all tables records."""
+    table = db.metadata.tables[tablename]
+    db.session.execute(table.delete())
+    db.session.commit()
+
+
+@manager.command
 def insertfeed(professor_id):
     import forgery_py
 
@@ -113,6 +121,13 @@ def adduser():
 def deleteusers():
     models.User.query.delete()
     db.session.commit()
+
+
+@manager.command
+def dbcreate():
+    os.system('python manage.py db init')
+    os.system('python manage.py db migrate')
+    os.system('python manage.py db upgrade')
 
 
 @manager.command
