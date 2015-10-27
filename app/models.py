@@ -265,7 +265,7 @@ class Degree(db.Model):
     __tablename__ = 'degrees'
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(32), unique=True, index=True)
-    name = db.Column(db.String(64))
+    name = db.Column(db.Text)
     category = db.Column(db.Enum('LM', 'L', 'D2', 'PAS', name='categories'),
                          nullable=False)
     curriculums = db.relationship('Curriculum',
