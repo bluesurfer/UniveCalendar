@@ -306,7 +306,7 @@ class Curriculum(db.Model):
                                           'degree_id'),)
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(32))
-    name = db.Column(db.String(64))
+    name = db.Column(db.Text)
     degree_id = db.Column(db.Integer, db.ForeignKey('degrees.id'))
     courses = db.relationship('Course',
                               backref='curriculum',
