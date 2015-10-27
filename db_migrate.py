@@ -35,11 +35,6 @@ with sqlite3.connect(db_filename) as conn:
             models.Curriculum.__table__.insert(),
             [dict(row) for row in cursor.fetchall()])
 
-        cursor.execute("SELECT * FROM courses")
-        db.engine.execute(
-            models.Course.__table__.insert(),
-            [dict(row) for row in cursor.fetchall()])
-
         cursor.execute("SELECT * FROM calendars")
         db.engine.execute(
             models.Calendar.__table__.insert(),
@@ -49,3 +44,9 @@ with sqlite3.connect(db_filename) as conn:
         db.engine.execute(
             models.Lesson.__table__.insert(),
             [convert_to_datetime(row) for row in cursor.fetchall()])
+
+        cursor.execute("SELECT * FROM courses")
+        db.engine.execute(
+            models.Course.__table__.insert(),
+            [dict(row) for row in cursor.fetchall()])
+
