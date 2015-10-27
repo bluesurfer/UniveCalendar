@@ -354,7 +354,7 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_hash = db.Column(db.String(128), unique=True)
     code = db.Column(db.String(16))
-    name = db.Column(db.String(64))
+    name = db.Column(db.Text)
     field = db.Column(db.String(16))
     credit = db.Column(db.Integer)
     total_credit = db.Column(db.Integer)
