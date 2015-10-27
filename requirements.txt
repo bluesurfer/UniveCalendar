@@ -19,4 +19,4 @@ itsdangerous==0.24
 ics==0.3.1
 ForgeryPy==0.1
 Psycopg2==2.6.1
-pyTelegramBotApi==0.3.8
+pyTelegramBotApi==1.4.0

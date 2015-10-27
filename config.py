@@ -10,7 +10,7 @@ class Config:
     SLOW_DB_QUERY_TIME = 0.2
     FEEDS_PER_PAGE = 10
     COURSES_PER_PAGE = 20
-    BOT_NAME = 'UniveCalendarBot'
+    BOT_NAME = 'UniveCalBot'
     BOT_TOKEN = os.environ.get('BOT_TOKEN') or 'token'
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587

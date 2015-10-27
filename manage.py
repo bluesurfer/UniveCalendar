@@ -16,7 +16,7 @@ manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['start', 'help'])
 def connect_user(msg):
     token = msg.text.split()[1] if len(msg.text.split()) > 1 else None
     if token:

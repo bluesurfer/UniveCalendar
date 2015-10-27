@@ -122,7 +122,7 @@ def download_calendar():
         calendar.events.append(Event(name=l.title,
                                      begin=l.start,
                                      end=l.end,
-                                     location=l.location.address))
+                                     location=l.location))
     response = make_response(str(calendar))
     response.headers["Content-Disposition"] = "attachment; filename=calendar.ics"
     return response
