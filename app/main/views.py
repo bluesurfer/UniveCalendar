@@ -17,7 +17,18 @@ def add_user_info():
     if current_user.is_authenticated:
         g.unread = count_unread_feeds()
         g.latest = get_latest_feeds(3)
-    g.languages = current_app.config['LANGUAGES'].keys()
+    g.locale = get_locale()
+
+
+@main.after_app_request
+def after_request(response):
+    for query in get_debug_queries():
+        if query.duration >= current_app.config['SLOW_DB_QUERY_TIME']:
+            current_app.logger.warning(
+                'Slow query: %s\nParameters: %s\nDuration: %fs\nContext: %s\n'
+                % (query.statement, query.parameters, query.duration,
+                   query.context))
+    return response
 
 
 @babel.localeselector
@@ -33,17 +44,6 @@ def get_locale():
 def change_language(lang):
     response = current_app.make_response(redirect(url_for('main.index')))
     response.set_cookie('language',value=lang)
-    return response
-
-
-@main.after_app_request
-def after_request(response):
-    for query in get_debug_queries():
-        if query.duration >= current_app.config['SLOW_DB_QUERY_TIME']:
-            current_app.logger.warning(
-                'Slow query: %s\nParameters: %s\nDuration: %fs\nContext: %s\n'
-                % (query.statement, query.parameters, query.duration,
-                   query.context))
     return response
 
 

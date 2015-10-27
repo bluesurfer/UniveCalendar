@@ -166,12 +166,13 @@
                     element.qtip({
                         content: {
                             title: event.title,
-                            text: '<p> Dalle ' + moment(event.start).format('HH:mm') + ' alle ' + moment(event.end).format('HH:mm') + '</p>' +
+                            text: '<p> Dalle ' + moment(event.start).format('hh:mm') + ' alle ' + moment(event.end).format('HH:mm') + '</p>' +
                             '<p> ' + event.location + '</p>'
                         },
                         position: {
-                            my: 'center left',
-                            at: 'center right'
+                            my: 'top center',  // Position my top left...
+                            at: 'bottom center', // at the bottom right of...
+
                         },
                         show: 'mouseover',
                         style: 'light qtip-bootstrap'
