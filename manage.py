@@ -41,8 +41,9 @@ def connect_user(msg):
 
 @bot.message_handler(commands=['stop'])
 def stop(msg):
+
     with app.app_context():
-        u = models.User.query.filter(models.User.telegram_chat_id == msg.chat.id).first()
+        u = models.User.query.filter(models.User.telegram_chat_id == int(msg.chat.id)).first()
         if u:
             u.telegram_chat_id = None
             db.session.commit()
