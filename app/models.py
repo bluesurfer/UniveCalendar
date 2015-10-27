@@ -435,7 +435,7 @@ class Lesson(db.Model):
     title = db.Column(db.Text)
     start = db.Column(db.DateTime(), nullable=False)
     end = db.Column(db.DateTime(), nullable=False)
-    location = db.Column(db.String(64), nullable=False)
+    location = db.Column(db.Text, nullable=False)
     calendar_id = db.Column(db.Integer, db.ForeignKey('calendars.id'))
 
     @staticmethod
