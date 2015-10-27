@@ -116,7 +116,7 @@ def show_feeds():
 @main.route('/download')
 @login_required
 def download_calendar():
-    lessons = [l for c in u.courses for l in c.calendar.lessons]
+    lessons = [l for c in current_user.courses for l in c.calendar.lessons]
     calendar = Calendar()
     for l in lessons:
         calendar.events.append(Event(name=l.title,
