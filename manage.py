@@ -41,7 +41,6 @@ def connect_user(msg):
 
 @bot.message_handler(commands=['stop'])
 def stop(msg):
-
     with app.app_context():
         u = models.User.query.filter(models.User.telegram_chat_id == str(msg.chat.id)).first()
         if u:
@@ -160,6 +159,20 @@ def trupdate():
     os.system(pybabel + ' extract -F babel.cfg -k lazy_gettext -o messages.pot app')
     os.system(pybabel + ' update -i messages.pot -d app/translations')
     os.unlink('messages.pot')
+
+
+@manager.command
+def dbupdate():
+    os.system('python db_update.py locations data/coordinate_sedi.csv')
+    os.system('python db_update.py courses data/esploso_corsi.csv')
+    os.system('python db_update.py calendars data/calendars.json')
+
+
+@manager.command
+def dbreset():
+    os.system('rm -rf migrations')
+    os.system('rm data-dev.sqlite')
+    dbcreate()
 
 
 @manager.command

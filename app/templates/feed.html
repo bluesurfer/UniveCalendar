@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% set active_page='Feed' %}
+
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-lg-12 animated fadeInRight">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{{ gettext('Feed') }}</h5>
+
+                </div>
+
+                <div class="ibox-content">
+                    <div class="mail-box-header">
+
+                        <div class="mail-tools tooltip-demo">
+                            <h3>
+                                <span class="font-noraml">{{ gettext('Subject:') }} {{ feed.title }} </span>
+                            </h3>
+                            <h5>
+                                <span class="pull-right font-noraml">{{ moment(feed.timestamp).format('D MMMM YYYY, hh:mm ') }}</span>
+                                <span class="font-noraml">{{ gettext('From: ') }} </span>{{ feed.contact }}
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="mail-box">
+                        <div class="mail-body">
+                            {{ feed.body }}
+                        </div>
+                        <div class="mail-body text-right tooltip-demo">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

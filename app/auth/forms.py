@@ -1,7 +1,7 @@
 from flask.ext.wtf import Form
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, Regexp, \
-    ValidationError, EqualTo, Optional
+    ValidationError, EqualTo
 from flask.ext.babel import lazy_gettext, gettext
 
 from ..models import User

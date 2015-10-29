@@ -2,7 +2,7 @@ from sqlalchemy import or_
 from flask.ext.login import current_user
 from flask import jsonify
 
-from ..models import User, Feed
+from ..models import User, Feed, Location
 from . import api
 from .errors import forbidden
 
@@ -30,6 +30,15 @@ def get_user_lessons(id):
         return forbidden('Insufficient permissions')
     lessons = [l for c in u.courses for l in c.calendar.lessons]
     return jsonify({'lessons': [l.to_json() for l in lessons]})
+
+
+@api.route('/users/<int:id>/locations/')
+def get_user_locations(id):
+    u = User.query.get_or_404(id)
+    if current_user.id != u.id:
+        return forbidden('Insufficient permissions')
+    locations = set([l.location for c in u.courses for l in c.calendar.lessons])
+    return jsonify({'locations': [l.to_json() for l in locations]})
 
 
 @api.route('/users/<int:id>/feeds/')

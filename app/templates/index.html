@@ -12,6 +12,13 @@
 
     <link href="{{ url_for('static', filename='css/plugins/qtip/jquery.qtip.css') }}" rel='stylesheet'>
 
+    <!-- Google Map -->
+    <style>
+        #map {
+            height: 500px;
+        }
+    </style>
+
 {% endblock %}
 
 {% block heading %}
@@ -119,6 +126,22 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox ">
+                        <div class="ibox-title">
+                            <h5>Mappa</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <p>
+
+                            </p>
+
+                            <div class="google-map" id="map"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -137,51 +160,92 @@
     <!-- Qtip2 -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/basic/jquery.qtip.min.js"></script>
 
+    <!-- Google maps -->
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+
     <script>
-        $(document).ready(function () {
+        /* initialize map
+         -----------------------------------------------------------------*/
+        function initialize() {
+            var mapCanvas = document.getElementById('map');
+            var mapOptions = {
+                center: new google.maps.LatLng(45.435, 12.335),
+                zoom: 14,
+                styles: [{"elementType": "geometry", "stylers": [{"hue": "#ff4400"}, {"saturation": -68}, {"lightness": -4}, {"gamma": 0.72}]}, {"featureType": "road", "elementType": "labels.icon"}, {"featureType": "landscape.man_made", "elementType": "geometry", "stylers": [{"hue": "#0077ff"}, {"gamma": 3.1}]}, {"featureType": "water", "stylers": [{"hue": "#00ccff"}, {"gamma": 0.44}, {"saturation": -33}]}, {
+                    "featureType": "poi.park",
+                    "stylers": [{"hue": "#44ff00"}, {"saturation": -23}]
+                }, {"featureType": "water", "elementType": "labels.text.fill", "stylers": [{"hue": "#007fff"}, {"gamma": 0.77}, {"saturation": 65}, {"lightness": 99}]}, {"featureType": "water", "elementType": "labels.text.stroke", "stylers": [{"gamma": 0.11}, {"weight": 5.6}, {"saturation": 99}, {"hue": "#0091ff"}, {"lightness": -86}]}, {
+                    "featureType": "transit.line",
+                    "elementType": "geometry",
+                    "stylers": [{"lightness": -48}, {"hue": "#ff5e00"}, {"gamma": 1.2}, {"saturation": -23}]
+                }, {"featureType": "transit", "elementType": "labels.text.stroke", "stylers": [{"saturation": -64}, {"hue": "#ff9100"}, {"lightness": 16}, {"gamma": 0.47}, {"weight": 2.7}]}],
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
 
-            /* initialize the calendar
-             -----------------------------------------------------------------*/
-            var date = new Date();
-            var d = date.getDate();
-            var m = date.getMonth();
-            var y = date.getFullYear();
+            var map = new google.maps.Map(mapCanvas, mapOptions);
 
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
-                },
-                events: function (start, end, timezone, callback) {
-                    $.ajax({
-                        url: $SCRIPT_ROOT + '/api/users/{{ current_user.id }}/lessons/',
-                        dataType: 'json',
-                        success: function (data) {
-                            callback(data.lessons);
-                        }
-                    })
-                },
-                eventRender: function (event, element, view) {
-                    element.qtip({
-                        content: {
-                            title: event.title,
-                            text: '<p> Dalle ' + moment(event.start).format('hh:mm') + ' alle ' + moment(event.end).format('HH:mm') + '</p>' +
-                            '<p> ' + event.location + '</p>'
-                        },
-                        position: {
-                            my: 'top center',  // Position my top left...
-                            at: 'bottom center', // at the bottom right of...
+            $.ajax({
+                url: $SCRIPT_ROOT + '/api/users/{{ current_user.id }}/locations/',
+                dataType: 'json',
+                success: function (json) {
+                    for (var i = 0; i < json.locations.length; i++) {
+                        var loc = json.locations[i];
+                        var marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(loc.lat, loc.lng),
+                            map: map,
+                            animation: google.maps.Animation.DROP,
+                            title: loc.name
+                        });
 
-                        },
-                        show: 'mouseover',
-                        style: 'light qtip-bootstrap'
-                    });
-                },
-                editable: false,
-                droppable: false
+                    }
+                }
             });
 
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+
+        /* initialize the calendar
+         -----------------------------------------------------------------*/
+        var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            events: function (start, end, timezone, callback) {
+                $.ajax({
+                    url: $SCRIPT_ROOT + '/api/users/{{ current_user.id }}/lessons/',
+                    dataType: 'json',
+                    success: function (data) {
+                        callback(data.lessons);
+                    }
+                })
+            },
+            eventRender: function (event, element, view) {
+                element.qtip({
+                    content: {
+                        title: event.title,
+                        text: '<p> Dalle ' + moment(event.start).format('hh:mm') + ' alle ' + moment(event.end).format('HH:mm') + '</p>' +
+                        '<p> ' + event.description + '</p>'
+                    },
+                    position: {
+                        my: 'top center',  // Position my top left...
+                        at: 'bottom center' // at the bottom right of...
+
+                    },
+                    show: 'mouseover',
+                    style: 'light qtip-bootstrap'
+                });
+            },
+            editable: false,
+            droppable: false
         });
 
     </script>

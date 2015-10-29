@@ -12,7 +12,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import db, login_manager, bot
 
-
 follows = db.Table('follows', db.Model.metadata,
                    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
                    db.Column('course_id', db.Integer, db.ForeignKey('courses.id')))
@@ -430,12 +429,13 @@ class Lesson(db.Model):
     __table_args__ = (db.UniqueConstraint('start',
                                           'end',
                                           'calendar_id',
-                                          'location'),)
+                                          'description'),)
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text)
     start = db.Column(db.DateTime(), nullable=False)
     end = db.Column(db.DateTime(), nullable=False)
-    location = db.Column(db.Text, nullable=False)
+    description = db.Column(db.Text)
+    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), )
     calendar_id = db.Column(db.Integer, db.ForeignKey('calendars.id'))
 
     @staticmethod
@@ -472,7 +472,7 @@ class Lesson(db.Model):
             'title': self.title,
             'start': self.start.strftime('%Y-%m-%d %H:%M:00'),
             'end': self.end.strftime('%Y-%m-%d %H:%M:00'),
-            'location': self.location,
+            'description': self.description,
             'url': self.calendar.url,
         }
         return json_lesson
@@ -483,7 +483,7 @@ def get_old_value(attr_state):
     return history.deleted[0] if history.deleted else None
 
 
-def trigger_lesson_change_events(lesson):
+def on_lesson_change_events(lesson):
     insp = inspect(lesson)
     start_state = insp.attrs.start
     end_state = insp.attrs.end
@@ -494,11 +494,10 @@ def trigger_lesson_change_events(lesson):
         new_feed = Feed(title='Modifica orario',
                         body="The lesson '{title}' of {day} has been rescheduled:\n"
                              "lesson starts at {start}\n"
-                             "lesson ends at {end}".format(
-                            title=lesson.title,
-                            day=start_state.value.strftime('%d.%m.%Y'),
-                            start=start_state.value.strftime('%H:%M %d.%m.%Y'),
-                            end=end_state.value.strftime('%H:%M %d.%m.%Y')),
+                             "lesson ends at {end}".format(title=lesson.title,
+                                                           day=start_state.value.strftime('%d.%m.%Y'),
+                                                           start=start_state.value.strftime('%H:%M %d.%m.%Y'),
+                                                           end=end_state.value.strftime('%H:%M %d.%m.%Y')),
                         professor=professor)
         db.session.add(new_feed)
 
@@ -507,15 +506,22 @@ def trigger_lesson_change_events(lesson):
 def receive_after_flush(session, flush_context):
     for changed_obj in session.dirty:
         if type(changed_obj) is Lesson:
-            trigger_lesson_change_events(changed_obj)
+            on_lesson_change_events(changed_obj)
 
 
 class Location(db.Model):
     __tablename__ = 'locations'
+    __table_args__ = (db.UniqueConstraint('name',
+                                          'lat',
+                                          'lng'),)
     id = db.Column(db.Integer, primary_key=True)
-    city = db.Column(db.String(64))
-    address = db.Column(db.String(64))
-    coordinates = db.Column(db.String(64))
+    code = db.Column(db.String(32), unique=True)
+    name = db.Column(db.Text)
+    lat = db.Column(db.Float(10, 6))
+    lng = db.Column(db.Float(10, 6))
+    lessons = db.relationship('Lesson',
+                              backref='location',
+                              lazy='dynamic')
 
     @staticmethod
     def generate_fake(count=100):
@@ -534,6 +540,15 @@ class Location(db.Model):
                 db.session.commit()
             except IntegrityError:
                 db.session.rollback()
+
+    def to_json(self):
+        json_location = {
+            'id': self.id,
+            'name': self.name,
+            'lat': float(self.lat),
+            'lng': float(self.lng)
+        }
+        return json_location
 
 
 class Feed(db.Model):
