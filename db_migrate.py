@@ -14,11 +14,11 @@ logging.basicConfig(level=logging.INFO)
 db_filename = 'dump.sqlite'
 
 
-def to_datetime(row):
-    format = '%Y-%m-%d %H:%M:%S.000000'
+def to_datetime(row, fieldnames):
+    format = '%Y-%m-%d %H:%M:%S.%f'
     result = dict(row)
-    result['start'] = datetime.datetime.strptime(row['start'], format)
-    result['end'] = datetime.datetime.strptime(row['end'], format)
+    for f in fieldnames:
+        result[f] = datetime.datetime.strptime(row[f], format)
     return result
 
 
@@ -58,10 +58,10 @@ with sqlite3.connect(db_filename) as conn:
             [dict(row) for row in cursor.fetchall()])
 
         logging.info('Migrating lessons ...')
-        cursor.execute("SELECT * FROM lessons")
+        cursor.execute("SELECT * FROM lessons l WHERE l.location_id == 10")
         db.engine.execute(
             models.Lesson.__table__.insert(),
-            [to_datetime(row) for row in cursor.fetchall()])
+            [to_datetime(row, ['start', 'end']) for row in cursor.fetchall()])
 
         logging.info('Migrating courses ...')
         cursor.execute("SELECT * FROM courses")
