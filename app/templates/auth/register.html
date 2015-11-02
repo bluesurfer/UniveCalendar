@@ -35,19 +35,22 @@
                         {% endif %}
                     {% endwith %}
 
-                    <form class="m-t" role="form" method='post' action="{{ url_for('auth.register') }}">
+                    <form class="m-t" role="form" method='post'
+                          action="{{ url_for('auth.register') }}">
                         {{ form.csrf_token }}
                         {{ render_field(form.username, type="text", required=True) }}
                         {{ render_field(form.email, type="email", required=True) }}
                         {{ render_field(form.password, type="password", required=True) }}
                         {{ render_field(form.password2, type="password", required=True) }}
 
-                        <button type="submit" class="btn btn-primary block full-width m-b">
+                        <button type="submit"
+                                class="btn btn-primary block full-width m-b">
                             <i class="fa fa-user-plus"></i> {{ form.submit.label.text }}
                         </button>
 
                         <p>{{ gettext('Already have an account?') }}</p>
-                        <a class="btn btn-sm btn-white block full-width m-b" href="{{ url_for('auth.login') }}">{{ gettext('Login') }}</a>
+                        <a class="btn btn-sm btn-white block full-width m-b"
+                           href="{{ url_for('auth.login') }}">{{ gettext('Login') }}</a>
                     </form>
                 </div>
             </div>

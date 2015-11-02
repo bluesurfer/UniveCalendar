@@ -16,10 +16,17 @@ db_filename = 'dump.sqlite'
 
 def to_datetime(row, fieldnames):
     format = '%Y-%m-%d %H:%M:%S.%f'
-    result = dict(row)
+    res = dict(row)
     for f in fieldnames:
-        result[f] = datetime.datetime.strptime(row[f], format)
-    return result
+        res[f] = datetime.datetime.strptime(res[f], format)
+    return res
+
+
+def string_to_none(row):
+    res = dict(row)
+    for k in res.keys():
+        res[k] = None if not res[k] else res[k]
+    return res
 
 
 with sqlite3.connect(db_filename) as conn:
@@ -67,4 +74,4 @@ with sqlite3.connect(db_filename) as conn:
         cursor.execute("SELECT * FROM courses")
         db.engine.execute(
             models.Course.__table__.insert(),
-            [dict(row) for row in cursor.fetchall()])
+            [string_to_none(row) for row in cursor.fetchall()])

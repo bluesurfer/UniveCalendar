@@ -25,8 +25,8 @@
     <div class="row  border-bottom white-bg dashboard-header">
         <div class="col-lg-6">
             <h2>{{ gettext('Welcome %(username)s', username=current_user.username) }}</h2>
-            {% if g.unread %}
-                <small>{{ ngettext('You have %(num)s unread feed.', 'You have %(num)s unread feeds.', g.unread) }}</small>
+            {% if g.unread_feeds_count %}
+                <small>{{ ngettext('You have %(num)s unread feed.', 'You have %(num)s unread feeds.', g.unread_feeds_count) }}</small>
             {% endif %}
         </div>
         <div class="col-lg-6">
@@ -38,11 +38,11 @@
                     </div>
                 </div>
                 <div class="col-xs-4">
-                    <span class="h4 font-bold m-t block">{{ current_user.total_credits() }}</span>
+                    <span class="h4 font-bold m-t block">{{ current_user.credits_count }}</span>
                     <small class="text-muted m-b block">{{ gettext('Total credits') }}</small>
                 </div>
                 <div class="col-xs-4">
-                    <span class="h4 font-bold m-t block">{{ current_user.number_of_lessons() }}</span>
+                    <span class="h4 font-bold m-t block">{{ current_user.lessons_count }}</span>
                     <small class="text-muted m-b block">{{ gettext('Lessons to attend') }}</small>
                 </div>
 

@@ -14,21 +14,32 @@
 
     {% block styles %}
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
-        <link href="{{ url_for('static', filename='css/animate.css') }}" rel="stylesheet">
-        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/animate.css') }}"
+              rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/style.css') }}"
+              rel="stylesheet">
 
     {% endblock %}
 </head>
 
 <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
 <script type="text/javascript">
-    window.cookieconsent_options = {"message": "{{ gettext("This website uses cookies to ensure you get the best experience on our website") }}", "dismiss": "{{ gettext("Got it!") }}", "learnMore": "{{ gettext("More info") }}", "link": null, "theme": "light-bottom"};
+    window.cookieconsent_options = {
+        "message": "{{ gettext("This website uses cookies to ensure you get the best experience on our website") }}",
+        "dismiss": "{{ gettext("Got it!") }}",
+        "learnMore": "{{ gettext("More info") }}",
+        "link": null,
+        "theme": "light-bottom"
+    };
 </script>
 
-<script type="text/javascript" src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
+<script type="text/javascript"
+        src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
 <!-- End Cookie Consent plugin -->
 
 
@@ -45,11 +56,15 @@
                     <!-- Profile element -->
                     <li class="nav-header">
                         <div class="dropdown profile-element"> <span>
-                            <img alt="image" class="img-circle" src="{{ current_user.gravatar() }}"/>
+                            <img alt="image" class="img-circle"
+                                 src="{{ current_user.gravatar() }}"/>
                              </span>
                             <a href="{{ url_for('auth.profile') }}">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ current_user.username }}</strong>
-                             </span> <span class="text-muted text-xs block">{{ current_user.email }} </span> </span>
+                            <span class="clear"> <span
+                                    class="block m-t-xs"> <strong
+                                    class="font-bold">{{ current_user.username }}</strong>
+                             </span> <span
+                                    class="text-muted text-xs block">{{ current_user.email }} </span> </span>
                             </a>
                         </div>
                         <div class="logo-element">
@@ -58,28 +73,51 @@
                     </li>
 
                     <!-- Sidebar menu options -->
-                    <li {% if 'home' == active_page %} class="active"{% endif %}>
-                        <a href="{{ url_for('main.index') }}"><i class="fa fa-home"></i> <span class="nav-label">{{ gettext('Home') }}</span> </a>
+                    <li {% if 'home' == active_page %}
+                        class="active"{% endif %}>
+                        <a href="{{ url_for('main.index') }}">
+                            <i class="fa fa-home"></i>
+                            <span class="nav-label">{{ gettext('Home') }}</span>
+                        </a>
                     </li>
-                    <li {% if 'courses' == active_page %} class="active"{% endif %}>
-                        <a href="{{ url_for('main.courses') }}"><i class="fa fa-graduation-cap"></i> <span class="nav-label">{{ gettext('Courses') }}</span> </a>
+                    <li {% if 'courses' == active_page %}
+                        class="active"{% endif %}>
+                        <a href="{{ url_for('main.courses') }}">
+                            <i class="fa fa-graduation-cap"></i>
+                            <span class="nav-label">{{ gettext('Courses') }}</span>
+                        </a>
                     </li>
-                    <li {% if 'feeds' == active_page %} class="active"{% endif %}>
-                        <a href="{{ url_for('main.show_feeds') }}"><i class="fa fa-envelope-o"></i> <span class="nav-label">{{ gettext('Feeds') }}</span> </a>
+                    <li {% if 'feeds' == active_page %}
+                        class="active"{% endif %}>
+                        <a href="{{ url_for('main.show_feeds') }}">
+                            <i class="fa fa-envelope-o"></i>
+                            <span class="nav-label">{{ gettext('Feeds') }}</span>
+                            {% if g.unread_feeds_count %}
+                                <span class="label label-warning pull-right">{{ g.unread_feeds_count }}/ {{ g.total_feeds_count }}</span>
+                            {% endif %}
+                        </a>
                     </li>
-                    <li {% if active_page in ['change_email_request', 'change_password', 'activate_telegram', 'profile'] %} class="active"{% endif %}>
-                        <a href="#"><i class="fa fa-user"></i> <span class="nav-label">{{ gettext('Profile') }}</span><span class="fa arrow"></span></a>
+                    <li
+                            {% if active_page in ['change_email_request', 'change_password', 'activate_telegram', 'profile'] %}
+                                class="active"{% endif %}>
+                        <a href="#"><i class="fa fa-user"></i> <span
+                                class="nav-label">{{ gettext('Profile') }}</span><span
+                                class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li {% if 'profile' == active_page %} class="active"{% endif %}>
+                            <li {% if 'profile' == active_page %}
+                                class="active"{% endif %}>
                                 <a href="{{ url_for('auth.profile') }}">{{ gettext('Profile Detail') }}</a>
                             </li>
-                            <li {% if 'change_email_request' == active_page %} class="active"{% endif %}>
+                            <li {% if 'change_email_request' == active_page %}
+                                class="active"{% endif %}>
                                 <a href="{{ url_for('auth.change_email_request') }}">{{ gettext('Change Email') }}</a>
                             </li>
-                            <li {% if 'change_password' == active_page %} class="active"{% endif %}>
+                            <li {% if 'change_password' == active_page %}
+                                class="active"{% endif %}>
                                 <a href="{{ url_for('auth.change_password') }}">{{ gettext('Change Password') }}</a>
                             </li>
-                            <li {% if 'activate_telegram' == active_page %} class="active"{% endif %}>
+                            <li {% if 'activate_telegram' == active_page %}
+                                class="active"{% endif %}>
                                 <a href="{{ url_for('auth.activate_telegram') }}">{{ gettext('Activate Telegram') }}</a>
                             </li>
                         </ul>
@@ -92,27 +130,36 @@
         <!-- Horizontal Navbar -->
         <div id="page-wrapper" class="gray-bg">
             <div class="row border-bottom">
-                <nav class="navbar navbar-static-top {% if active_page in ['feeds', 'feed'] %}white-bg{% endif %}" role="navigation" style="margin-bottom: 0">
+                <nav class="navbar navbar-static-top {% if active_page in ['feeds', 'feed'] %}white-bg{% endif %}"
+                     role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary "
+                           href="#"><i class="fa fa-bars"></i> </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                            <a class="dropdown-toggle count-info"
+                               data-toggle="dropdown" href="#">
                                 <i class="fa fa-envelope"></i>
-                                {% if g.unread %}
-                                    <span class="label label-warning">{{ g.unread }}</span>
+                                {% if g.unread_feeds_count %}
+                                    <span class="label label-warning">{{ g.unread_feeds_count }}</span>
                                 {% endif %}
                             </a>
                             <ul class="dropdown-menu dropdown-messages">
-                                {{ macros.feeds_navbar_widget(g.latest, moment) }}
+                                {{ macros.feeds_navbar_widget(g.latest_feeds, moment) }}
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ gettext('Language') }} <span class="caret"></span></a>
+                            <a role="button" href="#" class="dropdown-toggle"
+                               data-toggle="dropdown"> {{ gettext('Language') }}
+                                <span class="caret"></span></a>
                             <ul role="menu" class="dropdown-menu">
-                                <li><a href="{{ url_for('main.change_language', lang='it') }}">{{ gettext('Italian') }}</a></li>
-                                <li><a href="{{ url_for('main.change_language', lang='en') }}">{{ gettext('English') }}</a></li>
+                                <li>
+                                    <a href="{{ url_for('main.change_language', lang='it') }}">{{ gettext('Italian') }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('main.change_language', lang='en') }}">{{ gettext('English') }}</a>
+                                </li>
                             </ul>
                         </li>
                         <li>
@@ -132,7 +179,9 @@
 
                         <ol class="breadcrumb">
                             {%- for breadcrumb in breadcrumbs -%}
-                                <li{% if breadcrumb.text|lower == active_page %} class="active"{% endif %}>
+                                <li
+                                        {% if breadcrumb.text|lower == active_page %}
+                                            class="active"{% endif %}>
                                     {% if loop.last %}
                                         <b>{{ breadcrumb.text }}</b>
                                     {% else %}

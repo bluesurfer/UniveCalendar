@@ -5,6 +5,7 @@ from flask.ext.login import login_required, current_user
 from flask.ext.sqlalchemy import get_debug_queries
 from flask.ext.babel import gettext, ngettext, lazy_gettext
 from flask.ext import breadcrumbs
+
 from . import main
 from ..auth import auth
 from ..models import Course, Feed
@@ -15,8 +16,9 @@ from .. import babel
 @auth.before_request
 def add_user_info():
     if current_user.is_authenticated:
-        g.unread = count_unread_feeds()
-        g.latest = get_latest_feeds(3)
+        g.total_feeds_count = count_user_feeds()
+        g.unread_feeds_count = count_unread_feeds()
+        g.latest_feeds = get_latest_feeds(3)
     g.locale = get_locale()
 
 
@@ -43,11 +45,12 @@ def get_locale():
 @main.route('/change-language/<lang>')
 def change_language(lang):
     response = current_app.make_response(redirect(url_for('main.index')))
-    response.set_cookie('language',value=lang)
+    response.set_cookie('language', value=lang)
     return response
 
 
 def user_feeds_query():
+    """Query statement to retrieve user's related feeds."""
     if not current_user.courses.count():
         return
     professor_ids = set([c.professor_id for c in current_user.courses])
@@ -58,6 +61,12 @@ def get_latest_feeds(n=5):
     query = user_feeds_query()
     if query is not None:
         return query.order_by(Feed.timestamp.desc()).limit(n).all()
+
+
+def count_user_feeds():
+    query = user_feeds_query()
+    if query is not None:
+        return query.count()
 
 
 def count_unread_feeds():
@@ -71,7 +80,7 @@ def count_unread_feeds():
 def index():
     if current_user.is_authenticated:
         return render_template('index.html', feeds=get_latest_feeds(5))
-    return redirect(url_for('auth.login'))
+    return render_template('welcome.html')
 
 
 @main.route('/courses')
@@ -119,10 +128,11 @@ def download_calendar():
     lessons = [l for c in current_user.courses for l in c.calendar.lessons]
     calendar = Calendar()
     for l in lessons:
-        calendar.events.append(Event(name=l.title,
-                                     begin=l.start,
-                                     end=l.end,
-                                     description=l.description))
+        calendar.events.append(Event(
+            name=l.title,
+            begin=l.start,
+            end=l.end,
+            description=l.description))
     response = make_response(str(calendar))
     response.headers["Content-Disposition"] = "attachment; filename=calendar.ics"
     return response
@@ -131,39 +141,36 @@ def download_calendar():
 @main.route('/follow', methods=['post'])
 @login_required
 def follow():
-    course_ids = request.form.getlist('course_id')
-    if not course_ids:
+    ids = request.form.getlist('course_id')
+    if not ids:
         flash(gettext('No course selected'), 'warning')
         return redirect(url_for('main.courses'))
     added = 0
-    for c in Course.query.filter(Course.id.in_(course_ids)).all():
+    courses = Course.query.filter(Course.id.in_(ids))
+    for c in courses.all():
         added += current_user.follow(c)
-
     if added > 0:
         flash(ngettext('%(num)s new course added',
                        '%(num)s new courses added', added), 'info')
     else:
         flash(gettext('No new course added'), 'warning')
-
     return redirect(url_for('main.courses'))
 
 
 @main.route('/unfollow', methods=['post'])
 @login_required
 def unfollow():
-    course_ids = request.form.getlist('course_id')
-    if not course_ids:
+    ids = request.form.getlist('course_id')
+    if not ids:
         flash(gettext('No course selected'), 'warning')
         return redirect(url_for('main.courses'))
     deleted = 0
-    for c in Course.query.filter(Course.id.in_(course_ids)).all():
+    courses = Course.query.filter(Course.id.in_(ids))
+    for c in courses.all():
         deleted += current_user.unfollow(c)
-
     if deleted > 0:
         flash(ngettext('%(num)s course deleted',
                        '%(num)s courses deleted', deleted), 'danger')
     else:
         flash(gettext('No course deleted'), 'info')
-
     return redirect(url_for('main.courses'))
-

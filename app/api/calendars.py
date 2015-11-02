@@ -1,4 +1,5 @@
 from flask import jsonify
+
 from ..models import Calendar
 from . import api
 
@@ -11,11 +12,11 @@ def get_all_calendars():
 
 @api.route('/calendars/<int:id>/lessons/')
 def get_calendar_lessons(id):
-    cal = Calendar.query.get_or_404(id)
-    return jsonify({'lessons': [l.to_json() for l in cal.lessons]})
+    calendar = Calendar.query.get_or_404(id)
+    return jsonify({'lessons': [l.to_json() for l in calendar.lessons]})
 
 
 @api.route('/calendars/<int:id>/courses/')
 def get_calendar_courses(id):
-    cal = Calendar.query.get_or_404(id)
-    return jsonify({'courses': [c.to_json() for c in cal.courses.all()]})
+    calendar = Calendar.query.get_or_404(id)
+    return jsonify({'courses': [c.to_json() for c in calendar.courses.all()]})

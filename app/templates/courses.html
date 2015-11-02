@@ -4,16 +4,20 @@
 {% block styles %}
 
     <!-- Steps -->
-    <link href="{{ url_for('static',filename='css/plugins/steps/jquery.steps.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/plugins/steps/jquery.steps.css') }}"
+          rel="stylesheet">
 
     <!-- Bootstrap Select -->
-    <link href="{{ url_for('static', filename='css/plugins/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/plugins/bootstrap-select/bootstrap-select.min.css') }}"
+          rel="stylesheet">
 
     <!-- Bootstrap Table -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/plugins/bootstrap-table/bootstrap-table.min.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/plugins/bootstrap-table/bootstrap-table.min.css') }}">
 
     <!-- Toastr style -->
-    <link href="{{ url_for('static', filename='css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/plugins/toastr/toastr.min.css') }}"
+          rel="stylesheet">
 
     {{ super() }}
 
@@ -38,11 +42,14 @@
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
-                    <form action="{{ url_for('main.unfollow') }}" method="post">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <form action="{{ url_for('main.unfollow') }}"
+                          method="post">
+                        <input type="hidden" name="csrf_token"
+                               value="{{ csrf_token() }}"/>
 
                         <div id="toolbar">
-                            <button id="remove" type="submit" class="btn btn-danger" disabled>
+                            <button id="remove" type="submit"
+                                    class="btn btn-danger" disabled>
                                 <i class="glyphicon glyphicon-remove"></i> {{ gettext('Delete courses') }}
                             </button>
                         </div>
@@ -67,16 +74,33 @@
                                 <thead>
                                 <tr>
                                     <th data-checkbox="true">{{ gettext('Follow') }}</th>
-                                    <th data-field="id" data-visible="false">Id</th>
-                                    <th data-field="code" data-align="left" data-sortable="true">{{ gettext('Code') }}</th>
-                                    <th data-field="year" data-align="left" data-sortable="true" data-searchable="false">{{ gettext('Year') }}</th>
-                                    <th data-field="name" data-align="left" data-sortable="true" data-formatter="urlFormatter">{{ gettext('Name') }}</th>
-                                    <th data-field="url" data-visible="false">Url</th>
-                                    <th data-field="partition" data-align="left" data-searchable="false">{{ gettext('Partition') }}</th>
-                                    <th data-field="field" data-align="left" data-sortable="true">{{ gettext('Field') }}</th>
-                                    <th data-field="period" data-align="left" data-sortable="true">{{ gettext('Period') }}</th>
-                                    <th data-field="professor" data-align="left" data-sortable="true">{{ gettext('Professor') }}</th>
-                                    <th data-field="credit" data-align="left" data-searchable="false">CFU</th>
+                                    <th data-field="id" data-visible="false">
+                                        Id
+                                    </th>
+                                    <th data-field="code" data-align="left"
+                                        data-sortable="true">{{ gettext('Code') }}</th>
+                                    <th data-field="year" data-align="left"
+                                        data-sortable="true"
+                                        data-searchable="false">{{ gettext('Year') }}</th>
+                                    <th data-field="name" data-align="left"
+                                        data-sortable="true"
+                                        data-formatter="urlFormatter">{{ gettext('Name') }}</th>
+                                    <th data-field="url" data-visible="false">
+                                        Url
+                                    </th>
+                                    <th data-field="partition"
+                                        data-align="left"
+                                        data-searchable="false">{{ gettext('Partition') }}</th>
+                                    <th data-field="field" data-align="left"
+                                        data-sortable="true">{{ gettext('Field') }}</th>
+                                    <th data-field="period" data-align="left"
+                                        data-sortable="true">{{ gettext('Period') }}</th>
+                                    <th data-field="professor"
+                                        data-align="left"
+                                        data-sortable="true">{{ gettext('Professor') }}</th>
+                                    <th data-field="credit" data-align="left"
+                                        data-searchable="false">CFU
+                                    </th>
                                 </tr>
                                 </thead>
                             </table>
@@ -99,8 +123,10 @@
                         {{ gettext('Follow the wizard to add new courses.') }}
                     </p>
 
-                    <form id="form" action="{{ url_for('main.follow') }}" method="post" class="wizard-big">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <form id="form" action="{{ url_for('main.follow') }}"
+                          method="post" class="wizard-big">
+                        <input type="hidden" name="csrf_token"
+                               value="{{ csrf_token() }}"/>
 
                         <h1>{{ gettext('Category') }}</h1>
                         <fieldset>
@@ -108,7 +134,8 @@
                             <hr>
                             <div class="row">
                                 <div class="col-lg-8">
-                                    <select id="categories" class="selectpicker"
+                                    <select id="categories"
+                                            class="selectpicker"
                                             data-dropup-auto="false">
                                         <option value="L">{{ gettext('Bachelor') }}</option>
                                         <option value="LM">{{ gettext('Master') }}</option>
@@ -118,7 +145,8 @@
                                 <div class="col-lg-4">
                                     <div class="text-center">
                                         <div style="margin-top: 20px">
-                                            <i class="fa fa-arrow-circle-right " style="font-size: 180px;color: #e5e5e5 "></i>
+                                            <i class="fa fa-arrow-circle-right "
+                                               style="font-size: 180px;color: #e5e5e5 "></i>
                                         </div>
                                     </div>
                                 </div>
@@ -146,7 +174,8 @@
                                 <div class="col-lg-4">
                                     <div class="text-center">
                                         <div style="margin-top: 20px">
-                                            <i class="fa fa-arrow-circle-right " style="font-size: 180px;color: #e5e5e5 "></i>
+                                            <i class="fa fa-arrow-circle-right "
+                                               style="font-size: 180px;color: #e5e5e5 "></i>
                                         </div>
                                     </div>
                                 </div>
@@ -174,7 +203,8 @@
                                 <div class="col-lg-4">
                                     <div class="text-center">
                                         <div style="margin-top: 20px">
-                                            <i class="fa fa-arrow-circle-right " style="font-size: 180px;color: #e5e5e5 "></i>
+                                            <i class="fa fa-arrow-circle-right "
+                                               style="font-size: 180px;color: #e5e5e5 "></i>
                                         </div>
                                     </div>
                                 </div>
@@ -209,16 +239,39 @@
                                             <thead>
                                             <tr>
                                                 <th data-checkbox="true">{{ gettext('Follow') }}</th>
-                                                <th data-field="id" data-visible="false">Id</th>
-                                                <th data-field="code" data-align="left" data-sortable="true">{{ gettext('Code') }}</th>
-                                                <th data-field="year" data-align="left" data-sortable="true" data-searchable="false">{{ gettext('Year') }}</th>
-                                                <th data-field="name" data-align="left" data-sortable="true" data-formatter="urlFormatter">{{ gettext('Name') }}</th>
-                                                <th data-field="url" data-visible="false">Url</th>
-                                                <th data-field="partition" data-align="left" data-searchable="false">{{ gettext('Partition') }}</th>
-                                                <th data-field="field" data-align="left" data-sortable="true">{{ gettext('Field') }}</th>
-                                                <th data-field="period" data-align="left" data-sortable="true">{{ gettext('Period') }}</th>
-                                                <th data-field="professor" data-align="left" data-sortable="true">{{ gettext('Professor') }}</th>
-                                                <th data-field="credit" data-align="left" data-searchable="false">CFU</th>
+                                                <th data-field="id"
+                                                    data-visible="false">Id
+                                                </th>
+                                                <th data-field="code"
+                                                    data-align="left"
+                                                    data-sortable="true">{{ gettext('Code') }}</th>
+                                                <th data-field="year"
+                                                    data-align="left"
+                                                    data-sortable="true"
+                                                    data-searchable="false">{{ gettext('Year') }}</th>
+                                                <th data-field="name"
+                                                    data-align="left"
+                                                    data-sortable="true"
+                                                    data-formatter="urlFormatter">{{ gettext('Name') }}</th>
+                                                <th data-field="url"
+                                                    data-visible="false">Url
+                                                </th>
+                                                <th data-field="partition"
+                                                    data-align="left"
+                                                    data-searchable="false">{{ gettext('Partition') }}</th>
+                                                <th data-field="field"
+                                                    data-align="left"
+                                                    data-sortable="true">{{ gettext('Field') }}</th>
+                                                <th data-field="period"
+                                                    data-align="left"
+                                                    data-sortable="true">{{ gettext('Period') }}</th>
+                                                <th data-field="professor"
+                                                    data-align="left"
+                                                    data-sortable="true">{{ gettext('Professor') }}</th>
+                                                <th data-field="credit"
+                                                    data-align="left"
+                                                    data-searchable="false">CFU
+                                                </th>
                                             </tr>
                                             </thead>
                                         </table>
@@ -245,14 +298,18 @@
     <script src="{{ url_for('static', filename='js/plugins/validate/jquery.validate.min.js') }}"></script>
 
     <!-- Bootstrap Select -->
-    <script type="text/javascript" src="{{ url_for('static', filename='js/plugins/bootstrap-select/bootstrap-select.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js/plugins/bootstrap-select/bootstrap-select.min.js') }}"></script>
 
     <!-- Bootstrap Table -->
-    <script type="text/javascript" src="{{ url_for('static', filename='js/plugins/bootstrap-table/bootstrap-table.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/plugins/bootstrap-table/extensions/mobile/bootstrap-table-mobile.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js/plugins/bootstrap-table/bootstrap-table.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='js/plugins/bootstrap-table/extensions/mobile/bootstrap-table-mobile.js') }}"></script>
 
     {% if g.locale == 'it' %}
-        <script type="text/javascript" src="{{ url_for('static', filename='js/plugins/bootstrap-table/bootstrap-table-it-IT.min.js') }}"></script>
+        <script type="text/javascript"
+                src="{{ url_for('static', filename='js/plugins/bootstrap-table/bootstrap-table-it-IT.min.js') }}"></script>
     {% endif %}
 
     <!-- Tinycon -->

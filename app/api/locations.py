@@ -11,5 +11,5 @@ def get_locations():
 
 @api.route('/locations/<int:id>/courses')
 def get_locations_courses(id):
-    loc = Location.query.get_or_404(id)
-    return jsonify({'courses': [c.to_json() for c in loc.courses()]})
+    location = Location.query.get_or_404(id)
+    return jsonify({'courses': [c.to_json() for c in location.courses()]})

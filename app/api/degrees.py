@@ -1,12 +1,14 @@
 from flask import jsonify, request
+
 from . import api
 from ..models import Degree
 
 
 @api.route('/degrees/')
-def get_degrees_by_category():
-    cat = request.args.get('cat', '0')
-    degrees = Degree.query.filter_by(category=cat)
+def get_degrees():
+    cat = request.args.get('cat', '')
+    degrees = Degree.query.filter_by(category=cat) \
+        if cat else Degree.query.all()
     return jsonify({'degrees': [d.to_json() for d in degrees]})
 
 

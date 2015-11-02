@@ -7,23 +7,23 @@
 
     <div class="middle-box animated fadeInDown">
 
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
                 <h5>{{ gettext('Type here your new email adress') }}</h5>
-                </div>
-                <div class="ibox-content">
-                    <form class="m-t" role="form" method='post' action="">
-                        {{ form.csrf_token }}
-                        {{ render_field(form.email, type="text", required=True) }}
-                        {{ render_field(form.password, type="password", required=True) }}
+            </div>
+            <div class="ibox-content">
+                <form class="m-t" role="form" method='post' action="">
+                    {{ form.csrf_token }}
+                    {{ render_field(form.email, type="text", required=True) }}
+                    {{ render_field(form.password, type="password", required=True) }}
 
-                        <button type="submit" class="btn btn-primary">
-                            {{ form.submit.label.text }}
-                        </button>
-                    </form>
-                </div>
+                    <button type="submit" class="btn btn-primary">
+                        {{ form.submit.label.text }}
+                    </button>
+                </form>
             </div>
         </div>
+    </div>
 {% endblock %}
 
 

@@ -1,4 +1,5 @@
 from flask import jsonify, request, current_app, url_for
+
 from ..models import Course
 from . import api
 

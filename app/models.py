@@ -1,7 +1,8 @@
 import hashlib
 
 from sqlalchemy import event, inspect
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, URLSafeTimedSerializer
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, \
+    URLSafeTimedSerializer
 
 from datetime import datetime, timedelta
 from flask import request, current_app
@@ -14,7 +15,8 @@ from . import db, login_manager, bot
 
 follows = db.Table('follows', db.Model.metadata,
                    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-                   db.Column('course_id', db.Integer, db.ForeignKey('courses.id')))
+                   db.Column('course_id', db.Integer,
+                             db.ForeignKey('courses.id')))
 
 reads = db.Table('reads', db.Model.metadata,
                  db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
@@ -32,19 +34,24 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     telegram_chat_id = db.Column(db.String(64))
+    credits_count = db.Column(db.Integer, default=0)
+    lessons_count = db.Column(db.Integer, default=0)
     courses = db.relationship('Course',
                               backref='user_id',
                               secondary=follows,
-                              lazy='dynamic')
+                              lazy='dynamic',
+                              cascade='all')
     feeds = db.relationship('Feed',
                             backref='user_id',
                             secondary=reads,
-                            lazy='dynamic')
+                            lazy='dynamic',
+                            cascade='all')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.email is not None and self.avatar_hash is None:
-            self.avatar_hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
+            self.avatar_hash = hashlib.md5(
+                self.email.encode('utf-8')).hexdigest()
 
     @property
     def password(self):
@@ -70,6 +77,8 @@ class User(UserMixin, db.Model):
     def follow(self, course):
         if not self.is_following(course):
             self.courses.append(course)
+            self.credits_count += course.credit
+            self.lessons_count += course.calendar.lessons.count()
             db.session.add(course)
             db.session.commit()
             return True
@@ -79,6 +88,8 @@ class User(UserMixin, db.Model):
         c = self.courses.filter_by(id=course.id).first()
         if c:
             self.courses.remove(c)
+            self.credits_count -= course.credit
+            self.lessons_count -= course.calendar.lessons.count()
             db.session.commit()
             return True
         return False
@@ -181,12 +192,6 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def total_credits(self):
-        return sum(c.credit for c in self.courses)
-
-    def number_of_lessons(self):
-        return sum(len(c.calendar.lessons) for c in self.courses)
-
     def to_json(self):
         json_user = {
             'id': self.id,
@@ -211,7 +216,7 @@ class Professor(db.Model):
     avatar_hash = db.Column(db.String(32))
     courses = db.relationship('Course',
                               backref='professor',
-                              lazy='joined')
+                              lazy='select')
     feeds = db.relationship('Feed',
                             backref='professor',
                             lazy='dynamic')
@@ -219,7 +224,8 @@ class Professor(db.Model):
     def __init__(self, **kwargs):
         super(Professor, self).__init__(**kwargs)
         if self.email is not None and self.avatar_hash is None:
-            self.avatar_hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
+            self.avatar_hash = hashlib.md5(
+                self.email.encode('utf-8')).hexdigest()
 
     def gravatar(self, size=100, default='identicon', rating='g'):
         if request.is_secure:
@@ -253,7 +259,7 @@ class Professor(db.Model):
         json_user = {
             'id': self.id,
             'first_name': self.first_name,
-            'last_naem': self.last_name,
+            'last_name': self.last_name,
             'email': self.email,
             'avatar_hash': self.avatar_hash
         }
@@ -269,7 +275,7 @@ class Degree(db.Model):
                          nullable=False)
     curriculums = db.relationship('Curriculum',
                                   backref='degree',
-                                  lazy='joined')
+                                  lazy='dynamic')
 
     @staticmethod
     def generate_fake(count=100):
@@ -329,7 +335,7 @@ class Calendar(db.Model):
                               lazy='dynamic')
     lessons = db.relationship('Lesson',
                               backref='calendar',
-                              lazy='joined')
+                              lazy='dynamic')
 
     @property
     def url(self):
@@ -366,7 +372,7 @@ class Course(db.Model):
     users = db.relationship('User',
                             secondary=follows,
                             backref=db.backref('course_id', lazy='dynamic'),
-                            lazy='joined')
+                            lazy='select')
 
     @property
     def url(self):
@@ -438,6 +444,10 @@ class Lesson(db.Model):
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), )
     calendar_id = db.Column(db.Integer, db.ForeignKey('calendars.id'))
 
+    @property
+    def duration(self):
+        return self.start - self.end
+
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
@@ -451,7 +461,8 @@ class Lesson(db.Model):
         for i in range(count):
             c = Course.query.offset(randint(0, course_count - 1)).first()
             loc = Location.query.offset(randint(0, location_count - 1)).first()
-            start = datetime.combine(forgery_py.date.date(), datetime.min.time())
+            start = datetime.combine(forgery_py.date.date(),
+                                     datetime.min.time())
             start += timedelta(hours=randint(8, 15))
             l = Lesson(title=forgery_py.lorem_ipsum.title(),
                        start=start,
@@ -494,10 +505,11 @@ def on_lesson_change_events(lesson):
         new_feed = Feed(title='Modifica orario',
                         body="The lesson '{title}' of {day} has been rescheduled:\n"
                              "lesson starts at {start}\n"
-                             "lesson ends at {end}".format(title=lesson.title,
-                                                           day=start_state.value.strftime('%d.%m.%Y'),
-                                                           start=start_state.value.strftime('%H:%M %d.%m.%Y'),
-                                                           end=end_state.value.strftime('%H:%M %d.%m.%Y')),
+                             "lesson ends at {end}".format(
+                            title=lesson.title,
+                            day=start_state.value.strftime('%d.%m.%Y'),
+                            start=start_state.value.strftime('%H:%M %d.%m.%Y'),
+                            end=end_state.value.strftime('%H:%M %d.%m.%Y')),
                         professor=professor)
         db.session.add(new_feed)
 
@@ -568,10 +580,6 @@ class Feed(db.Model):
         return self.professor.first_name + ' ' + self.professor.last_name
 
     @property
-    def contact(self):
-        return self.professor.email
-
-    @property
     def gravatar(self):
         return self.professor.gravatar()
 
@@ -586,8 +594,10 @@ class Feed(db.Model):
         professor_count = Professor.query.count()
         for i in range(count):
             p = Professor.query.offset(randint(0, professor_count - 1)).first()
-            timestamp = datetime.combine(forgery_py.date.date(past=True), datetime.min.time())
-            timestamp += timedelta(hours=randint(0, 24), minutes=randint(0, 59))
+            timestamp = datetime.combine(forgery_py.date.date(past=True),
+                                         datetime.min.time())
+            timestamp += timedelta(hours=randint(0, 24),
+                                   minutes=randint(0, 59))
             f = Feed(title=forgery_py.lorem_ipsum.title(),
                      body=forgery_py.lorem_ipsum.paragraphs(2),
                      timestamp=timestamp,
@@ -609,15 +619,15 @@ class Feed(db.Model):
 
 
 def on_new_feed(mapper, connection, target):
-    """Notify new feed to users with Telegram messege."""
+    """Notify users with Telegram message."""
     followers = [u for c in target.professor.courses
                  for u in c.users if u.telegram_chat_id]
     for f in followers:
-        bot.send_message(f.telegram_chat_id, '{title}\nFrom: {author}\n{body}'.format(
-            title=target.title,
-            author=' '.join((target.professor.first_name,
-                             target.professor.last_name)),
-            body=target.body))
+        bot.send_message(f.telegram_chat_id,
+                         '{title}\nFrom: {author}\n{body}'.format(
+                             title=target.title,
+                             author=target.author,
+                             body=target.body))
 
 
 event.listen(Feed, 'after_insert', on_new_feed)

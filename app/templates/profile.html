@@ -5,7 +5,8 @@
 {% block heading %}
     <div class="row  border-bottom white-bg dashboard-header">
         <div class="col-lg-4">
-            <img class="img-rounded profile-thumbnail" src="{{ current_user.gravatar(size=256) }}">
+            <img class="img-rounded profile-thumbnail"
+                 src="{{ current_user.gravatar(size=256) }}">
         </div>
         <div class="col-lg-8">
             <h2>{{ current_user.username }}</h2>
@@ -20,7 +21,9 @@
                     {{ gettext('Last seen: %(last_seen)s', last_seen=moment(current_user.last_seen).fromNow()) }}
                 </li>
                 <li class="list-group-item">
-                    Telegram Chat ID: {% if current_user.telegram_chat_id %}{{ current_user.telegram_chat_id }}{% else %}{{ gettext('Disabled') }}{% endif %}
+                    Telegram Chat ID: {% if current_user.telegram_chat_id %}
+                    {{ current_user.telegram_chat_id }}{% else %}
+                    {{ gettext('Disabled') }}{% endif %}
                 </li>
                 <li class="list-group-item">
                     {{ current_user.courses.count() }} {{ ngettext('%(num)s Followed Course', '%(num)s Followed Courses', current_user.courses.count()) }}

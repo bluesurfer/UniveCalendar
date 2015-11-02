@@ -1,8 +1,10 @@
-from sqlalchemy import or_
-from flask.ext.login import current_user
-from flask import jsonify
+import datetime
 
-from ..models import User, Feed, Location
+from flask.ext.login import current_user
+from flask import jsonify, request
+from sqlalchemy import or_
+
+from ..models import User, Feed, Lesson
 from . import api
 from .errors import forbidden
 
@@ -28,7 +30,8 @@ def get_user_lessons(id):
     u = User.query.get_or_404(id)
     if current_user.id != u.id:
         return forbidden('Insufficient permissions')
-    lessons = [l for c in u.courses for l in c.calendar.lessons]
+    lessons = [l for c in u.courses for l in c.calendar.lessons.filter(
+        Lesson.start >= datetime.datetime.today()).all()]
     return jsonify({'lessons': [l.to_json() for l in lessons]})
 
 
@@ -48,6 +51,7 @@ def get_user_feeds(id):
         return forbidden('Insufficient permissions')
     professor_ids = set([c.professor_id for c in u.courses])
     lessons_ids = [l.id for c in u.courses for l in c.lessons]
-    feeds = Feed.query.filter(or_(Feed.professor_id.in_(professor_ids),
-                                  Feed.lesson_id.in_(lessons_ids))).all()
+    feeds = Feed.query.filter(
+        or_(Feed.professor_id.in_(professor_ids),
+            Feed.lesson_id.in_(lessons_ids))).all()
     return jsonify({'feeds': [f.to_json() for f in feeds]})

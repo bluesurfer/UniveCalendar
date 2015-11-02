@@ -24,8 +24,10 @@
             <li>
                 <div class="dropdown-messages-box">
                     <a href="{{ feed.author.url }}" class="pull-left">
-                        <img alt="image" class="img-circle" src="{{ feed.gravatar }}">
+                        <img alt="image" class="img-circle"
+                             src="{{ feed.gravatar }}">
                     </a>
+
                     <div class="media-body">
                         <small class="pull-right">{{ moment(feed.timestamp).fromNow() }}</small>
                         <strong>{{ feed.author }}</strong><br>{{ feed.title }}<br>
@@ -38,7 +40,8 @@
         <li>
             <div class="text-center link-block">
                 <a href="{{ url_for('main.show_feeds') }}">
-                    <i class="fa fa-envelope"></i> <strong>{{ gettext('Read all feeds') }}</strong>
+                    <i class="fa fa-envelope"></i>
+                    <strong>{{ gettext('Read all feeds') }}</strong>
                 </a>
             </div>
         </li>
@@ -49,21 +52,25 @@
 {% macro pagination_widget(pagination, endpoint, fragment='') %}
     <div class="btn-group pull-right">
         <a class="btn btn-white btn-sm {% if not pagination.has_prev %}disabled{% endif %}"
-           href="{% if pagination.has_prev %}{{ url_for(endpoint, page=pagination.prev_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">
+           href="
+                   {% if pagination.has_prev %}{{ url_for(endpoint, page=pagination.prev_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">
             <i class="fa fa-arrow-left"></i>
         </a>
         {% for p in pagination.iter_pages() %}
             {% if p %}
                 {% if p == pagination.page %}
-                    <a class="btn btn-white btn-sm active" href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
+                    <a class="btn btn-white btn-sm active" href="
+                            {{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
                 {% else %}
-                    <a class="btn btn-white btn-sm" href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
+                    <a class="btn btn-white btn-sm" href="
+                            {{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
                 {% endif %}
             {% else %}
             {% endif %}
         {% endfor %}
         <a class="btn btn-white btn-sm {% if not pagination.has_next %}disabled{% endif %}"
-           href="{% if pagination.has_next %}{{ url_for(endpoint, page=pagination.next_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">
+           href="
+                   {% if pagination.has_next %}{{ url_for(endpoint, page=pagination.next_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">
             <i class="fa fa-arrow-right"></i>
         </a>
     </div>
