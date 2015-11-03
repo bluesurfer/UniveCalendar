@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-11-03 11:20+0100\n"
+"POT-Creation-Date: 2015-11-03 14:17+0100\n"
 "PO-Revision-Date: 2015-10-01 14:05+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -494,13 +494,17 @@ msgstr ""
 "Scarica il tuo calendario personale in formato ICS, compatibile con le "
 "più comuni applicazioni Calendar"
 
-#: app/templates/index.html:277
-msgid "From "
-msgstr "Dalle: "
-
 #: app/templates/index.html:279
+msgid "From "
+msgstr "Dalle "
+
+#: app/templates/index.html:280
 msgid " to "
 msgstr " alle "
+
+#: app/templates/index.html:281
+msgid "Page course"
+msgstr "Pagina del corso"
 
 #: app/templates/profile.html:18
 #, python-format

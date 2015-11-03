@@ -216,7 +216,7 @@
         <script src="{{ url_for('static', filename='js/univecalendar.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
         {{ moment.include_moment() }}
-        {{ moment.lang("it") }}
+        {{ moment.lang(g.locale) }}
 
         <script type=text/javascript>
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
