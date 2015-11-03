@@ -496,11 +496,11 @@ msgstr ""
 
 #: app/templates/index.html:277
 msgid "From "
-msgstr "Da: "
+msgstr "Dalle: "
 
 #: app/templates/index.html:279
 msgid " to "
-msgstr " a "
+msgstr " alle "
 
 #: app/templates/profile.html:18
 #, python-format
