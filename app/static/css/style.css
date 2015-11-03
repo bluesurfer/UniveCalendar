@@ -2039,10 +2039,6 @@ body {
     background-color: #2f4050;
 }
 
-html,
-body {
-    height: 100%;
-}
 
 body.full-height-layout #wrapper,
 body.full-height-layout #page-wrapper {
@@ -3690,4 +3686,8 @@ fieldset[disabled] .btn-danger.active {
 
 .table-container {
     min-height: 500px;
+}
+
+html {
+    height: 100%;
 }
