@@ -95,7 +95,7 @@
                                         <div class="well">
                                             {{ feed.body }}
                                         </div>
-                                        <small class="text-muted">{{ gettext('Published %(fromnow)s at %(date)s', fromnow=moment(feed.timestamp).fromNow(), date=moment(feed.timestamp).format('HH:MM - D.M.YYYY')) }}</small>
+                                        <small class="text-muted">{{ gettext('Published %(fromnow)s at %(date)s', fromnow=moment(feed.timestamp).fromNow(), date=moment(feed.timestamp).format('D.M.YYYY')) }}</small>
                                     </div>
                                 </div>
                             {% endfor %}

@@ -31,7 +31,7 @@
                     <div class="media-body">
                         <small class="pull-right">{{ moment(feed.timestamp).fromNow() }}</small>
                         <strong>{{ feed.author }}</strong><br>{{ feed.title }}<br>
-                        <small class="text-muted">{{ gettext('Published %(fromnow)s at %(date)s', fromnow=moment(feed.timestamp).fromNow(), date=moment(feed.timestamp).format('HH:MM - D.M.YYYY')) }}</small>
+                        <small class="text-muted">{{ gettext('Published %(fromnow)s at %(date)s', fromnow=moment(feed.timestamp).fromNow(), date=moment(feed.timestamp).format('D.M.YYYY')) }}</small>
                     </div>
                 </div>
             </li>
