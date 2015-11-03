@@ -273,15 +273,6 @@ h1 {
     text-align: left;
 }
 
-.carousel-caption {
-    position: absolute;
-    top: 100px;
-    left: 0;
-    bottom: auto;
-    right: auto;
-    text-align: left;
-}
-
 .carousel-caption.blank {
     top: 140px;
 }
