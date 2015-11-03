@@ -5,12 +5,15 @@
 {% block styles %}
 
     <!-- Full Calendar style -->
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.css" rel="stylesheet">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.print.css" rel='stylesheet' media='print'>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.css"
+          rel="stylesheet">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.print.css"
+          rel='stylesheet' media='print'>
 
     {{ super() }}
 
-    <link href="{{ url_for('static', filename='css/plugins/qtip/jquery.qtip.css') }}" rel='stylesheet'>
+    <link href="{{ url_for('static', filename='css/plugins/qtip/jquery.qtip.css') }}"
+          rel='stylesheet'>
 
     <!-- Google Map -->
     <style>
@@ -81,7 +84,8 @@
                             {% for feed in feeds %}
                                 <div class="feed-element">
                                     <a href="#" class="pull-left">
-                                        <img alt="image" class="img-circle" src="{{ feed.gravatar }}">
+                                        <img alt="image" class="img-circle"
+                                             src="{{ feed.gravatar }}">
                                     </a>
 
                                     <div class="media-body ">
@@ -97,7 +101,8 @@
                             {% endfor %}
                             <div class="text-center link-block m-t">
                                 <a href="{{ url_for('main.show_feeds') }}">
-                                    <i class="fa fa-envelope"></i> <strong>{{ gettext('Read all feeds') }}</strong>
+                                    <i class="fa fa-envelope"></i>
+                                    <strong>{{ gettext('Read all feeds') }}</strong>
                                 </a>
                             </div>
                         {% endif %}
@@ -114,13 +119,18 @@
                 <div class="ibox-content">
                     {% if not current_user.courses.first() %}
                         <div class="alert alert-warning">
-                            {{ gettext('You calendar is empty.') }} <a class="alert-link" href="{{ url_for('main.courses') }}">{{ gettext('Add courses') }}</a>.
+                            {{ gettext('You calendar is empty.') }} <a
+                                class="alert-link"
+                                href="{{ url_for('main.courses') }}">{{ gettext('Add courses') }}</a>.
                         </div>
                     {% endif %}
                     <div id="calendar"></div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <a href="{{ url_for('main.download_calendar') }}" class="btn btn-success btn-block m-t"><i class="fa fa-download"></i> {{ gettext('Download Calendar') }}</a>
+                            <a href="{{ url_for('main.download_calendar') }}"
+                               class="btn btn-success btn-block m-t"><i
+                                    class="fa fa-download"></i> {{ gettext('Download Calendar') }}
+                            </a>
                             <small>{{ gettext('Get your personal calendar in ICS format, compatible with the most common Calendar apps') }}</small>
                         </div>
                     </div>
@@ -164,6 +174,7 @@
     <script src="https://maps.googleapis.com/maps/api/js"></script>
 
     <script>
+
         /* initialize map
          -----------------------------------------------------------------*/
         function initialize() {
@@ -171,14 +182,39 @@
             var mapOptions = {
                 center: new google.maps.LatLng(45.435, 12.335),
                 zoom: 12,
-                styles: [{"elementType": "geometry", "stylers": [{"hue": "#ff4400"}, {"saturation": -68}, {"lightness": -4}, {"gamma": 0.72}]}, {"featureType": "road", "elementType": "labels.icon"}, {"featureType": "landscape.man_made", "elementType": "geometry", "stylers": [{"hue": "#0077ff"}, {"gamma": 3.1}]}, {"featureType": "water", "stylers": [{"hue": "#00ccff"}, {"gamma": 0.44}, {"saturation": -33}]}, {
+                styles: [{
+                    "elementType": "geometry",
+                    "stylers": [{"hue": "#ff4400"}, {"saturation": -68}, {"lightness": -4}, {"gamma": 0.72}]
+                }, {
+                    "featureType": "road",
+                    "elementType": "labels.icon"
+                }, {
+                    "featureType": "landscape.man_made",
+                    "elementType": "geometry",
+                    "stylers": [{"hue": "#0077ff"}, {"gamma": 3.1}]
+                }, {
+                    "featureType": "water",
+                    "stylers": [{"hue": "#00ccff"}, {"gamma": 0.44}, {"saturation": -33}]
+                }, {
                     "featureType": "poi.park",
                     "stylers": [{"hue": "#44ff00"}, {"saturation": -23}]
-                }, {"featureType": "water", "elementType": "labels.text.fill", "stylers": [{"hue": "#007fff"}, {"gamma": 0.77}, {"saturation": 65}, {"lightness": 99}]}, {"featureType": "water", "elementType": "labels.text.stroke", "stylers": [{"gamma": 0.11}, {"weight": 5.6}, {"saturation": 99}, {"hue": "#0091ff"}, {"lightness": -86}]}, {
+                }, {
+                    "featureType": "water",
+                    "elementType": "labels.text.fill",
+                    "stylers": [{"hue": "#007fff"}, {"gamma": 0.77}, {"saturation": 65}, {"lightness": 99}]
+                }, {
+                    "featureType": "water",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [{"gamma": 0.11}, {"weight": 5.6}, {"saturation": 99}, {"hue": "#0091ff"}, {"lightness": -86}]
+                }, {
                     "featureType": "transit.line",
                     "elementType": "geometry",
                     "stylers": [{"lightness": -48}, {"hue": "#ff5e00"}, {"gamma": 1.2}, {"saturation": -23}]
-                }, {"featureType": "transit", "elementType": "labels.text.stroke", "stylers": [{"saturation": -64}, {"hue": "#ff9100"}, {"lightness": 16}, {"gamma": 0.47}, {"weight": 2.7}]}],
+                }, {
+                    "featureType": "transit",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [{"saturation": -64}, {"hue": "#ff9100"}, {"lightness": 16}, {"gamma": 0.47}, {"weight": 2.7}]
+                }],
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
@@ -200,7 +236,6 @@
                     }
                 }
             });
-
         }
 
         google.maps.event.addDomListener(window, 'load', initialize);
@@ -228,11 +263,22 @@
                     }
                 })
             },
+            eventClick: function (event) {
+                if (event.url) {
+                    window.open(event.url);
+                    return false;
+                }
+            },
             eventRender: function (event, element, view) {
                 element.qtip({
                     content: {
                         title: event.title,
-                        text: '<p> Dalle ' + moment(event.start).format('hh:mm') + ' alle ' + moment(event.end).format('HH:mm') + '</p>' +
+                        text: '<p>' +
+                        '{{ gettext('From ') }}' +
+                        moment(event.start).format('HH:mm') +
+                        '{{ gettext(' to ') }}' +
+                        moment(event.end).format('HH:mm') +
+                        '</p>' +
                         '<p> ' + event.description + '</p>'
                     },
                     position: {

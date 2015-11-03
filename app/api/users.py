@@ -31,7 +31,7 @@ def get_user_lessons(id):
     if current_user.id != u.id:
         return forbidden('Insufficient permissions')
     lessons = [l for c in u.courses for l in c.calendar.lessons.filter(
-        Lesson.start >= datetime.datetime.today()).all()]
+        Lesson.start >= datetime.datetime.utcnow()).all()]
     return jsonify({'lessons': [l.to_json() for l in lessons]})
 
 

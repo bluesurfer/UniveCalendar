@@ -21,9 +21,12 @@
                     {{ gettext('Last seen: %(last_seen)s', last_seen=moment(current_user.last_seen).fromNow()) }}
                 </li>
                 <li class="list-group-item">
-                    Telegram Chat ID: {% if current_user.telegram_chat_id %}
-                    {{ current_user.telegram_chat_id }}{% else %}
-                    {{ gettext('Disabled') }}{% endif %}
+                    {{ gettext('Telegram notifications: ') }}
+                    {% if current_user.telegram_chat_id %}
+                        <span class="label label-success">{{ gettext('Enabled') }}</span>
+                    {% else %}
+                        <span class="label label-danger">{{ gettext('Disabled') }}</span>
+                    {% endif %}
                 </li>
                 <li class="list-group-item">
                     {{ current_user.courses.count() }} {{ ngettext('%(num)s Followed Course', '%(num)s Followed Courses', current_user.courses.count()) }}
