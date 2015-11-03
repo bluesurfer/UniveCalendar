@@ -3688,6 +3688,6 @@ fieldset[disabled] .btn-danger.active {
     min-height: 500px;
 }
 
-html {
-    height: 100%;
+html, body {
+    min-height: 100%;
 }

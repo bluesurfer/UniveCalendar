@@ -19,7 +19,9 @@
     <div class="middle-box text-center loginscreen animated fadeInDown">
         <div>
             <div>
-                <h1 class="logo-name">UniveCalendar</h1>
+                <a href="{{ url_for('main.index') }}">
+                    <h1 class="logo-name">UniveCalendar</h1>
+                </a>
             </div>
             <div class="ibox no-shadow">
                 <div class="ibox-title">
@@ -35,7 +37,11 @@
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
-
+                    <div class="alert alert-warning">
+                        <b>Development Version</b><br>
+                        user:bob@unive.it<br>
+                        pass:123456<br>
+                    </div>
                     <form class="m-t" role="form" method='post'
                           action="{{ url_for('auth.login') }}">
 
