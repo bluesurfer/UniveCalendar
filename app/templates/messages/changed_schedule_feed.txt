@@ -1,0 +1,4 @@
+La lezione di {title} del giorno {day} è stata spostata.
+
+Nuovo orario:
+Inizio {start} - Fine {end}
