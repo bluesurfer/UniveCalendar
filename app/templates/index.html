@@ -254,15 +254,13 @@
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            events: function (start, end, timezone, callback) {
-                $.ajax({
-                    url: $SCRIPT_ROOT + '/api/users/{{ current_user.id }}/lessons/',
-                    dataType: 'json',
-                    success: function (data) {
-                        callback(data.lessons);
-                    }
-                })
-            },
+            eventSources: [{
+                url: $SCRIPT_ROOT + '/api/users/{{ current_user.id }}/lessons/',
+                dataType: 'json',
+                success: function (data) {
+                    return data.lessons;
+                }
+            }],
             eventClick: function (event) {
                 if (event.url) {
                     return false;
@@ -277,9 +275,9 @@
                     content: {
                         title: event.title,
                         text: '<p>' + '{{ gettext('From ') }}' + moment(event.start).format('HH:mm') +
-                                '{{ gettext(' to ') }}' + moment(event.end).format('HH:mm') +'</p>' +
-                                '<p><a href="' + event.url + '">{{ gettext('Page course') }}' + '</a></p>' +
-                                '<p> ' + event.description + '</p>'
+                        '{{ gettext(' to ') }}' + moment(event.end).format('HH:mm') + '</p>' +
+                        '<p><a href="' + event.url + '">{{ gettext('Page course') }}' + '</a></p>' +
+                        '<p> ' + event.description + '</p>'
                     },
                     position: {
                         my: 'top center',  // Position my top left...

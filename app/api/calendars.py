@@ -5,7 +5,7 @@ from . import api
 
 
 @api.route('/calendars/')
-def get_all_calendars():
+def get_calendars():
     calendars = Calendar.query.all()
     return jsonify({'calendars': [c.to_json() for c in calendars]})
 
@@ -19,4 +19,4 @@ def get_calendar_lessons(id):
 @api.route('/calendars/<int:id>/courses/')
 def get_calendar_courses(id):
     calendar = Calendar.query.get_or_404(id)
-    return jsonify({'courses': [c.to_json() for c in calendar.courses.all()]})
+    return jsonify({'courses': [c.to_json() for c in calendar.courses]})

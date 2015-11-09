@@ -5,7 +5,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, \
     URLSafeTimedSerializer
 
 from datetime import datetime, timedelta
-from flask import request, current_app
+from flask import request, current_app, render_template
 from flask.ext.login import UserMixin
 from flask.ext.sqlalchemy import SignallingSession
 
@@ -39,13 +39,11 @@ class User(UserMixin, db.Model):
     courses = db.relationship('Course',
                               backref='user_id',
                               secondary=follows,
-                              lazy='dynamic',
-                              cascade='all')
+                              lazy='dynamic')
     feeds = db.relationship('Feed',
                             backref='user_id',
                             secondary=reads,
-                            lazy='dynamic',
-                            cascade='all')
+                            lazy='dynamic')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -212,9 +210,12 @@ class Professor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
-    email = db.Column(db.String(64), unique=True)
+    email = db.Column(db.String(64))
     avatar_hash = db.Column(db.String(32))
     courses = db.relationship('Course',
+                              backref='professor',
+                              lazy='select')
+    lessons = db.relationship('Lesson',
                               backref='professor',
                               lazy='select')
     feeds = db.relationship('Feed',
@@ -440,13 +441,19 @@ class Lesson(db.Model):
     title = db.Column(db.Text)
     start = db.Column(db.DateTime(), nullable=False)
     end = db.Column(db.DateTime(), nullable=False)
+    has_changed = db.Column(db.Boolean, default=False)
     description = db.Column(db.Text)
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), )
+    professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'), )
     calendar_id = db.Column(db.Integer, db.ForeignKey('calendars.id'))
 
     @property
     def duration(self):
         return self.start - self.end
+
+    @property
+    def past(self):
+        return self.end <= datetime.utcnow()
 
     @staticmethod
     def generate_fake(count=100):
@@ -483,9 +490,17 @@ class Lesson(db.Model):
             'title': self.title,
             'start': self.start.strftime('%Y-%m-%d %H:%M:00'),
             'end': self.end.strftime('%Y-%m-%d %H:%M:00'),
-            'description': self.description,
+            'has_changed': self.has_changed,
+            'description': 'Prof. %s %s, %s' % (self.professor.first_name, self.professor.last_name, self.description),
+            'color': '#009688',
+            'textColor': '#fff',
             'url': self.calendar.url,
         }
+        if self.has_changed and not self.past:
+            json_lesson['color'] = '#FFC107'
+            json_lesson['textColor'] = '#000'
+        elif self.past:
+            json_lesson['color'] = '#78909C'
         return json_lesson
 
 
@@ -494,31 +509,30 @@ def get_old_value(attr_state):
     return history.deleted[0] if history.deleted else None
 
 
-def on_lesson_change_events(lesson):
+def on_lesson_change_event(lesson):
     insp = inspect(lesson)
     start_state = insp.attrs.start
     end_state = insp.attrs.end
     old_start_value = get_old_value(start_state)
     old_end_value = get_old_value(end_state)
     if old_start_value or old_end_value:
-        professor = lesson.course.professor
         new_feed = Feed(title='Modifica orario',
-                        body="The lesson '{title}' of {day} has been rescheduled:\n"
-                             "lesson starts at {start}\n"
-                             "lesson ends at {end}".format(
+                        body=render_template(
+                            'messages/changed_schedule_feed.txt').format(
                             title=lesson.title,
                             day=start_state.value.strftime('%d.%m.%Y'),
                             start=start_state.value.strftime('%H:%M %d.%m.%Y'),
                             end=end_state.value.strftime('%H:%M %d.%m.%Y')),
-                        professor=professor)
+                        professor=lesson.professor)
+        lesson.has_changed = True
         db.session.add(new_feed)
 
 
-@event.listens_for(SignallingSession, 'after_flush')
-def receive_after_flush(session, flush_context):
+@event.listens_for(SignallingSession, 'before_flush')
+def receive_after_flush(session, flush_context, instances):
     for changed_obj in session.dirty:
         if type(changed_obj) is Lesson:
-            on_lesson_change_events(changed_obj)
+            on_lesson_change_event(changed_obj)
 
 
 class Location(db.Model):
@@ -569,7 +583,7 @@ class Feed(db.Model):
     title = db.Column(db.String(64))
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'))
+    professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'), nullable=False)
     users = db.relationship('User',
                             secondary=reads,
                             backref=db.backref('feed_id', lazy='dynamic'),

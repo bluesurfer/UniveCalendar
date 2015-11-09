@@ -1,13 +1,13 @@
-Dear {{ user.username }},
+Ciao {{ user.username }},
 
-Welcome to Flasky!
+Benvenuto su UniveCalendar!
 
-To confirm your account please click on the following link:
+Per confermare il tuo account visita il segunte link:
 
 {{ url_for('auth.confirm', token=token, _external=True) }}
 
-Sincerely,
+Cordialmente,
 
-The Flasky Team
+The UniveCalendar Team
 
-Note: replies to this email address are not monitored.
+Nota: risposte a questa email saranno ignorate.

@@ -13,10 +13,10 @@ def get_courses():
     courses = pagination.items
     prev = None
     if pagination.has_prev:
-        prev = url_for('api.get_courses', page=page-1, _external=True)
+        prev = url_for('api.get_courses', page=page - 1, _external=True)
     next = None
     if pagination.has_next:
-        next = url_for('api.get_courses', page=page+1, _external=True)
+        next = url_for('api.get_courses', page=page + 1, _external=True)
     return jsonify({
         'posts': [course.to_json() for course in courses],
         'prev': prev,

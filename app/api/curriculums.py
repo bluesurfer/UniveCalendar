@@ -12,6 +12,4 @@ def get_curriculums():
 @api.route('/curriculums/<int:id>/courses/')
 def get_curriculum_courses(id):
     curriculum = Curriculum.query.get(id)
-    courses = [c.to_json() for c in curriculum.courses]
-    return jsonify({'courses': courses,
-                    'count': len(courses)})
+    return jsonify({'courses': [c.to_json() for c in curriculum.courses]})

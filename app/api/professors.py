@@ -12,13 +12,11 @@ def get_professors():
 
 @api.route('/professors/<int:id>/feeds/')
 def get_professor_feeds(id):
-    professor = Professor.query.get_or_404(id)
-    feeds = professor.feeds.all()
-    return jsonify({'feeds': [f.to_json() for f in feeds]})
+    p = Professor.query.get_or_404(id)
+    return jsonify({'feeds': [f.to_json() for f in p.feeds]})
 
 
 @api.route('/professors/<int:id>/courses/')
 def get_professor_courses(id):
-    professor = Professor.query.get_or_404(id)
-    courses = professor.courses.all()
-    return jsonify({'courses': [c.to_json() for c in courses]})
+    p = Professor.query.get_or_404(id)
+    return jsonify({'courses': [c.to_json() for c in p.courses]})

@@ -12,7 +12,7 @@ from sqlalchemy import and_, literal
 from app import models
 from manage import app, db
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, filename='db.log')
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -134,22 +134,35 @@ def update_calendars(args):
     with open(args.datapath, 'rt') as f:
         data = json.load(f)
         with app.app_context():
-            calendars = models.Calendar.query.all()[1401:]
-            for (i, cal) in enumerate(calendars):
+            calendars = models.Calendar.query.all()
+            for (i, cal) in enumerate(calendars[220:]):
                 logging.info('Loading lessons from calendar "%d", %d of %d' %
                              (cal.id, i + 1, len(calendars)))
                 events = data[str(cal.id)] if str(cal.id) in data.keys() else None
                 if events:
                     for e in events:
+                        full_name = e['title'].split(u' - ')[-1].split(u',')[0]
+                        professors = models.Professor.query.filter(
+                            and_(literal(full_name).contains(models.Professor.first_name),
+                                 literal(full_name).contains(models.Professor.last_name))).all()
+                        if len(professors) > 1:
+                            logging.info('Professors with same name %s' % [p.id for p in professors])
+                        if not professors:
+                            logging.error('Professor "%s" not found' % full_name)
+                            continue
+
                         loc = models.Location.query.filter(
-                            literal(e['description']).contains(models.Location.name)).first()
+                            literal(e['description']).contains(
+                                models.Location.name)).first()
                         if loc is None:
-                            logging.warn("Can't find location %s" % e['description'])
+                            logging.warn(
+                                "Can't find location %s" % e['description'])
                         l = models.Lesson(
-                            title=e['title'],
+                            title=e['title'].split(' - ')[0],
                             start=datetime.strptime(e['start'], date_format),
                             end=datetime.strptime(e['end'], date_format),
                             description=e['description'],
+                            professor=professors[0],
                             location=loc,
                             calendar=cal)
                         db.session.add(l)
@@ -163,7 +176,7 @@ def update_calendars(args):
                     logging.warning('Calendar %d is empty' % cal.id)
 
 
-def donwload_calendars(args):
+def download_calendars(args):
     from ics import Calendar
     from ics.parse import ParseError
 
@@ -173,14 +186,19 @@ def donwload_calendars(args):
         data = {}
         try:
             for (i, cal) in enumerate(calendars):
-                logging.info('Downloading calendar "%d", %s of %s' % (cal.id, i + 1, len(calendars)))
+                logging.info('Downloading calendar "%d", %s of %s' % (
+                cal.id, i + 1, len(calendars)))
                 try:
-                    html = urlopen(url.format(id=cal.id)).read().decode('iso-8859-1')
+                    html = urlopen(url.format(id=cal.id)).read().decode(
+                        'iso-8859-1')
                     events = Calendar(html).events
                     data[cal.id] = [{'title': e.name,
-                                     'start': e.begin.datetime.strftime("%d-%m-%Y %H:%M:%S"),
-                                     'end': e.end.datetime.strftime("%d-%m-%Y %H:%M:%S"),
-                                     'description': e.location} for e in events]
+                                     'start': e.begin.datetime.strftime(
+                                         "%d-%m-%Y %H:%M:%S"),
+                                     'end': e.end.datetime.strftime(
+                                         "%d-%m-%Y %H:%M:%S"),
+                                     'description': e.location} for e in
+                                    events]
                 except HTTPError as e:
                     logging.critical(e.message)
                 except ParseError as e:
@@ -199,7 +217,8 @@ subparsers = parser.add_subparsers(help='commands')
 courses_parser = subparsers.add_parser('courses', help='Update courses')
 courses_parser.add_argument('datapath', action='store', help='Data path')
 courses_parser.add_argument('-n', action='store',
-                            dest='n', type=int, default=None, help='Number of courses')
+                            dest='n', type=int, default=None,
+                            help='Number of courses')
 courses_parser.set_defaults(func=update_courses)
 
 # Update locations command
@@ -210,7 +229,7 @@ locations_parser.set_defaults(func=update_locations)
 # Download calendars command
 download_parser = subparsers.add_parser('download', help='Download calendars')
 download_parser.add_argument('filename', action='store', help='Output file')
-download_parser.set_defaults(func=donwload_calendars)
+download_parser.set_defaults(func=download_calendars)
 
 # Update calendars command
 calendars_parser = subparsers.add_parser('calendars', help='Update calendars')

@@ -116,6 +116,23 @@ def adduser():
     db.session.add(u)
     db.session.commit()
 
+    u = models.User(email='alice@unive.it',
+                username='alice92',
+                confirmed=True,
+                password='123456')
+    db.session.add(u)
+    db.session.commit()
+
+@manager.command
+def addprofessor():
+    p = models.Professor(
+        id=1,
+        first_name='UniveCalendar',
+        last_name='Admin',
+        email='univecalendar@gmail.com')
+    db.session.add(p)
+    db.session.commit()
+
 
 @manager.command
 def deleteusers():

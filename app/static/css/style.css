@@ -936,9 +936,11 @@ fieldset[disabled] .btn-warning.active {
 }
 
 .btn-danger {
-    background-color: #ed5565;
-    border-color: #ed5565;
-    color: #FFFFFF;
+    color: #fff;
+    background-color: #b33630;
+    background-image: -webkit-linear-gradient(#dc5f59, #b33630);
+    background-image: linear-gradient(#dc5f59, #b33630);
+    border-color: #cd504a;
 }
 
 .btn-danger:hover,
@@ -2038,7 +2040,6 @@ body {
     background-image: linear-gradient(to bottom, #243645, #455f76);
     background-color: #2f4050;
 }
-
 
 body.full-height-layout #wrapper,
 body.full-height-layout #page-wrapper {
@@ -3466,7 +3467,7 @@ a {
 }
 
 .alert-danger {
-    background-color: #D64242;
+    background-color: #DF3E3E;
     color: #fff;
 }
 
@@ -3549,9 +3550,11 @@ fieldset[disabled] .btn-danger:hover,
 fieldset[disabled] .btn-danger:focus,
 fieldset[disabled] .btn-danger:active,
 fieldset[disabled] .btn-danger.active {
-    background-color: #fff;
-    border-color: #D64242;
-    color: #D64242;
+    background-color: #eee;
+    background-image: -webkit-linear-gradient(#fcfcfc, #eee);
+    background-image: linear-gradient(#fcfcfc, #eee);
+    border-color: #900;
+    color: #900;
 }
 
 /* FULLCALENDAR */

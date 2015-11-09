@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-11-03 14:17+0100\n"
+"POT-Creation-Date: 2015-11-04 10:49+0100\n"
 "PO-Revision-Date: 2015-10-01 14:05+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -434,7 +434,7 @@ msgstr "Aggiorna"
 msgid "Mark as read"
 msgstr "Segna come già letto"
 
-#: app/templates/feeds.html:96 app/templates/auth/activate_telegram.html:19
+#: app/templates/feeds.html:96 app/templates/auth/activate_telegram.html:20
 msgid "Stay up to date!"
 msgstr "Rimani aggiornato!"
 
@@ -494,6 +494,10 @@ msgstr ""
 "Scarica il tuo calendario personale in formato ICS, compatibile con le "
 "più comuni applicazioni Calendar"
 
+#: app/templates/index.html:143
+msgid "Map"
+msgstr "Mappa"
+
 #: app/templates/index.html:279
 msgid "From "
 msgstr "Dalle "
@@ -541,11 +545,11 @@ msgstr "Accedi"
 msgid "Telegram Activation Link"
 msgstr "Link di Attivazione Telegram"
 
-#: app/templates/auth/activate_telegram.html:21
+#: app/templates/auth/activate_telegram.html:22
 msgid "Don't you want to miss a feed?"
 msgstr "Non vuoi perdere nessun avviso?"
 
-#: app/templates/auth/activate_telegram.html:23
+#: app/templates/auth/activate_telegram.html:24
 msgid ""
 "Click the following link to connect your Telegram account and start "
 "receiving updates."
