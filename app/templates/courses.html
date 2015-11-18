@@ -4,20 +4,16 @@
 {% block styles %}
 
     <!-- Steps -->
-    <link href="{{ url_for('static',filename='css/plugins/steps/jquery.steps.css') }}"
-          rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/plugins/steps/jquery.steps.css') }}" rel="stylesheet">
 
     <!-- Bootstrap Select -->
-    <link href="{{ url_for('static', filename='css/plugins/bootstrap-select/bootstrap-select.min.css') }}"
-          rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/plugins/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet">
 
     <!-- Bootstrap Table -->
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/plugins/bootstrap-table/bootstrap-table.min.css') }}">
+    <link href="{{ url_for('static', filename='css/plugins/bootstrap-table/bootstrap-table.min.css') }}" rel="stylesheet">
 
     <!-- Toastr style -->
-    <link href="{{ url_for('static', filename='css/plugins/toastr/toastr.min.css') }}"
-          rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
 
     {{ super() }}
 
@@ -28,7 +24,6 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-title">
-
                     <h5>{{ gettext('My courses') }}</h5>
                 </div>
                 <div class="ibox-content">
@@ -137,9 +132,6 @@
                                     <select id="categories"
                                             class="selectpicker"
                                             data-dropup-auto="false">
-                                        <option value="L">{{ gettext('Bachelor') }}</option>
-                                        <option value="LM">{{ gettext('Master') }}</option>
-                                        <option value="PAS">{{ gettext('PAS') }}</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-4">
@@ -298,14 +290,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.min.js"></script>
 
     <!-- Bootstrap Select -->
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
 
     <!-- Bootstrap Table -->
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.js"></script>
-    <script type="text/javascript"
-            src="{{ url_for('static', filename='js/plugins/bootstrap-table/extensions/mobile/bootstrap-table-mobile.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.9.1/bootstrap-table.min.js"></script>
+    <script src="{{ url_for('static', filename='js/plugins/bootstrap-table/extensions/mobile/bootstrap-table-mobile.js') }}"></script>
 
     {% if g.locale == 'it' %}
         <script type="text/javascript"
@@ -362,6 +351,23 @@
                 loading: "{{ gettext('Loading...') }}"
             },
             bodyTag: "fieldset",
+            onInit: function (event, currentIndex) {
+                // Populate degrees categories selection box.
+                $.ajax({
+                    url: $SCRIPT_ROOT + '/api/degrees/categories',
+                    type: "GET",
+                    dataType: "html",
+                    success: function (json) {
+                        var categories = JSON.parse(json).categories;
+                        var options = '';
+                        for (var i = 0; i < categories.length; i++) {
+                            var cat = categories[i];
+                            options += '<option value="' + cat.id + '">' + cat.desc + '</option>'
+                        }
+                        $('#categories').html(options).selectpicker('refresh');
+                    }
+                })
+            },
             onStepChanging: function (event, currentIndex, newIndex) {
 
                 // Always allow going backward
@@ -381,7 +387,7 @@
                             var options = '';
                             for (var i = 0; i < degrees.length; i++) {
                                 var d = degrees[i];
-                                options += '<option value="' + d.id + '">' + toTitleCase(d.name) + ' [' + d.code.toUpperCase() + ']</option>'
+                                options += '<option value="' + d.id + '">' + d.name + ' [' + d.code.toUpperCase() + ']</option>'
                             }
                             $('#degrees').html(options).selectpicker('refresh');
                         }
@@ -400,7 +406,7 @@
                             var options = '';
                             for (var i = 0; i < curriculums.length; i++) {
                                 var c = curriculums[i];
-                                options += '<option value="' + c.id + '">' + toTitleCase(c.name) + ' [' + c.code.toUpperCase() + ']</option>'
+                                options += '<option value="' + c.id + '">' + c.name + ' [' + c.code.toUpperCase() + ']</option>'
                             }
                             $('#curriculums').html(options).selectpicker('refresh');
                         }

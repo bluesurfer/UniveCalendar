@@ -18,6 +18,6 @@ Mako==1.0.3
 WTForms==2.0.2
 itsdangerous==0.24
 ics==0.3.1
-ForgeryPy==0.1
 Psycopg2==2.6.1
 pyTelegramBotApi==1.4.0
+feedparser==5.2.1

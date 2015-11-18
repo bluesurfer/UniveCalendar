@@ -1,21 +1,39 @@
 {% import "_macros.html" as macros %}
 
 <!DOCTYPE html>
+<html lang="it">
+
 <html>
 
 <head>
     {% block head %}
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <title>UniveCalendar</title>
+
     {% endblock %}
 
     {% block styles %}
+
+        <!-- Bootstrap Core CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+        <!-- Custom Fonts -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
+        <!-- Custom CSS -->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
     {% endblock %}
 </head>
 
@@ -52,11 +70,8 @@
                                  src="{{ current_user.gravatar() }}"/>
                              </span>
                             <a href="{{ url_for('auth.profile') }}">
-                            <span class="clear"> <span
-                                    class="block m-t-xs"> <strong
-                                    class="font-bold">{{ current_user.username }}</strong>
-                             </span> <span
-                                    class="text-muted text-xs block">{{ current_user.email }} </span> </span>
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ current_user.username }}</strong>
+                             </span> <span class="text-muted text-xs block">{{ current_user.email }} </span> </span>
                             </a>
                         </div>
                         <div class="logo-element">
@@ -89,12 +104,8 @@
                             {% endif %}
                         </a>
                     </li>
-                    <li
-                            {% if active_page in ['change_email_request', 'change_password', 'activate_telegram', 'profile'] %}
-                                class="active"{% endif %}>
-                        <a href="#"><i class="fa fa-user"></i> <span
-                                class="nav-label">{{ gettext('Profile') }}</span><span
-                                class="fa arrow"></span></a>
+                    <li{% if active_page in ['change_email_request', 'change_password', 'activate_telegram', 'profile'] %} class="active"{% endif %}>
+                        <a href="#"><i class="fa fa-user"></i> <span class="nav-label">{{ gettext('Profile') }}</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li {% if 'profile' == active_page %}
                                 class="active"{% endif %}>
@@ -114,7 +125,6 @@
                             </li>
                         </ul>
                     </li>
-
                 </ul>
             </div>
         </nav>
@@ -160,7 +170,6 @@
                             </a>
                         </li>
                     </ul>
-
                 </nav>
             </div>
 
@@ -168,12 +177,9 @@
                 <div class="row wrapper border-bottom white-bg page-heading">
                     <div class="col-lg-8">
                         <h2>{{ (breadcrumbs|last).text }}</h2>
-
                         <ol class="breadcrumb">
                             {%- for breadcrumb in breadcrumbs -%}
-                                <li
-                                        {% if breadcrumb.text|lower == active_page %}
-                                            class="active"{% endif %}>
+                                <li{% if breadcrumb.text|lower == active_page %}class="active"{% endif %}>
                                     {% if loop.last %}
                                         <b>{{ breadcrumb.text }}</b>
                                     {% else %}
@@ -185,14 +191,11 @@
                     </div>
                 </div>
             {% endblock %}
-
             <div class="wrapper wrapper-content">
                 {% block content %}
                 {% endblock %}
             </div>
-
         </div>
-
     </div>
 
     {% block scripts %}
@@ -207,13 +210,14 @@
         <!-- Custom and plugin javascript -->
         <script src="{{ url_for('static', filename='js/univecalendar.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+
         {{ moment.include_moment() }}
         {{ moment.lang(g.locale) }}
 
         <script type=text/javascript>
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+            $USER_ID = {{ current_user.id }}
         </script>
-
     {% endblock %}
     </body>
 {% endblock %}

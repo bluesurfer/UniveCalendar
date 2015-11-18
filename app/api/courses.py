@@ -18,7 +18,7 @@ def get_courses():
     if pagination.has_next:
         next = url_for('api.get_courses', page=page + 1, _external=True)
     return jsonify({
-        'posts': [course.to_json() for course in courses],
+        'courses': [course.to_json() for course in courses],
         'prev': prev,
         'next': next,
         'count': pagination.total

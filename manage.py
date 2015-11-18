@@ -60,12 +60,10 @@ def runbot():
 
 @manager.command
 def populatedb():
-    """Populate database with fake data."""
-    models.Location.generate_fake(10)
-    models.Professor.generate_fake(50)
-    models.Degree.generate_fake(30)
-    models.Course.generate_fake(150)
-    models.Lesson.generate_fake(1000)
+    os.system('python manage.py cleardb')
+    os.system('python db_update.py locations data/coordinate_sedi.csv')
+    os.system('python db_update.py calendars data/calendars2.json')
+    os.system('python db_update.py courses data/esploso_corsi.csv')
 
 
 @manager.command

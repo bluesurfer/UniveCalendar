@@ -36,16 +36,16 @@
             <div class="row text-left">
                 <div class="col-xs-4">
                     <div class=" m-l-md">
-                        <span class="h4 font-bold m-t block">{{ current_user.courses.count() }}</span>
-                        <small class="text-muted m-b block">{{ ngettext('%(num)s Followed Course', '%(num)s Followed Courses', current_user.courses.count()) }}</small>
+                        <span class="h4 font-bold m-t block">{{ current_user.courses|length }}</span>
+                        <small class="text-muted m-b block">{{ ngettext('%(num)s Followed Course', '%(num)s Followed Courses', current_user.courses|length) }}</small>
                     </div>
                 </div>
                 <div class="col-xs-4">
-                    <span class="h4 font-bold m-t block">{{ current_user.credits_count }}</span>
+                    <span class="h4 font-bold m-t block">{{ current_user.count_credits() }}</span>
                     <small class="text-muted m-b block">{{ gettext('Total credits') }}</small>
                 </div>
                 <div class="col-xs-4">
-                    <span class="h4 font-bold m-t block">{{ current_user.lessons_count }}</span>
+                    <span class="h4 font-bold m-t block">{{ current_user.count_lessons() }}</span>
                     <small class="text-muted m-b block">{{ gettext('Lessons to attend') }}</small>
                 </div>
 
@@ -117,7 +117,7 @@
                     <h5>{{ gettext('My calendar') }} </h5>
                 </div>
                 <div class="ibox-content">
-                    {% if not current_user.courses.first() %}
+                    {% if not current_user.courses %}
                         <div class="alert alert-warning">
                             {{ gettext('You calendar is empty.') }} <a
                                 class="alert-link"
@@ -136,20 +136,20 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="ibox ">
-                        <div class="ibox-title">
-                            <h5>{{ gettext('Map') }}</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>{{ gettext('Map') }}</h5>
+                </div>
+                <div class="ibox-content">
+                    <p>
 
-                            </p>
+                    </p>
 
-                            <div class="google-map" id="map"></div>
-                        </div>
-                    </div>
+                    <div class="google-map" id="map"></div>
                 </div>
             </div>
         </div>
@@ -171,76 +171,10 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/basic/jquery.qtip.min.js"></script>
 
     <!-- Google maps -->
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCaDjPvZqIM8iAUhn6PiyX4EaIfW7AbXsA&amp;libraries=geometry&amp;"></script>
+    <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 
     <script>
-
-        /* initialize map
-         -----------------------------------------------------------------*/
-        function initialize() {
-            var mapCanvas = document.getElementById('map');
-            var mapOptions = {
-                center: new google.maps.LatLng(45.435, 12.335),
-                zoom: 12,
-                styles: [{
-                    "elementType": "geometry",
-                    "stylers": [{"hue": "#ff4400"}, {"saturation": -68}, {"lightness": -4}, {"gamma": 0.72}]
-                }, {
-                    "featureType": "road",
-                    "elementType": "labels.icon"
-                }, {
-                    "featureType": "landscape.man_made",
-                    "elementType": "geometry",
-                    "stylers": [{"hue": "#0077ff"}, {"gamma": 3.1}]
-                }, {
-                    "featureType": "water",
-                    "stylers": [{"hue": "#00ccff"}, {"gamma": 0.44}, {"saturation": -33}]
-                }, {
-                    "featureType": "poi.park",
-                    "stylers": [{"hue": "#44ff00"}, {"saturation": -23}]
-                }, {
-                    "featureType": "water",
-                    "elementType": "labels.text.fill",
-                    "stylers": [{"hue": "#007fff"}, {"gamma": 0.77}, {"saturation": 65}, {"lightness": 99}]
-                }, {
-                    "featureType": "water",
-                    "elementType": "labels.text.stroke",
-                    "stylers": [{"gamma": 0.11}, {"weight": 5.6}, {"saturation": 99}, {"hue": "#0091ff"}, {"lightness": -86}]
-                }, {
-                    "featureType": "transit.line",
-                    "elementType": "geometry",
-                    "stylers": [{"lightness": -48}, {"hue": "#ff5e00"}, {"gamma": 1.2}, {"saturation": -23}]
-                }, {
-                    "featureType": "transit",
-                    "elementType": "labels.text.stroke",
-                    "stylers": [{"saturation": -64}, {"hue": "#ff9100"}, {"lightness": 16}, {"gamma": 0.47}, {"weight": 2.7}]
-                }],
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-
-            var map = new google.maps.Map(mapCanvas, mapOptions);
-
-            $.ajax({
-                url: $SCRIPT_ROOT + '/api/users/{{ current_user.id }}/locations/',
-                dataType: 'json',
-                success: function (json) {
-                    for (var i = 0; i < json.locations.length; i++) {
-                        var loc = json.locations[i];
-                        var marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(loc.lat, loc.lng),
-                            map: map,
-                            animation: google.maps.Animation.DROP,
-                            title: loc.name
-                        });
-
-                    }
-                }
-            });
-        }
-
-        google.maps.event.addDomListener(window, 'load', initialize);
-
-
         /* initialize the calendar
          -----------------------------------------------------------------*/
         var date = new Date();
@@ -277,7 +211,8 @@
                         text: '<p>' + '{{ gettext('From ') }}' + moment(event.start).format('HH:mm') +
                         '{{ gettext(' to ') }}' + moment(event.end).format('HH:mm') + '</p>' +
                         '<p><a href="' + event.url + '">{{ gettext('Page course') }}' + '</a></p>' +
-                        '<p> ' + event.description + '</p>'
+                        '<p> ' + event.description + '</p>' +
+                        '<p> ' + event.classrooms + '</p>'
                     },
                     position: {
                         my: 'top center',  // Position my top left...
@@ -290,6 +225,5 @@
             editable: false,
             droppable: false
         });
-
     </script>
 {% endblock %}

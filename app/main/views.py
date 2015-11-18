@@ -51,13 +51,13 @@ def change_language(lang):
 
 def user_feeds_query():
     """Query statement to retrieve user's related feeds."""
-    if not current_user.courses.count():
+    if not current_user.courses:
         return
     professor_ids = set([c.professor_id for c in current_user.courses])
     return Feed.query.filter(Feed.professor_id.in_(professor_ids))
 
 
-def get_latest_feeds(n=5):
+def get_latest_feeds(n=3):
     query = user_feeds_query()
     if query is not None:
         return query.order_by(Feed.timestamp.desc()).limit(n).all()
@@ -125,14 +125,17 @@ def show_feeds():
 @main.route('/download')
 @login_required
 def download_calendar():
-    lessons = [l for c in current_user.courses for l in c.calendar.lessons]
+    add_course_info = lambda l, url, title: l.update({'url': url, 'title': title}) or l
+    lessons = [add_course_info(l.to_json(), c.url, '%s [%s]' % (c.name, c.code))
+               for c in current_user.courses
+               for l in c.calendar.lessons]
     calendar = Calendar()
     for l in lessons:
         calendar.events.append(Event(
-            name=l.title,
-            begin=l.start,
-            end=l.end,
-            description=l.description))
+            name=l['title'],
+            begin=l['start'],
+            end=l['end'],
+            description=l['description']))
     response = make_response(str(calendar))
     response.headers["Content-Disposition"] = "attachment; filename=calendar.ics"
     return response

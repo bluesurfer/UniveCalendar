@@ -9,7 +9,7 @@ def get_locations():
     return jsonify({'locations': [l.to_json() for l in locations]})
 
 
-@api.route('/locations/<int:id>/lessons')
+@api.route('/locations/<int:id>/classrooms')
 def get_locations_courses(id):
     location = Location.query.get_or_404(id)
-    return jsonify({'lessons': [l.to_json() for l in location.lessons]})
+    return jsonify({'classrooms': [c.to_json() for c in location.classrooms]})

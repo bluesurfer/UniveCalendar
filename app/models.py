@@ -1,10 +1,10 @@
 import hashlib
 
-from sqlalchemy import event, inspect
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, \
     URLSafeTimedSerializer
 
-from datetime import datetime, timedelta
+from sqlalchemy import inspect, event
+from datetime import datetime
 from flask import request, current_app, render_template
 from flask.ext.login import UserMixin
 from flask.ext.sqlalchemy import SignallingSession
@@ -13,14 +13,22 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import db, login_manager, bot
 
+
 follows = db.Table('follows', db.Model.metadata,
                    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-                   db.Column('course_id', db.Integer,
-                             db.ForeignKey('courses.id')))
+                   db.Column('course_id', db.Integer, db.ForeignKey('courses.id')))
 
 reads = db.Table('reads', db.Model.metadata,
                  db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
                  db.Column('feed_id', db.Integer, db.ForeignKey('feeds.id')))
+
+held_at = db.Table('held_at', db.Model.metadata,
+                   db.Column('lesson_id', db.Integer, db.ForeignKey('lessons.id')),
+                   db.Column('classroom_id', db.Integer, db.ForeignKey('classrooms.id')))
+
+courses_curriculums = db.Table('courses_curriculums', db.Model.metadata,
+                               db.Column('course_id', db.Integer, db.ForeignKey('courses.id')),
+                               db.Column('curriculum_id', db.Integer, db.ForeignKey('curriculums.id')))
 
 
 class User(UserMixin, db.Model):
@@ -34,16 +42,12 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     telegram_chat_id = db.Column(db.String(64))
-    credits_count = db.Column(db.Integer, default=0)
-    lessons_count = db.Column(db.Integer, default=0)
     courses = db.relationship('Course',
-                              backref='user_id',
                               secondary=follows,
-                              lazy='dynamic')
+                              backref='users')
     feeds = db.relationship('Feed',
-                            backref='user_id',
                             secondary=reads,
-                            lazy='dynamic')
+                            backref='users')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -62,6 +66,12 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def count_credits(self):
+        return sum([c.credit for c in self.courses])
+
+    def count_lessons(self):
+        return sum([len(c.calendar.lessons) for c in self.courses])
+
     def gravatar(self, size=100, default='identicon', rating='g'):
         if request.is_secure:
             url = 'https://secure.gravatar.com/avatar'
@@ -75,44 +85,36 @@ class User(UserMixin, db.Model):
     def follow(self, course):
         if not self.is_following(course):
             self.courses.append(course)
-            self.credits_count += course.credit
-            self.lessons_count += course.calendar.lessons.count()
-            db.session.add(course)
             db.session.commit()
             return True
         return False
 
     def unfollow(self, course):
-        c = self.courses.filter_by(id=course.id).first()
-        if c:
-            self.courses.remove(c)
-            self.credits_count -= course.credit
-            self.lessons_count -= course.calendar.lessons.count()
+        if self.is_following(course):
+            self.courses.remove(course)
             db.session.commit()
             return True
         return False
 
     def is_following(self, course):
-        return self.courses.filter_by(id=course.id).first() is not None
+        return course in self.courses
 
     def read(self, feed):
         if not self.has_read(feed):
             self.feeds.append(feed)
-            db.session.add(feed)
             db.session.commit()
             return True
         return False
 
     def unread(self, feed):
-        f = self.feeds.filter_by(id=feed.id).first()
-        if f:
-            self.feeds.remove(f)
+        if self.has_read:
+            self.feeds.remove(feed)
             db.session.commit()
             return True
         return False
 
     def has_read(self, feed):
-        return self.feeds.filter_by(id=feed.id).first() is not None
+        return feed in self.feeds
 
     def generate_reset_token(self, expiration=3600):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
@@ -127,7 +129,6 @@ class User(UserMixin, db.Model):
         if data.get('reset') != self.id:
             return False
         self.password = new_password
-        db.session.add(self)
         db.session.commit()
         return True
 
@@ -144,7 +145,6 @@ class User(UserMixin, db.Model):
         if data.get('confirm') != self.id:
             return False
         self.confirmed = True
-        db.session.add(self)
         db.session.commit()
         return True
 
@@ -168,7 +168,6 @@ class User(UserMixin, db.Model):
         self.email = new_email
         self.avatar_hash = hashlib.md5(
             self.email.encode('utf-8')).hexdigest()
-        db.session.add(self)
         db.session.commit()
         return True
 
@@ -187,7 +186,6 @@ class User(UserMixin, db.Model):
 
     def ping(self):
         self.last_seen = datetime.utcnow()
-        db.session.add(self)
         db.session.commit()
 
     def to_json(self):
@@ -210,23 +208,20 @@ class Professor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
+    username = db.Column(db.String(64))
     email = db.Column(db.String(64))
     avatar_hash = db.Column(db.String(32))
-    courses = db.relationship('Course',
-                              backref='professor',
-                              lazy='select')
-    lessons = db.relationship('Lesson',
-                              backref='professor',
-                              lazy='select')
-    feeds = db.relationship('Feed',
-                            backref='professor',
-                            lazy='dynamic')
+    courses = db.relationship('Course', backref='professor')
+    feeds = db.relationship('Feed', backref='professor')
 
     def __init__(self, **kwargs):
         super(Professor, self).__init__(**kwargs)
         if self.email is not None and self.avatar_hash is None:
             self.avatar_hash = hashlib.md5(
                 self.email.encode('utf-8')).hexdigest()
+
+    def __repr__(self):
+        return '%s %s' % (self.first_name.title(), self.last_name.title())
 
     def gravatar(self, size=100, default='identicon', rating='g'):
         if request.is_secure:
@@ -238,29 +233,12 @@ class Professor(db.Model):
         return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
             url=url, hash=hash, size=size, default=default, rating=rating)
 
-    @staticmethod
-    def generate_fake(count=100):
-        from sqlalchemy.exc import IntegrityError
-        from random import seed
-        import forgery_py
-
-        seed()
-
-        for i in range(count):
-            p = Professor(first_name=forgery_py.name.first_name(),
-                          last_name=forgery_py.name.last_name(),
-                          email=forgery_py.internet.email_address())
-            db.session.add(p)
-            try:
-                db.session.commit()
-            except IntegrityError:
-                db.session.rollback()
-
     def to_json(self):
         json_user = {
             'id': self.id,
             'first_name': self.first_name,
             'last_name': self.last_name,
+            'username': self.username,
             'email': self.email,
             'avatar_hash': self.avatar_hash
         }
@@ -271,52 +249,32 @@ class Degree(db.Model):
     __tablename__ = 'degrees'
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(32), unique=True, index=True)
-    name = db.Column(db.Text)
-    category = db.Column(db.Enum('LM', 'L', 'D2', 'PAS', name='categories'),
-                         nullable=False)
-    curriculums = db.relationship('Curriculum',
-                                  backref='degree',
-                                  lazy='dynamic')
-
-    @staticmethod
-    def generate_fake(count=100):
-        from sqlalchemy.exc import IntegrityError
-        from random import seed, choice
-        import forgery_py
-
-        seed()
-
-        for i in range(count):
-            d = Degree(code=forgery_py.basic.text(3),
-                       name=forgery_py.lorem_ipsum.title(),
-                       category=choice(['bachelor', 'master']))
-            db.session.add(d)
-            try:
-                db.session.commit()
-            except IntegrityError:
-                db.session.rollback()
+    name = db.Column(db.Text, nullable=False)
+    category_code = db.Column(db.Enum('LM', 'L', 'D2', 'PAS', 'M1-270',
+                                     name='categories'))
+    category_desc = db.Column(db.Text)
+    curriculums = db.relationship('Curriculum', backref='degree')
 
     def to_json(self):
         json_degree = {
             'id': self.id,
             'code': self.code,
             'name': self.name,
-            'category': self.category
+            'category': self.category_desc
         }
         return json_degree
 
 
 class Curriculum(db.Model):
     __tablename__ = 'curriculums'
-    __table_args__ = (db.UniqueConstraint('code',
-                                          'degree_id'),)
+    __table_args__ = (db.UniqueConstraint('code', 'degree_id'),)
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(32))
     name = db.Column(db.Text)
     degree_id = db.Column(db.Integer, db.ForeignKey('degrees.id'))
     courses = db.relationship('Course',
-                              backref='curriculum',
-                              lazy='dynamic')
+                              secondary=courses_curriculums,
+                              backref='curriculums')
 
     def to_json(self):
         json_curriculum = {
@@ -328,37 +286,11 @@ class Curriculum(db.Model):
         return json_curriculum
 
 
-class Calendar(db.Model):
-    __tablename__ = 'calendars'
-    id = db.Column(db.Integer, primary_key=True)
-    courses = db.relationship('Course',
-                              backref='calendar',
-                              lazy='dynamic')
-    lessons = db.relationship('Lesson',
-                              backref='calendar',
-                              lazy='dynamic')
-
-    @property
-    def url(self):
-        return 'http://www.unive.it/data/insegnamento/%s' % self.id
-
-    def to_json(self):
-        json_calendar = {
-            'id': self.id,
-            'url': self.url,
-        }
-        return json_calendar
-
-
 class Course(db.Model):
     __tablename__ = 'courses'
-    __table_args__ = (db.UniqueConstraint('code',
-                                          'name',
-                                          'curriculum_id',
-                                          'professor_id',
-                                          'partition'),)
+    __table_args__ = (db.UniqueConstraint('id',
+                                          'name'),)
     id = db.Column(db.Integer, primary_key=True)
-    id_hash = db.Column(db.String(128), unique=True)
     code = db.Column(db.String(16))
     name = db.Column(db.Text)
     field = db.Column(db.String(16))
@@ -367,47 +299,12 @@ class Course(db.Model):
     period = db.Column(db.String(32))
     year = db.Column(db.Integer)
     partition = db.Column(db.String(32))
-    curriculum_id = db.Column(db.Integer, db.ForeignKey('curriculums.id'))
-    professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'), )
     calendar_id = db.Column(db.Integer, db.ForeignKey('calendars.id'))
-    users = db.relationship('User',
-                            secondary=follows,
-                            backref=db.backref('course_id', lazy='dynamic'),
-                            lazy='select')
+    professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'))
 
     @property
     def url(self):
-        return self.calendar.url
-
-    @staticmethod
-    def generate_fake(count=100):
-        from sqlalchemy.exc import IntegrityError
-        from random import seed, randint
-        import forgery_py
-
-        seed()
-
-        professor_count = Professor.query.count()
-        degree_count = Degree.query.count()
-
-        for i in range(count):
-            d = Degree.query.offset(randint(0, degree_count - 1)).first()
-            p = Professor.query.offset(randint(0, professor_count - 1)).first()
-            c = Course(code=forgery_py.basic.text(5).upper(),
-                       url=forgery_py.internet.domain_name(),
-                       name=forgery_py.lorem_ipsum.title(),
-                       field=forgery_py.basic.text(5).upper(),
-                       credit=randint(0, 12),
-                       period='1',
-                       year=randint(1, 3),
-                       partition='',
-                       degree=d,
-                       professor=p)
-            db.session.add(c)
-            try:
-                db.session.commit()
-            except IntegrityError:
-                db.session.rollback()
+        return 'http://www.unive.it/data/insegnamento/%s' % self.id
 
     def to_json(self):
         json_course = {
@@ -415,8 +312,7 @@ class Course(db.Model):
             'code': self.code,
             'url': self.url,
             'name': self.name,
-            'degree': self.curriculum.degree.name,
-            'curriculum': self.curriculum.code,
+            'degrees': ', '.join(set(c.degree.name for c in self.curriculums)),
             'field': self.field,
             'credit': self.credit,
             'total_credit': self.total_credit,
@@ -424,11 +320,20 @@ class Course(db.Model):
             'year': self.year,
             'calendar': self.calendar_id,
             'partition': self.partition,
-            'professor': u'{first_name} {last_name}'.format(
-                first_name=self.professor.first_name,
-                last_name=self.professor.last_name)
+            'professor': str(self.professor) if self.professor else None
         }
         return json_course
+
+
+class Calendar(db.Model):
+    __tablename__ = 'calendars'
+    id = db.Column(db.Integer, primary_key=True)
+    courses = db.relationship('Course', backref='calendar')
+    lessons = db.relationship('Lesson', backref='calendar')
+
+    def to_json(self):
+        json_calendar = {'id': self.id}
+        return json_calendar
 
 
 class Lesson(db.Model):
@@ -438,14 +343,14 @@ class Lesson(db.Model):
                                           'calendar_id',
                                           'description'),)
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.Text)
     start = db.Column(db.DateTime(), nullable=False)
     end = db.Column(db.DateTime(), nullable=False)
-    has_changed = db.Column(db.Boolean, default=False)
     description = db.Column(db.Text)
-    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), )
-    professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'), )
-    calendar_id = db.Column(db.Integer, db.ForeignKey('calendars.id'))
+    has_changed = db.Column(db.Boolean, default=False)
+    calendar_id = db.Column(db.Integer, db.ForeignKey('calendars.id'), index=True)
+    classrooms = db.relationship('Classroom',
+                                 secondary=held_at,
+                                 backref='lessons')
 
     @property
     def duration(self):
@@ -455,46 +360,18 @@ class Lesson(db.Model):
     def past(self):
         return self.end <= datetime.utcnow()
 
-    @staticmethod
-    def generate_fake(count=100):
-        from sqlalchemy.exc import IntegrityError
-        from random import seed, randint
-        import forgery_py
-
-        seed()
-
-        course_count = Course.query.count()
-        location_count = Location.query.count()
-        for i in range(count):
-            c = Course.query.offset(randint(0, course_count - 1)).first()
-            loc = Location.query.offset(randint(0, location_count - 1)).first()
-            start = datetime.combine(forgery_py.date.date(),
-                                     datetime.min.time())
-            start += timedelta(hours=randint(8, 15))
-            l = Lesson(title=forgery_py.lorem_ipsum.title(),
-                       start=start,
-                       end=start + timedelta(hours=randint(1, 4)),
-                       url=forgery_py.internet.domain_name(),
-                       course=c,
-                       location=loc)
-
-            db.session.add(l)
-            try:
-                db.session.commit()
-            except IntegrityError:
-                db.session.rollback()
-
     def to_json(self):
         json_lesson = {
             'id': self.id,
-            'title': self.title,
             'start': self.start.strftime('%Y-%m-%d %H:%M:00'),
             'end': self.end.strftime('%Y-%m-%d %H:%M:00'),
             'has_changed': self.has_changed,
-            'description': 'Prof. %s %s, %s' % (self.professor.first_name, self.professor.last_name, self.description),
+            'description': self.description,
             'color': '#009688',
             'textColor': '#fff',
-            'url': self.calendar.url,
+            'classrooms': ', '.join(c.name + ' ' +
+                                    c.location.address
+                                    for c in self.classrooms)
         }
         if self.has_changed and not self.past:
             json_lesson['color'] = '#FFC107'
@@ -517,8 +394,7 @@ def on_lesson_change_event(lesson):
     old_end_value = get_old_value(end_state)
     if old_start_value or old_end_value:
         new_feed = Feed(title='Modifica orario',
-                        body=render_template(
-                            'messages/changed_schedule_feed.txt').format(
+                        body=render_template('messages/changed_schedule_feed.txt').format(
                             title=lesson.title,
                             day=start_state.value.strftime('%d.%m.%Y'),
                             start=start_state.value.strftime('%H:%M %d.%m.%Y'),
@@ -535,6 +411,31 @@ def receive_after_flush(session, flush_context, instances):
             on_lesson_change_event(changed_obj)
 
 
+class Classroom(db.Model):
+    __tablename__ = 'classrooms'
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(64), unique=True)
+    name = db.Column(db.Text)
+    capacity = db.Column(db.Integer)
+    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
+
+    def to_json(self):
+        json_classroom = {
+            'id': self.id,
+            'code': self.code,
+            'name': self.name,
+            'capacity': self.capacity,
+        }
+        if self.location:
+            json_classroom.update({
+                'address': self.location.address,
+                'lat': float(self.location.lat) if self.location.lat else None,
+                'lng': float(self.location.lng) if self.location.lng else None,
+                'polyline': self.location.polyline
+            })
+        return json_classroom
+
+
 class Location(db.Model):
     __tablename__ = 'locations'
     __table_args__ = (db.UniqueConstraint('name',
@@ -543,36 +444,20 @@ class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(32), unique=True)
     name = db.Column(db.Text)
+    address = db.Column(db.Text)
     lat = db.Column(db.Float(10, 6))
     lng = db.Column(db.Float(10, 6))
-    lessons = db.relationship('Lesson',
-                              backref='location',
-                              lazy='dynamic')
-
-    @staticmethod
-    def generate_fake(count=100):
-        from sqlalchemy.exc import IntegrityError
-        from random import seed
-        import forgery_py
-
-        seed()
-
-        for i in range(count):
-            l = Location(city=forgery_py.address.city(),
-                         address=forgery_py.address.street_address(),
-                         coordinates='')
-            db.session.add(l)
-            try:
-                db.session.commit()
-            except IntegrityError:
-                db.session.rollback()
+    polyline = db.Column(db.Text)
+    classrooms = db.relationship('Classroom', backref='location')
 
     def to_json(self):
         json_location = {
             'id': self.id,
             'name': self.name,
-            'lat': float(self.lat),
-            'lng': float(self.lng)
+            'address': self.address,
+            'lat': float(self.lat) if self.lat else None,
+            'lng': float(self.lng) if self.lng else None,
+            'polyline': self.polyline
         }
         return json_location
 
@@ -584,10 +469,6 @@ class Feed(db.Model):
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'), nullable=False)
-    users = db.relationship('User',
-                            secondary=reads,
-                            backref=db.backref('feed_id', lazy='dynamic'),
-                            lazy='dynamic')
 
     @property
     def author(self):
@@ -596,31 +477,6 @@ class Feed(db.Model):
     @property
     def gravatar(self):
         return self.professor.gravatar()
-
-    @staticmethod
-    def generate_fake(count=100):
-        from sqlalchemy.exc import IntegrityError
-        from random import seed, randint
-        import forgery_py
-
-        seed()
-
-        professor_count = Professor.query.count()
-        for i in range(count):
-            p = Professor.query.offset(randint(0, professor_count - 1)).first()
-            timestamp = datetime.combine(forgery_py.date.date(past=True),
-                                         datetime.min.time())
-            timestamp += timedelta(hours=randint(0, 24),
-                                   minutes=randint(0, 59))
-            f = Feed(title=forgery_py.lorem_ipsum.title(),
-                     body=forgery_py.lorem_ipsum.paragraphs(2),
-                     timestamp=timestamp,
-                     professor=p)
-            db.session.add(f)
-        try:
-            db.session.commit()
-        except IntegrityError:
-            db.session.rollback()
 
     def to_json(self):
         json_feed = {
@@ -644,4 +500,4 @@ def on_new_feed(mapper, connection, target):
                              body=target.body))
 
 
-event.listen(Feed, 'after_insert', on_new_feed)
+db.event.listen(Feed, 'after_insert', on_new_feed)
