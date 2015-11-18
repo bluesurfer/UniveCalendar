@@ -14,6 +14,7 @@ db_filename = 'dump.sqlite'
 def to_datetime(row, fieldnames):
     date_format = '%Y-%m-%d %H:%M:%S.%f'
     res = dict(row)
+    res['has_changed'] = bool(res['has_changed'])
     for f in fieldnames:
         res[f] = datetime.datetime.strptime(res[f], date_format)
     return res
