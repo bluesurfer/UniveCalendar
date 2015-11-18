@@ -1,0 +1,8 @@
+<p>Ciao {{ user.username }},</p>
+<p>Benvenuto su <b>UniveCalendar</b>!</p>
+<p>Per confermare il tuo account <a href="{{ url_for('auth.change_email', token=token, _external=True) }}">clicca qui</a>.</p>
+<p>Oppure, copia e incolla il seguente indirizzo nella barra degli indirizzi:</p>
+<p>{{ url_for('auth.change_email', token=token, _external=True) }}</p>
+<p>Cordialmente,</p>
+<p>Il team UniveCalendar</p>
+<p><small>Nota: le risposte a questa email saranno ignorate</small></p>
