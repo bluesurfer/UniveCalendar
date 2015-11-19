@@ -210,26 +210,34 @@ class Professor(db.Model):
     last_name = db.Column(db.String(64), nullable=False)
     username = db.Column(db.String(64))
     email = db.Column(db.String(64))
+    avatar_url = db.Column(db.String(100))
     avatar_hash = db.Column(db.String(32))
     courses = db.relationship('Course', backref='professor')
-    feeds = db.relationship('Feed', backref='professor')
+    feeds = db.relationship('Feed', backref='author')
 
     def __init__(self, **kwargs):
         super(Professor, self).__init__(**kwargs)
-        if self.email is not None and self.avatar_hash is None:
+        if self.email is not None and self.avatar_hash is None \
+                and not self.avatar_url:
             self.avatar_hash = hashlib.md5(
                 self.email.encode('utf-8')).hexdigest()
 
     def __repr__(self):
         return '%s %s' % (self.first_name.title(), self.last_name.title())
 
+    @property
+    def url(self):
+        return 'http://www.unive.it/data/persone/%s' % self.id
+
     def gravatar(self, size=100, default='identicon', rating='g'):
+        if self.avatar_url:
+            return self.avatar_url
+
         if request.is_secure:
             url = 'https://secure.gravatar.com/avatar'
         else:
             url = 'http://www.gravatar.com/avatar'
-        hash = self.avatar_hash or hashlib.md5(
-            self.email.encode('utf-8')).hexdigest()
+        hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
         return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
             url=url, hash=hash, size=size, default=default, rating=rating)
 
@@ -240,6 +248,7 @@ class Professor(db.Model):
             'last_name': self.last_name,
             'username': self.username,
             'email': self.email,
+            'avatar_url': self.avatar_url,
             'avatar_hash': self.avatar_hash
         }
         return json_user
@@ -320,7 +329,7 @@ class Course(db.Model):
             'year': self.year,
             'calendar': self.calendar_id,
             'partition': self.partition,
-            'professor': str(self.professor) if self.professor else None
+            'professor': str(self.professor) + ' (%s)' % self.professor_id if self.professor else None
         }
         return json_course
 
@@ -468,15 +477,9 @@ class Feed(db.Model):
     title = db.Column(db.String(64))
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'), nullable=False)
-
-    @property
-    def author(self):
-        return self.professor.first_name + ' ' + self.professor.last_name
-
-    @property
-    def gravatar(self):
-        return self.professor.gravatar()
+    professor_id = db.Column(db.Integer,
+                             db.ForeignKey('professors.id'),
+                             nullable=False)
 
     def to_json(self):
         json_feed = {
@@ -490,7 +493,7 @@ class Feed(db.Model):
 
 def on_new_feed(mapper, connection, target):
     """Notify users with Telegram message."""
-    followers = [u for c in target.professor.courses
+    followers = [u for c in target.author.courses
                  for u in c.users if u.telegram_chat_id]
     for f in followers:
         bot.send_message(f.telegram_chat_id,

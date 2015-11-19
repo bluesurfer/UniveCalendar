@@ -1,7 +1,7 @@
 from flask import jsonify, request
 
 from . import api
-from ..models import Degree
+from ..models import db, Degree
 
 
 @api.route('/degrees/')
@@ -14,7 +14,7 @@ def get_degrees():
 
 @api.route('/degrees/categories')
 def get_categories():
-    degrees = Degree.query.distinct(Degree.category_code).group_by(Degree.category_code)
+    degrees = db.session.query(Degree.category_code, Degree.category_desc).distinct()
     return jsonify({'categories': [{'id': d.category_code,
                                     'desc': d.category_desc}
                                    for d in degrees]})

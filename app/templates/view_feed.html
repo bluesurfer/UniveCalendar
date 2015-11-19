@@ -12,11 +12,11 @@
 
                 <div class="mail-tools tooltip-demo">
                     <h3><span
-                            class="font-noraml">{{ gettext('Subject:') }} {{ feed.title }}</span>
+                            class="font-normal">{{ gettext('Subject:') }} {{ feed.title }}</span>
                     </h3>
                     <h5>
-                        <span class="pull-right font-noraml">{{ moment(feed.timestamp).format('D MMMM YYYY, hh:mm ') }}</span>
-                        <span class="font-noraml">{{ gettext('From: ') }} </span>{{ feed.professor.email }}
+                        <span class="pull-right font-normal">{{ moment(feed.timestamp).format('D MMMM YYYY, hh:mm ') }}</span>
+                        <span class="font-normal">{{ gettext('From: ') }} </span>{{ feed.author.email }}
                     </h5>
                 </div>
             </div>

@@ -89,7 +89,7 @@ def insertfeed(professor_id):
     p = models.Professor.query.get(professor_id)
     f = models.Feed(title=forgery_py.lorem_ipsum.title(),
                     body=forgery_py.lorem_ipsum.paragraphs(2),
-                    professor=p)
+                    author=p)
 
     db.session.add(f)
     db.session.commit()

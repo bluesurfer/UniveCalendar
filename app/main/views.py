@@ -125,7 +125,7 @@ def show_feeds():
 @main.route('/download')
 @login_required
 def download_calendar():
-    add_course_info = lambda l, url, title: l.update({'url': url, 'title': title}) or l
+    add_course_info = lambda l, u, t: l.update({'url': u, 'title': t}) or l
     lessons = [add_course_info(l.to_json(), c.url, '%s [%s]' % (c.name, c.code))
                for c in current_user.courses
                for l in c.calendar.lessons]
@@ -148,13 +148,16 @@ def follow():
     if not ids:
         flash(gettext('No course selected'), 'warning')
         return redirect(url_for('main.courses'))
+
     added = 0
     courses = Course.query.filter(Course.id.in_(ids))
     for c in courses.all():
         added += current_user.follow(c)
+
     if added > 0:
         flash(ngettext('%(num)s new course added',
-                       '%(num)s new courses added', added), 'info')
+                       '%(num)s new courses added',
+                       added), 'info')
     else:
         flash(gettext('No new course added'), 'warning')
     return redirect(url_for('main.courses'))
@@ -167,13 +170,16 @@ def unfollow():
     if not ids:
         flash(gettext('No course selected'), 'warning')
         return redirect(url_for('main.courses'))
+
     deleted = 0
     courses = Course.query.filter(Course.id.in_(ids))
     for c in courses.all():
         deleted += current_user.unfollow(c)
+
     if deleted > 0:
         flash(ngettext('%(num)s course deleted',
-                       '%(num)s courses deleted', deleted), 'danger')
+                       '%(num)s courses deleted',
+                       deleted), 'danger')
     else:
         flash(gettext('No course deleted'), 'info')
     return redirect(url_for('main.courses'))

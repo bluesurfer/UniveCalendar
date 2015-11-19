@@ -2,20 +2,21 @@
 Synchronize application's database (data from web service).
 """
 import os
+import re
 import json
 import multiprocessing
 import time
 import datetime
 import logging
 
-from urllib2 import urlopen
+from urllib2 import urlopen, HTTPError
 
 from manage import app, db
-
 
 FORMAT = ' %(levelname)s %(asctime)-15s PID:%(process)s - %(message)s'
 logging.basicConfig(level=logging.INFO, format=FORMAT, filename='sync.log')
 basedir = os.path.abspath(os.path.dirname(__file__))
+re_avatar_url = re.compile(r'(\/media\/foto_persone&#x2F;\w&#x2F;.*(.jpg|.png|.jpeg))', flags=re.I)
 
 
 def add_or_update(session, model, search_key=None, **kwargs):
@@ -63,13 +64,16 @@ def merge_professors(json_professors):
     from app.models import Professor
 
     for (i, row) in enumerate(json_professors):
-        logging.info('Processing row %s of %s' % (i + 1, len(json_professors)))
+        logging.info('Processing row %s of %s with id %s' % (i + 1,
+                                                             len(json_professors),
+                                                             row['DOCENTE_ID']))
         add_or_update(
             db.session, Professor, 'id',
             id=row['DOCENTE_ID'],
             first_name=row['NOME'],
             last_name=row['COGNOME'],
             username=row['USERNAME'],
+            avatar_url=get_professor_avatar_url(row['DOCENTE_ID']),
             email=row['MAIL'],
         )
 
@@ -103,6 +107,7 @@ def merge_courses(json_courses):
 
 def merge_lessons(json_lessons):
     from app.models import Lesson, Classroom
+
     date_format = '%Y-%m-%d%H:%M'
     for (i, row) in enumerate(json_lessons):
         logging.info('Processing row %s of %s' % (i + 1, len(json_lessons)))
@@ -161,6 +166,16 @@ def merge_locations(json_locations):
         )
 
 
+def get_professor_avatar_url(prof_id):
+    url = 'http://www.unive.it/data/persone/%s' % prof_id
+    try:
+        avatar = re_avatar_url.search(urlopen(url).read())
+    except HTTPError as e:
+        logging.warning('HTTP error')
+        return
+    return 'http://www.unive.it' + avatar.group(0).replace('&#x2F;', '/') if avatar else None
+
+
 def courses_professors(json_relation):
     from app.models import Course, Professor
 
@@ -214,12 +229,16 @@ def parallel(worker, data, n_process):
 
 
 if __name__ == '__main__':
-
     n_process = 2
     baseurl = 'http://static.unive.it/sitows/didattica/'
     start = time.time()
 
     with app.app_context():
+
+        print('# Merging professors')
+        json_professors = json.load(urlopen((baseurl + 'docenti')))
+        parallel(merge_professors, json_professors, n_process)
+        exit()
 
         print('# Merging locations')
         json_locations = json.load(urlopen((baseurl + 'sedi')))

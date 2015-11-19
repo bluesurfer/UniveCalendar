@@ -7,16 +7,29 @@ from manage import app, db
 
 
 logging.basicConfig(level=logging.INFO)
-
+date_format = '%Y-%m-%d %H:%M:%S.%f'
 db_filename = 'dump.sqlite'
 
 
-def to_datetime(row, fieldnames):
-    date_format = '%Y-%m-%d %H:%M:%S.%f'
+def lesson_handler(row):
     res = dict(row)
     res['has_changed'] = bool(res['has_changed'])
-    for f in fieldnames:
+    for f in ['start', 'end']:
         res[f] = datetime.datetime.strptime(res[f], date_format)
+    return res
+
+
+def user_handler(row):
+    res = dict(row)
+    res['confirmed'] = bool(res['confirmed'])
+    for f in ['last_seen', 'member_since']:
+        res[f] = datetime.datetime.strptime(res[f], date_format)
+    return res
+
+
+def feed_handler(row):
+    res = dict(row)
+    res['timestamp'] = datetime.datetime.strptime(res['timestamp'], date_format)
     return res
 
 
@@ -71,8 +84,7 @@ with sqlite3.connect(db_filename) as conn:
         cursor.execute("SELECT * FROM lessons")
         db.engine.execute(
             models.Lesson.__table__.insert(),
-            [to_datetime(row, ['start', 'end'])
-             for row in cursor.fetchall()])
+            [lesson_handler(row) for row in cursor.fetchall()])
 
         logging.info('Migrating "held_at" ...')
         cursor.execute("SELECT * FROM held_at")
@@ -84,4 +96,22 @@ with sqlite3.connect(db_filename) as conn:
         cursor.execute("SELECT * FROM courses_curriculums")
         db.engine.execute(
             models.courses_curriculums.insert(),
+            [dict(row) for row in cursor.fetchall()])
+
+        logging.info('Migrating "feeds" ...')
+        cursor.execute("SELECT * FROM feeds")
+        db.engine.execute(
+            models.Feed.__table__.insert(),
+            [feed_handler(row) for row in cursor.fetchall()])
+
+        logging.info('Migrating "users" ...')
+        cursor.execute("SELECT * FROM users")
+        db.engine.execute(
+            models.User.__table__.insert(),
+            [user_handler(row) for row in cursor.fetchall()])
+
+        logging.info('Migrating "follows" ...')
+        cursor.execute("SELECT * FROM follows")
+        db.engine.execute(
+            models.follows.insert(),
             [dict(row) for row in cursor.fetchall()])

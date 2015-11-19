@@ -25,7 +25,7 @@
                 <div class="dropdown-messages-box">
                     <a href="{{ feed.author.url }}" class="pull-left">
                         <img alt="image" class="img-circle"
-                             src="{{ feed.gravatar }}">
+                             src="{{ feed.author.gravatar() }}">
                     </a>
 
                     <div class="media-body">
@@ -52,25 +52,21 @@
 {% macro pagination_widget(pagination, endpoint, fragment='') %}
     <div class="btn-group pull-right">
         <a class="btn btn-white btn-sm {% if not pagination.has_prev %}disabled{% endif %}"
-           href="
-                   {% if pagination.has_prev %}{{ url_for(endpoint, page=pagination.prev_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">
+           href="{% if pagination.has_prev %}{{ url_for(endpoint, page=pagination.prev_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">
             <i class="fa fa-arrow-left"></i>
         </a>
         {% for p in pagination.iter_pages() %}
             {% if p %}
                 {% if p == pagination.page %}
-                    <a class="btn btn-white btn-sm active" href="
-                            {{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
+                    <a class="btn btn-white btn-sm active" href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
                 {% else %}
-                    <a class="btn btn-white btn-sm" href="
-                            {{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
+                    <a class="btn btn-white btn-sm" href="{{ url_for(endpoint, page = p, **kwargs) }}{{ fragment }}">{{ p }}</a>
                 {% endif %}
             {% else %}
             {% endif %}
         {% endfor %}
         <a class="btn btn-white btn-sm {% if not pagination.has_next %}disabled{% endif %}"
-           href="
-                   {% if pagination.has_next %}{{ url_for(endpoint, page=pagination.next_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">
+           href="{% if pagination.has_next %}{{ url_for(endpoint, page=pagination.next_num, **kwargs) }}{{ fragment }}{% else %}#{% endif %}">
             <i class="fa fa-arrow-right"></i>
         </a>
     </div>

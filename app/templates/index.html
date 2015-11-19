@@ -83,9 +83,9 @@
                         {% else %}
                             {% for feed in feeds %}
                                 <div class="feed-element">
-                                    <a href="#" class="pull-left">
+                                    <a href="{{ feed.author.url }}" class="pull-left">
                                         <img alt="image" class="img-circle"
-                                             src="{{ feed.gravatar }}">
+                                             src="{{ feed.author.gravatar() }}">
                                     </a>
 
                                     <div class="media-body ">

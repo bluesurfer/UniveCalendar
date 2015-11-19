@@ -408,7 +408,7 @@ msgstr "Avviso"
 
 #: app/templates/feed.html:21 app/templates/view_feed.html:15
 msgid "Subject:"
-msgstr "Oggetto"
+msgstr "Oggetto: "
 
 #: app/templates/feed.html:25 app/templates/view_feed.html:19
 msgid "From: "
