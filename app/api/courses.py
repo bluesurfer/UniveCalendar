@@ -1,5 +1,4 @@
 from flask import jsonify, request, current_app, url_for
-
 from ..models import Course
 from . import api
 
@@ -18,7 +17,7 @@ def get_courses():
     if pagination.has_next:
         next = url_for('api.get_courses', page=page + 1, _external=True)
     return jsonify({
-        'courses': [course.to_json() for course in courses],
+        'courses': [c.to_json() for c in courses],
         'prev': prev,
         'next': next,
         'count': pagination.total
@@ -33,5 +32,21 @@ def get_course(id):
 
 @api.route('/courses/<int:id>/users/')
 def get_course_users(id):
-    c = Course.query.get_or_404(id)
-    return jsonify({'users': [u.to_json() for u in c.users]})
+    course = Course.query.get_or_404(id)
+    page = request.args.get('page', 1, type=int)
+    pagination = course.users.paginate(
+        page, per_page=current_app.config['OBJECTS_PER_PAGE'],
+        error_out=False)
+    users = pagination.items
+    prev = None
+    if pagination.has_prev:
+        prev = url_for('api.get_course_users', page=page - 1, _external=True)
+    next = None
+    if pagination.has_next:
+        next = url_for('api.get_course_users', page=page + 1, _external=True)
+    return jsonify({
+        'users': [u.to_json() for u in users],
+        'prev': prev,
+        'next': next,
+        'count': pagination.total
+    })

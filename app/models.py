@@ -3,7 +3,7 @@ import hashlib
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, \
     URLSafeTimedSerializer
 
-from sqlalchemy import inspect, event
+from sqlalchemy import inspect, event, and_
 from datetime import datetime
 from flask import request, current_app, render_template
 from flask.ext.login import UserMixin
@@ -44,7 +44,8 @@ class User(UserMixin, db.Model):
     telegram_chat_id = db.Column(db.String(64))
     courses = db.relationship('Course',
                               secondary=follows,
-                              backref='users')
+                              backref='users',
+                              lazy='dynamic')
     feeds = db.relationship('Feed',
                             secondary=reads,
                             backref='users')
@@ -70,7 +71,7 @@ class User(UserMixin, db.Model):
         return sum([c.credit for c in self.courses])
 
     def count_lessons(self):
-        return sum([len(c.calendar.lessons) for c in self.courses])
+        return sum([c.calendar.lessons.count() for c in self.courses])
 
     def gravatar(self, size=100, default='identicon', rating='g'):
         if request.is_secure:
@@ -115,6 +116,27 @@ class User(UserMixin, db.Model):
 
     def has_read(self, feed):
         return feed in self.feeds
+
+    def feeds_query(self):
+        if not self.courses:
+            return
+        professor_ids = set([c.professor_id for c in self.courses])
+        return Feed.query.filter(Feed.professor_id.in_(professor_ids))
+
+    def count_feeds(self):
+        query = self.feeds_query()
+        if query is not None:
+            return query.count()
+
+    def count_unread_feeds(self):
+        query = self.feeds_query()
+        if query is not None:
+            return query.filter(~Feed.users.contains(self)).count()
+
+    def get_latest_feeds(self, n=3):
+        query = self.feeds_query()
+        if query is not None:
+            return query.order_by(Feed.timestamp.desc()).limit(n).all()
 
     def generate_reset_token(self, expiration=3600):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
@@ -259,8 +281,7 @@ class Degree(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(32), unique=True, index=True)
     name = db.Column(db.Text, nullable=False)
-    category_code = db.Column(db.Enum('LM', 'L', 'D2', 'PAS', 'M1-270',
-                                     name='categories'))
+    category_code = db.Column(db.Enum('LM', 'L', 'D2', 'PAS', 'M1-270', name='categories'))
     category_desc = db.Column(db.Text)
     curriculums = db.relationship('Curriculum', backref='degree')
 
@@ -283,7 +304,8 @@ class Curriculum(db.Model):
     degree_id = db.Column(db.Integer, db.ForeignKey('degrees.id'))
     courses = db.relationship('Course',
                               secondary=courses_curriculums,
-                              backref='curriculums')
+                              backref='curriculums',
+                              lazy='dynamic')
 
     def to_json(self):
         json_curriculum = {
@@ -297,6 +319,8 @@ class Curriculum(db.Model):
 
 class Course(db.Model):
     __tablename__ = 'courses'
+    __sortable__ = ['code', 'name', 'field',
+                    'period', 'year', 'partition']
     __table_args__ = (db.UniqueConstraint('id',
                                           'name'),)
     id = db.Column(db.Integer, primary_key=True)
@@ -310,6 +334,9 @@ class Course(db.Model):
     partition = db.Column(db.String(32))
     calendar_id = db.Column(db.Integer, db.ForeignKey('calendars.id'))
     professor_id = db.Column(db.Integer, db.ForeignKey('professors.id'))
+
+    def __repr__(self):
+        return '%s [%s]' % (self.name, self.code.upper())
 
     @property
     def url(self):
@@ -329,7 +356,7 @@ class Course(db.Model):
             'year': self.year,
             'calendar': self.calendar_id,
             'partition': self.partition,
-            'professor': str(self.professor) + ' (%s)' % self.professor_id if self.professor else None
+            'professor': str(self.professor)
         }
         return json_course
 
@@ -338,7 +365,12 @@ class Calendar(db.Model):
     __tablename__ = 'calendars'
     id = db.Column(db.Integer, primary_key=True)
     courses = db.relationship('Course', backref='calendar')
-    lessons = db.relationship('Lesson', backref='calendar')
+    lessons = db.relationship('Lesson',
+                              backref='calendar',
+                              lazy='dynamic')
+
+    def lessons_between(self, start, end):
+        return self.lessons.filter(and_(Lesson.start >= start, Lesson.end <= end))
 
     def to_json(self):
         json_calendar = {'id': self.id}
@@ -369,24 +401,20 @@ class Lesson(db.Model):
     def past(self):
         return self.end <= datetime.utcnow()
 
-    def to_json(self):
+    def to_json(self, **kwargs):
         json_lesson = {
             'id': self.id,
             'start': self.start.strftime('%Y-%m-%d %H:%M:00'),
             'end': self.end.strftime('%Y-%m-%d %H:%M:00'),
+            'past': self.past,
             'has_changed': self.has_changed,
             'description': self.description,
-            'color': '#009688',
-            'textColor': '#fff',
             'classrooms': ', '.join(c.name + ' ' +
                                     c.location.address
                                     for c in self.classrooms)
         }
-        if self.has_changed and not self.past:
-            json_lesson['color'] = '#FFC107'
-            json_lesson['textColor'] = '#000'
-        elif self.past:
-            json_lesson['color'] = '#78909C'
+        for key, value in kwargs.iteritems():
+            json_lesson[key] = value
         return json_lesson
 
 

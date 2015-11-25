@@ -1,10 +1,13 @@
 {% import "_macros.html" as macros %}
 
+{# Jinja2 global variables #}
+{% if current_user.is_authenticated %}
+    {% set n_feeds = current_user.count_feeds() %}
+    {% set n_unread_feeds = current_user.count_unread_feeds() %}
+{% endif %}
+
 <!DOCTYPE html>
 <html lang="it">
-
-<html>
-
 <head>
     {% block head %}
 
@@ -52,7 +55,6 @@
         src="//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js"></script>
 <!-- End Cookie Consent plugin -->
 
-
 {% block body %}
 
     <body>
@@ -99,8 +101,8 @@
                         <a href="{{ url_for('main.show_feeds') }}">
                             <i class="fa fa-envelope-o"></i>
                             <span class="nav-label">{{ gettext('Feeds') }}</span>
-                            {% if g.unread_feeds_count %}
-                                <span class="label label-warning pull-right">{{ g.unread_feeds_count }}/ {{ g.total_feeds_count }}</span>
+                            {% if n_unread_feeds > 0 %}
+                                <span class="label label-warning pull-right">{{ n_unread_feeds }}/ {{ n_feeds }}</span>
                             {% endif %}
                         </a>
                     </li>
@@ -143,12 +145,12 @@
                             <a class="dropdown-toggle count-info"
                                data-toggle="dropdown" href="#">
                                 <i class="fa fa-envelope"></i>
-                                {% if g.unread_feeds_count %}
-                                    <span class="label label-warning">{{ g.unread_feeds_count }}</span>
+                                {% if n_unread_feeds > 0 %}
+                                    <span class="label label-warning">{{ n_unread_feeds }}</span>
                                 {% endif %}
                             </a>
                             <ul class="dropdown-menu dropdown-messages">
-                                {{ macros.feeds_navbar_widget(g.latest_feeds, moment) }}
+                                {{ macros.feeds_navbar_widget(current_user.get_latest_feeds(), moment) }}
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -180,11 +182,11 @@
                         <ol class="breadcrumb">
                             {%- for breadcrumb in breadcrumbs -%}
                                 <li{% if breadcrumb.text|lower == active_page %}class="active"{% endif %}>
-                                    {% if loop.last %}
-                                        <b>{{ breadcrumb.text }}</b>
-                                    {% else %}
-                                        <a href="{{ breadcrumb.url }}">{{ breadcrumb.text }}</a>
-                                    {% endif %}
+                                {% if loop.last %}
+                                    <b>{{ breadcrumb.text }}</b>
+                                {% else %}
+                                    <a href="{{ breadcrumb.url }}">{{ breadcrumb.text }}</a>
+                                {% endif %}
                                 </li>
                             {%- endfor -%}
                         </ol>
@@ -216,7 +218,8 @@
 
         <script type=text/javascript>
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-            $USER_ID = {{ current_user.id }}
+            $USER_ID =
+            {{ current_user.id }}
         </script>
     {% endblock %}
     </body>

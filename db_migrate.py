@@ -1,3 +1,6 @@
+"""
+Migrate data from 'db_filename' to app database URL
+"""
 import datetime
 import logging
 import sqlite3

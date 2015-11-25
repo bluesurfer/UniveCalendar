@@ -1,10 +1,11 @@
 from itertools import groupby
-from datetime import datetime
+
+from sqlalchemy import or_, inspect
 
 from flask.ext.login import current_user
 from flask import jsonify, request
 
-from ..models import User
+from ..models import User, Course
 from . import api
 from .errors import forbidden
 
@@ -17,12 +18,33 @@ def get_user(id):
     return jsonify({'user': u.to_json()})
 
 
-@api.route('/users/<int:id>/courses/')
+@api.route('/users/<int:id>/table/courses/')
 def get_user_courses(id):
     u = User.query.get_or_404(id)
     if current_user.id != u.id:
         return forbidden('Insufficient permissions')
-    return jsonify({'courses': [c.to_json() for c in u.courses]})
+
+    limit = min(request.args.get('limit', 5, type=int), 20)
+    offset = request.args.get('offset', 0, type=int)
+    sort = request.args.get('sort', 'id', type=str)
+    descending = request.args.get('order', 'asc', type=str) == 'desc'
+    search = request.args.get('search', '', type=str)
+    column = sort if sort in Course.__sortable__ else 'id'
+
+    if search:
+        query = u.courses.filter(or_(
+            Course.name.like('%' + search + '%'),
+            Course.code.like('%' + search + '%')))
+    else:
+        query = u.courses
+
+    if descending:
+        query = query.order_by(column + ' desc')
+    else:
+        query = query.order_by(column + ' asc')
+
+    return jsonify({'total': query.count(),
+                    'rows': [c.to_json() for c in query[offset:limit + offset]]})
 
 
 @api.route('/users/<int:id>/lessons/')
@@ -31,18 +53,12 @@ def get_user_lessons(id):
     if current_user.id != u.id:
         return forbidden('Insufficient permissions')
 
-    try:
-        start = datetime.strptime(request.args.get('start', ''), '%Y-%m-%d')
-        end = datetime.strptime(request.args.get('end', ''), '%Y-%m-%d')
-    except ValueError:
-        return jsonify({'error': 'invalid date format'})
-
-    # Functions that adds URL and title of the course for this lesson.
-    add_course_info = lambda l, url, title: l.update({'url': url, 'title': title}) or l
-    lessons = [add_course_info(l.to_json(), c.url, '%s [%s]' % (c.name, c.code))
+    start = request.args.get('start', '')
+    end = request.args.get('end', '')
+    lessons = [l.to_json(url=c.url, title=str(c))
                for c in u.courses
-               for l in c.calendar.lessons
-               if l.start >= start and l.end <= end]
+               for l in c.calendar.lessons_between(start, end)]
+
     return jsonify({'lessons': lessons})
 
 
@@ -52,8 +68,11 @@ def get_user_classrooms(id):
     if current_user.id != u.id:
         return forbidden('Insufficient permissions')
 
-    lessons = [l for c in u.courses for l in c.calendar.lessons]
-    classrooms = set(c for l in lessons for c in l.classrooms)
+    classrooms = set(classroom
+                     for course in u.courses
+                     for lesson in course.calendar.lessons
+                     for classroom in lesson.classrooms)
+
     return jsonify({'classrooms': [c.to_json() for c in classrooms]})
 
 
@@ -63,11 +82,15 @@ def get_user_locations(id):
     if current_user.id != u.id:
         return forbidden('Insufficient permissions')
 
-    lessons = [l for c in u.courses for l in c.calendar.lessons]
-    classrooms = set(c for l in lessons for c in l.classrooms)
+    classrooms = set(classroom
+                     for course in u.courses
+                     for lesson in course.calendar.lessons
+                     for classroom in lesson.classrooms)
+
     locations = []
     for location, group in groupby(classrooms, lambda c: c.location):
         json_loc = location.to_json()
         json_loc['classrooms'] = ', '.join(c.name for c in group)
         locations.append(json_loc)
+
     return jsonify({'locations': locations})

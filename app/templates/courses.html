@@ -48,58 +48,49 @@
                                 {{ gettext('Delete courses') }}
                             </button>
                         </div>
-                        <div id="loader1" class="spinner-table">
-                            <p class="lead text-center">{{ gettext("Loading table") }}</p>
 
-                            <div class="sk-spinner sk-spinner-rotating-plane"></div>
-                        </div>
-                        <div id="followedCourses" class="table-container">
-                            <table id="table1"
-                                   data-click-to-select="true"
-                                   data-toolbar="#toolbar"
-                                   data-search="true"
-                                   data-striped="true"
-                                   data-mobile-responsive="true"
-                                   data-select-item-name="course_id"
-                                   data-id-field="id"
-                                   data-minimum-count-columns="2"
-                                   data-show-pagination-switch="true"
-                                   data-pagination="true"
-                                   data-page-list="[10, 25, 50, 100, ALL]">
-                                <thead>
-                                <tr>
-                                    <th data-checkbox="true">{{ gettext('Follow') }}</th>
-                                    <th data-field="id" data-visible="false">
-                                        Id
-                                    </th>
-                                    <th data-field="code" data-align="left"
-                                        data-sortable="true">{{ gettext('Code') }}</th>
-                                    <th data-field="year" data-align="left"
-                                        data-sortable="true"
-                                        data-searchable="false">{{ gettext('Year') }}</th>
-                                    <th data-field="name" data-align="left"
-                                        data-sortable="true"
-                                        data-formatter="urlFormatter">{{ gettext('Name') }}</th>
-                                    <th data-field="url" data-visible="false">
-                                        Url
-                                    </th>
-                                    <th data-field="partition"
-                                        data-align="left"
-                                        data-searchable="false">{{ gettext('Partition') }}</th>
-                                    <th data-field="field" data-align="left"
-                                        data-sortable="true">{{ gettext('Field') }}</th>
-                                    <th data-field="period" data-align="left"
-                                        data-sortable="true">{{ gettext('Period') }}</th>
-                                    <th data-field="professor"
-                                        data-align="left"
-                                        data-sortable="true">{{ gettext('Professor') }}</th>
-                                    <th data-field="credit" data-align="left"
-                                        data-searchable="false">CFU
-                                    </th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
+                        <table id="table1"
+                               data-click-to-select="true"
+                               data-toolbar="#toolbar"
+                               data-search="true"
+                               data-toggle="table"
+                               data-url="{{ url_for('api.get_user_courses', id=current_user.id) }}"
+                               data-striped="true"
+                               data-mobile-responsive="true"
+                               data-side-pagination="server"
+                               data-select-item-name="course_id"
+                               data-id-field="id"
+                               data-minimum-count-columns="2"
+                               data-show-pagination-switch="true"
+                               data-pagination="true"
+                               data-page-list="[10, 25, 50, 100, ALL]">
+                            <thead>
+                            <tr>
+                                <th data-checkbox="true">{{ gettext('Follow') }}</th>
+                                <th data-field="id" data-visible="false">Id</th>
+                                <th data-field="code" data-align="left"
+                                    data-sortable="true">{{ gettext('Code') }}</th>
+                                <th data-field="year" data-align="left"
+                                    data-sortable="true">{{ gettext('Year') }}</th>
+                                <th data-field="name" data-align="left"
+                                    data-sortable="true"
+                                    data-formatter="urlFormatter">{{ gettext('Name') }}</th>
+                                <th data-field="url" data-visible="false">Url </th>
+                                <th data-field="partition"
+                                    data-sortable="true"
+                                    data-align="left">{{ gettext('Partition') }}</th>
+                                <th data-field="field" data-align="left"
+                                    data-sortable="true">{{ gettext('Field') }}</th>
+                                <th data-field="period" data-align="left"
+                                    data-sortable="true">{{ gettext('Period') }}</th>
+                                <th data-field="professor"
+                                    data-align="left">{{ gettext('Professor') }}</th>
+                                <th data-field="credit" data-align="left"
+                                    >CFU
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
                     </form>
                 </div>
             </div>
@@ -210,64 +201,55 @@
                             <hr>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <div id="loader2" class="spinner-table">
-                                        <p class="lead text-center">{{ gettext("Loading table") }}</p>
 
-                                        <div class="sk-spinner sk-spinner-rotating-plane"></div>
-                                    </div>
-                                    <div id="courses" class="table-container">
-                                        <table id="table2"
-                                               data-click-to-select="true"
-                                               data-search="true"
-                                               data-striped="true"
-                                               data-toggle="table"
-                                               data-mobile-responsive="true"
-                                               data-select-item-name="course_id"
-                                               data-id-field="id"
-                                               data-minimum-count-columns="2"
-                                               data-show-pagination-switch="true"
-                                               data-pagination="true"
-                                               data-page-list="[10, 25, 50, 100, ALL]">
-                                            <thead>
-                                            <tr>
-                                                <th data-checkbox="true">{{ gettext('Follow') }}</th>
-                                                <th data-field="id"
-                                                    data-visible="false">Id
-                                                </th>
-                                                <th data-field="code"
-                                                    data-align="left"
-                                                    data-sortable="true">{{ gettext('Code') }}</th>
-                                                <th data-field="year"
-                                                    data-align="left"
-                                                    data-sortable="true"
-                                                    data-searchable="false">{{ gettext('Year') }}</th>
-                                                <th data-field="name"
-                                                    data-align="left"
-                                                    data-sortable="true"
-                                                    data-formatter="urlFormatter">{{ gettext('Name') }}</th>
-                                                <th data-field="url"
-                                                    data-visible="false">Url
-                                                </th>
-                                                <th data-field="partition"
-                                                    data-align="left"
-                                                    data-searchable="false">{{ gettext('Partition') }}</th>
-                                                <th data-field="field"
-                                                    data-align="left"
-                                                    data-sortable="true">{{ gettext('Field') }}</th>
-                                                <th data-field="period"
-                                                    data-align="left"
-                                                    data-sortable="true">{{ gettext('Period') }}</th>
-                                                <th data-field="professor"
-                                                    data-align="left"
-                                                    data-sortable="true">{{ gettext('Professor') }}</th>
-                                                <th data-field="credit"
-                                                    data-align="left"
-                                                    data-searchable="false">CFU
-                                                </th>
-                                            </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
+                                    <table id="table2"
+                                           data-click-to-select="true"
+                                           data-search="true"
+                                           data-striped="true"
+                                           data-toggle="table"
+                                           data-mobile-responsive="true"
+                                           data-select-item-name="course_id"
+                                           data-id-field="id"
+                                           data-minimum-count-columns="2"
+                                           data-show-pagination-switch="true"
+                                           data-pagination="true"
+                                           data-side-pagination="server"
+                                           data-page-list="[10, 25, 50, 100, ALL]">
+                                        <thead>
+                                        <tr>
+                                            <th data-checkbox="true">{{ gettext('Follow') }}</th>
+                                            <th data-field="id" data-visible="false">Id</th>
+                                            <th data-field="code"
+                                                data-align="left"
+                                                data-sortable="true">{{ gettext('Code') }}</th>
+                                            <th data-field="year"
+                                                data-align="left"
+                                                data-sortable="true"
+                                                >{{ gettext('Year') }}</th>
+                                            <th data-field="name"
+                                                data-align="left"
+                                                data-sortable="true"
+                                                data-formatter="urlFormatter">{{ gettext('Name') }}</th>
+                                            <th data-field="url" data-visible="false">Url</th>
+                                            <th data-field="partition"
+                                                data-align="left"
+                                                >{{ gettext('Partition') }}</th>
+                                            <th data-field="field"
+                                                data-align="left"
+                                                data-sortable="true">{{ gettext('Field') }}</th>
+                                            <th data-field="period"
+                                                data-align="left"
+                                                data-sortable="true">{{ gettext('Period') }}</th>
+                                            <th data-field="professor"
+                                                data-align="left"
+                                                data-sortable="true">{{ gettext('Professor') }}</th>
+                                            <th data-field="credit"
+                                                data-align="left"
+                                                >CFU
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
                         </fieldset>
@@ -309,34 +291,10 @@
 
     <script>
 
-        /* Initialize tables
-         -----------------------------------------------------------------*/
-        var tableContainer1 = '#followedCourses',
-                tableContainer2 = '#courses';
-
-        var table1 = '#table1',
-                table2 = '#table2';
-
-        $(tableContainer1).hide();
-        $(tableContainer2).hide();
-
-        $.ajax({
-            url: $SCRIPT_ROOT + '/api/users/{{ current_user.id }}/courses/',
-            dataType: "json",
-            success: function (data) {
-                $(table1).bootstrapTable({
-                    data: data.courses
-                });
-
-                // Highlight the delete button when something is selected.
-                $(table1).on('check.bs.table uncheck.bs.table ' +
-                        'check-all.bs.table uncheck-all.bs.table', function () {
-                    $('#remove').prop('disabled', !$(table1).bootstrapTable('getSelections').length);
-                });
-
-                $('#loader1').hide();
-                $(tableContainer1).show()
-            }
+        // Highlight the delete button when something is selected.
+        $('#table1').on('check.bs.table uncheck.bs.table ' +
+                'check-all.bs.table uncheck-all.bs.table', function () {
+            $('#remove').prop('disabled', !$('#table1').bootstrapTable('getSelections').length);
         });
 
         /* Initialize wizard
@@ -382,12 +340,13 @@
                         url: $SCRIPT_ROOT + '/api/degrees/?cat=' + degreesCat,
                         type: "GET",
                         dataType: "html",
-                        success: function (json) {
+                        success: function ( json ) {
                             var degrees = JSON.parse(json).degrees;
                             var options = '';
                             for (var i = 0; i < degrees.length; i++) {
                                 var d = degrees[i];
-                                options += '<option value="' + d.id + '">' + d.name + ' [' + d.code.toUpperCase() + ']</option>'
+                                options += '<option value="' + d.id + '">' + d.name +
+                                        ' [' + d.code.toUpperCase() + ']</option>'
                             }
                             $('#degrees').html(options).selectpicker('refresh');
                         }
@@ -401,12 +360,13 @@
                         url: $SCRIPT_ROOT + '/api/degrees/' + degreeId + '/curriculums/',
                         type: "GET",
                         dataType: "html",
-                        success: function (json) {
+                        success: function ( json ) {
                             var curriculums = JSON.parse(json).curriculums;
                             var options = '';
                             for (var i = 0; i < curriculums.length; i++) {
                                 var c = curriculums[i];
-                                options += '<option value="' + c.id + '">' + c.name + ' [' + c.code.toUpperCase() + ']</option>'
+                                options += '<option value="' + c.id + '">' + c.name +
+                                        ' [' + c.code.toUpperCase() + ']</option>'
                             }
                             $('#curriculums').html(options).selectpicker('refresh');
                         }
@@ -416,16 +376,8 @@
                 // Populate table of courses
                 if (newIndex === 3) {
                     var curriculumId = $("#curriculums").find("option:selected").val();
-                    $(tableContainer2).hide();
-                    $('#loader2').show();
-                    $.ajax({
-                        url: $SCRIPT_ROOT + '/api/curriculums/' + curriculumId + '/courses/',
-                        dataType: "json",
-                        success: function (data) {
-                            $(table2).bootstrapTable('load', data.courses);
-                            $('#loader2').hide();
-                            $(tableContainer2).show();
-                        }
+                    $('#table2').bootstrapTable('refresh', {
+                        url:  $SCRIPT_ROOT + '/api/curriculums/' + curriculumId + '/table/courses/'
                     });
                 }
 
@@ -446,8 +398,6 @@
             }
         });
 
-        /* Initialize bootstrap-select
-         -----------------------------------------------------------------*/
         $('.selectpicker').selectpicker();
 
         function urlFormatter(value, row) {

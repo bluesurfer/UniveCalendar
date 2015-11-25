@@ -1,6 +1,8 @@
-from flask import jsonify
+from sqlalchemy import or_
+
+from flask import jsonify, request
 from . import api
-from ..models import Curriculum
+from ..models import Curriculum, Course
 
 
 @api.route('/curriculums/')
@@ -9,7 +11,29 @@ def get_curriculums():
     return jsonify({'curriculums': [c.to_json() for c in curriculums]})
 
 
-@api.route('/curriculums/<int:id>/courses/')
+@api.route('/curriculums/<int:id>/table/courses/')
 def get_curriculum_courses(id):
-    curriculum = Curriculum.query.get(id)
-    return jsonify({'courses': [c.to_json() for c in curriculum.courses]})
+    c = Curriculum.query.get_or_404(id)
+    limit = min(request.args.get('limit', 5, type=int), 20)
+    offset = request.args.get('offset', 0, type=int)
+    sort = request.args.get('sort', 'id', type=str)
+    descending = request.args.get('order', 'asc', type=str) == 'desc'
+    search = request.args.get('search', '', type=str)
+    column = sort if sort in Course.__sortable__ else 'id'
+
+    if search:
+        query = c.courses.filter(or_(
+            Course.name.like('%' + search + '%'),
+            Course.code.like('%' + search + '%')))
+    else:
+        query = c.courses
+
+    if descending:
+        query = query.order_by(column + ' desc')
+    else:
+        query = query.order_by(column + ' asc')
+
+    return jsonify({'total': query.count(),
+                    'rows': [c.to_json() for c in query[offset:limit + offset]]})
+
+

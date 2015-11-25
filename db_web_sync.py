@@ -1,5 +1,5 @@
 """
-Synchronize application's database (data from web service).
+Synchronize application's database with data from web service.
 """
 import os
 import re
@@ -12,6 +12,7 @@ import logging
 from urllib2 import urlopen, HTTPError
 
 from manage import app, db
+
 
 FORMAT = ' %(levelname)s %(asctime)-15s PID:%(process)s - %(message)s'
 logging.basicConfig(level=logging.INFO, format=FORMAT, filename='sync.log')
@@ -58,6 +59,16 @@ def merge_degrees(json_degrees):
             name=row['PDS_DES'],
             degree=degree
         )
+
+
+def get_professor_avatar_url(prof_id):
+    url = 'http://www.unive.it/data/persone/%s' % prof_id
+    try:
+        avatar = re_avatar_url.search(urlopen(url).read())
+    except HTTPError as e:
+        logging.warning('HTTP error')
+        return
+    return 'http://www.unive.it' + avatar.group(0).replace('&#x2F;', '/') if avatar else None
 
 
 def merge_professors(json_professors):
@@ -166,16 +177,6 @@ def merge_locations(json_locations):
         )
 
 
-def get_professor_avatar_url(prof_id):
-    url = 'http://www.unive.it/data/persone/%s' % prof_id
-    try:
-        avatar = re_avatar_url.search(urlopen(url).read())
-    except HTTPError as e:
-        logging.warning('HTTP error')
-        return
-    return 'http://www.unive.it' + avatar.group(0).replace('&#x2F;', '/') if avatar else None
-
-
 def courses_professors(json_relation):
     from app.models import Course, Professor
 
@@ -234,11 +235,6 @@ if __name__ == '__main__':
     start = time.time()
 
     with app.app_context():
-
-        print('# Merging professors')
-        json_professors = json.load(urlopen((baseurl + 'docenti')))
-        parallel(merge_professors, json_professors, n_process)
-        exit()
 
         print('# Merging locations')
         json_locations = json.load(urlopen((baseurl + 'sedi')))

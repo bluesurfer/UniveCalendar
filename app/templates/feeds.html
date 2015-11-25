@@ -29,8 +29,12 @@
         <div class="col-lg-12 animated fadeInRight">
             <div class="mail-box-header">
                 <h2>
-                    {{ gettext('Inbox') }} {% if g.unread_feeds_count > 0 %}(
-                    {{ g.unread_feeds_count }}) {% else %} (0) {% endif %}
+                    {{ gettext('Inbox') }}
+                    {% if n_unread_feeds > 0 %}
+                        ({{ n_feeds }})
+                    {% else %}
+                        (0)
+                    {% endif %}
                 </h2>
 
                 <div class="mail-tools tooltip-demo m-t-md">
@@ -38,8 +42,7 @@
                         <button class="btn btn-white btn-sm"
                                 data-toggle="tooltip" data-placement="top"
                                 title="{{ gettext('Select/deselect all') }}">
-                            <input type="checkbox" id="checkAll"
-                                   onchange="selectAll()"/>
+                            <input type="checkbox" id="checkAll" onchange="selectAll()"/>
                         </button>
                         <a href="{{ url_for('main.show_feeds') }}"
                            class="btn btn-white btn-sm" data-toggle="tooltip"
@@ -67,8 +70,7 @@
                         {% for feed in feeds %}
                             <tr class="{% if current_user.has_read(feed) %}read{% else %}unread{% endif %}">
                                 <td class="check-mail">
-                                    <input type="checkbox" class="i-checks"
-                                           value="{{ feed.id }}">
+                                    <input type="checkbox" class="i-checks" value="{{ feed.id }}">
                                 </td>
 
                                 <td class="mail-contact">

@@ -28,16 +28,16 @@
     <div class="row  border-bottom white-bg dashboard-header">
         <div class="col-lg-6">
             <h2>{{ gettext('Welcome %(username)s', username=current_user.username) }}</h2>
-            {% if g.unread_feeds_count %}
-                <small>{{ ngettext('You have %(num)s unread feed.', 'You have %(num)s unread feeds.', g.unread_feeds_count) }}</small>
+            {% if n_unread_feeds %}
+                <small>{{ ngettext('You have %(num)s unread feed.', 'You have %(num)s unread feeds.', n_unread_feeds) }}</small>
             {% endif %}
         </div>
         <div class="col-lg-6">
             <div class="row text-left">
                 <div class="col-xs-4">
                     <div class=" m-l-md">
-                        <span class="h4 font-bold m-t block">{{ current_user.courses|length }}</span>
-                        <small class="text-muted m-b block">{{ ngettext('%(num)s Followed Course', '%(num)s Followed Courses', current_user.courses|length) }}</small>
+                        <span class="h4 font-bold m-t block">{{ current_user.courses.count() }}</span>
+                        <small class="text-muted m-b block">{{ ngettext('%(num)s Followed Course', '%(num)s Followed Courses', current_user.courses.count()) }}</small>
                     </div>
                 </div>
                 <div class="col-xs-4">
@@ -84,8 +84,7 @@
                             {% for feed in feeds %}
                                 <div class="feed-element">
                                     <a href="{{ feed.author.url }}" class="pull-left">
-                                        <img alt="image" class="img-circle"
-                                             src="{{ feed.author.gravatar() }}">
+                                        <img alt="image" class="img-circle" src="{{ feed.author.gravatar() }}">
                                     </a>
 
                                     <div class="media-body ">
@@ -192,6 +191,11 @@
                 url: $SCRIPT_ROOT + '/api/users/{{ current_user.id }}/lessons/',
                 dataType: 'json',
                 success: function (data) {
+                    for (var i = 0; i < data.lessons.length; i++) {
+                        var l = data.lessons[i];
+                        l.textColor = (l.past || !l.has_changed) ? '#fff' : '#000';
+                        l.color = (l.past) ? '#78909C' : ((l.has_changed) ? '#FFC107' : '#009688');
+                    }
                     return data.lessons;
                 }
             }],
