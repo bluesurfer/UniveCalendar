@@ -446,7 +446,7 @@ msgstr "Collega il tuo account Telegram, clicca <a href='%(link)s'>qui</a>"
 #: app/templates/index.html:30
 #, python-format
 msgid "Welcome %(username)s"
-msgstr " <b class='text-muted'>Benvenuto</b> %(username)s!"
+msgstr "Benvenuto %(username)s!"
 
 #: app/templates/index.html:32
 #, python-format

@@ -2,6 +2,7 @@
 
 {# Jinja2 global variables #}
 {% if current_user.is_authenticated %}
+    {% set n_courses = current_user.courses.count() %}
     {% set n_feeds = current_user.count_feeds() %}
     {% set n_unread_feeds = current_user.count_unread_feeds() %}
 {% endif %}

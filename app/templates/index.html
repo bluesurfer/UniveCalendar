@@ -5,15 +5,13 @@
 {% block styles %}
 
     <!-- Full Calendar style -->
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.css"
-          rel="stylesheet">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.print.css"
-          rel='stylesheet' media='print'>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.css" rel="stylesheet">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.print.css" rel='stylesheet' media='print'>
 
     {{ super() }}
 
-    <link href="{{ url_for('static', filename='css/plugins/qtip/jquery.qtip.css') }}"
-          rel='stylesheet'>
+    <!-- Qtip style -->
+    <link href="{{ url_for('static', filename='css/plugins/qtip/jquery.qtip.css') }}" rel='stylesheet'>
 
     <!-- Google Map -->
     <style>
@@ -36,8 +34,8 @@
             <div class="row text-left">
                 <div class="col-xs-4">
                     <div class=" m-l-md">
-                        <span class="h4 font-bold m-t block">{{ current_user.courses.count() }}</span>
-                        <small class="text-muted m-b block">{{ ngettext('%(num)s Followed Course', '%(num)s Followed Courses', current_user.courses.count()) }}</small>
+                        <span class="h4 font-bold m-t block">{{ n_courses }}</span>
+                        <small class="text-muted m-b block">{{ ngettext('%(num)s Followed Course', '%(num)s Followed Courses', n_courses) }}</small>
                     </div>
                 </div>
                 <div class="col-xs-4">
@@ -89,10 +87,10 @@
 
                                     <div class="media-body ">
                                         <small class="pull-right">{{ moment(feed.timestamp).fromNow() }}</small>
-                                        <strong>{{ feed.author }}</strong><br> {{ feed.title }}<br>
+                                        <strong>{{ feed.author }}</strong><br> {{ feed.title|safe }}<br>
 
                                         <div class="well">
-                                            {{ feed.body }}
+                                            {{ feed.body|safe }}
                                         </div>
                                         <small class="text-muted">{{ gettext('Published %(fromnow)s at %(date)s', fromnow=moment(feed.timestamp).fromNow(), date=moment(feed.timestamp).format('D.M.YYYY')) }}</small>
                                     </div>

@@ -12,7 +12,7 @@
 
                 <div class="mail-tools tooltip-demo">
                     <h3><span
-                            class="font-normal">{{ gettext('Subject:') }} {{ feed.title }}</span>
+                            class="font-normal">{{ gettext('Subject:') }} {{ feed.title|safe }}</span>
                     </h3>
                     <h5>
                         <span class="pull-right font-normal">{{ moment(feed.timestamp).format('D MMMM YYYY, HH:mm ') }}</span>
@@ -22,7 +22,7 @@
             </div>
             <div class="mail-box">
                 <div class="mail-body">
-                    {{ feed.body }}
+                    {{ feed.body|safe }}
                 </div>
                 <div class="mail-body text-right tooltip-demo">
                 </div>
