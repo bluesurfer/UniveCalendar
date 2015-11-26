@@ -1,3 +1,6 @@
+"""
+UniveCalendar Database models.
+"""
 import hashlib
 
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, \

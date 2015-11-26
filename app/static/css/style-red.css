@@ -200,7 +200,7 @@ body .body-small .navbar-top-links li:last-child {
 }
 
 .nav > li.active {
-    border-left: 4px solid #19aa8d;
+    border-left: 4px solid #AD0040;
     background: #293846;
 }
 
@@ -329,7 +329,7 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
 }
 
 .navbar-default .special_link a {
-    background: #009688;
+    background: #AD0040;
     color: white;
 }
 
@@ -340,22 +340,22 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
 
 .navbar-default .special_link a span.label {
     background: #fff;
-    color: #009688;
+    color: #AD0040;
 }
 
 .navbar-default .landing_link a {
-    background: #1cc09f;
+    background: #AD0040;
     color: white;
 }
 
 .navbar-default .landing_link a:hover {
-    background: #009688 !important;
+    background: #AD0040 !important;
     color: white;
 }
 
 .navbar-default .landing_link a span.label {
     background: #fff;
-    color: #1cc09f;
+    color: #AD0040;
 }
 
 .logo-element {
@@ -434,7 +434,7 @@ body.canvas-menu .logo-element {
 
 body.mini-navbar .nav-header {
     padding: 0;
-    background-color: #009688;
+    background-color: #AD0040;
 }
 
 body.canvas-menu .nav-header {
@@ -557,7 +557,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 
 .top-navigation .navbar-nav .dropdown-menu > .active > a {
     background: white;
-    color: #009688;
+    color: #AD0040;
     font-weight: bold;
 }
 
@@ -578,7 +578,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 .top-navigation .nav > li a:hover,
 .top-navigation .nav > li a:focus {
     background: #fff;
-    color: #009688;
+    color: #AD0040;
 }
 
 .top-navigation .nav > li.active {
@@ -587,7 +587,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 }
 
 .top-navigation .nav > li.active > a {
-    color: #009688;
+    color: #AD0040;
 }
 
 .top-navigation .navbar-right {
@@ -609,7 +609,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 }
 
 .top-navigation .navbar-brand {
-    background: #009688;
+    background: #AD0040;
     color: #fff;
     padding: 15px 25px;
 }
@@ -645,7 +645,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 }
 
 .navbar-toggle {
-    background-color: #009688;
+    background-color: #AD0040;
     color: #fff;
     padding: 6px 12px;
     font-size: 14px;
@@ -703,7 +703,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 }
 
 .btn-primary.btn-outline {
-    color: #009688;
+    color: #AD0040;
 }
 
 .btn-success.btn-outline {
@@ -731,8 +731,8 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 }
 
 .btn-primary {
-    background-color: #009688;
-    border-color: #009688;
+    background-color: #AD0040;
+    border-color: #AD0040;
     color: #FFFFFF;
 }
 
@@ -741,8 +741,8 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 .btn-primary:active,
 .btn-primary.active,
 .open .dropdown-toggle.btn-primary {
-    background-color: #18a689;
-    border-color: #18a689;
+    background-color: #c20048;
+    border-color: #c20048;
     color: #FFFFFF;
 }
 
@@ -968,7 +968,7 @@ fieldset[disabled] .btn-warning.active {
 .btn-link:active,
 .btn-link.active,
 .open .dropdown-toggle.btn-link {
-    color: #009688;
+    color: #AD0040;
     text-decoration: none;
 }
 
@@ -1178,7 +1178,7 @@ button.dim:active:before {
 
 .label-primary,
 .badge-primary {
-    background-color: #009688;
+    background-color: #AD0040;
     color: #FFFFFF;
 }
 
@@ -1247,7 +1247,7 @@ button.dim:active:before {
     display: block;
     overflow: hidden;
     cursor: pointer;
-    border: 2px solid #009688;
+    border: 2px solid #AD0040;
     border-radius: 2px;
 }
 
@@ -1279,7 +1279,7 @@ button.dim:active:before {
 .onoffswitch-inner:before {
     content: "ON";
     padding-left: 10px;
-    background-color: #009688;
+    background-color: #AD0040;
     color: #FFFFFF;
 }
 
@@ -1295,7 +1295,7 @@ button.dim:active:before {
     width: 20px;
     margin: 0px;
     background: #FFFFFF;
-    border: 2px solid #009688;
+    border: 2px solid #AD0040;
     border-radius: 2px;
     position: absolute;
     top: 0;
@@ -1377,8 +1377,8 @@ button.dim:active:before {
 a.list-group-item.active,
 a.list-group-item.active:hover,
 a.list-group-item.active:focus {
-    background-color: #009688;
-    border-color: #009688;
+    background-color: #AD0040;
+    border-color: #AD0040;
     color: #FFFFFF;
     z-index: 2;
 }
@@ -1641,7 +1641,7 @@ a.list-group-item.active:focus {
 }
 
 .pace .pace-progress {
-    background: #009688;
+    background: #AD0040;
     position: fixed;
     z-index: 2000;
     top: 0;
@@ -1691,11 +1691,11 @@ a.list-group-item.active:focus {
 
 .form-control:focus,
 .single-line:focus {
-    border-color: #009688 !important;
+    border-color: #AD0040 !important;
 }
 
 .has-success .form-control {
-    border-color: #009688;
+    border-color: #AD0040;
 }
 
 .has-warning .form-control {
@@ -1707,7 +1707,7 @@ a.list-group-item.active:focus {
 }
 
 .has-success .control-label {
-    color: #009688;
+    color: #AD0040;
 }
 
 .has-warning .control-label {
@@ -1739,7 +1739,7 @@ a.list-group-item.active:focus {
 }
 
 .noUi-connect {
-    background: none repeat scroll 0 0 #009688;
+    background: none repeat scroll 0 0 #AD0040;
     box-shadow: none;
 }
 
@@ -1811,11 +1811,11 @@ label.error {
 }
 
 .toast {
-    background-color: #009688;
+    background-color: #AD0040;
 }
 
 .toast-success {
-    background-color: #009688;
+    background-color: #AD0040;
 }
 
 .toast-error {
@@ -2036,8 +2036,6 @@ body {
 }
 
 #wrapper {
-    background-image: -webkit-linear-gradient(top, #243645, #455f76);
-    background-image: linear-gradient(to bottom, #243645, #455f76);
     background-color: #2f4050;
 }
 
@@ -2325,7 +2323,7 @@ img.circle-border {
     font-weight: 600;
     padding: 17px 20px;
     text-align: center;
-    background-color: #009688;
+    background-color: #AD0040;
 }
 
 .login-panel {
@@ -2519,10 +2517,7 @@ table.table-mail tr td {
 }
 
 .navy-bg {
-    background-color: #41736D;
-    background-image: -webkit-linear-gradient(top, #55968e, #41736D);
-    background-image: linear-gradient(to bottom, #55968e, #41736D);
-    background-color: #41736D;
+    background-color: #AD0040;
     -webkit-box-shadow: inset 0 0 100px rgba(0, 0, 0, .5);
     box-shadow: inset 0 0 100px rgba(0, 0, 0, .5);
 }
@@ -2552,12 +2547,12 @@ table.table-mail tr td {
 }
 
 .panel-primary {
-    border-color: #009688;
+    border-color: #AD0040;
 }
 
 .panel-primary > .panel-heading {
-    background-color: #009688;
-    border-color: #009688;
+    background-color: #AD0040;
+    border-color: #AD0040;
 }
 
 .panel-success {
@@ -2601,7 +2596,7 @@ table.table-mail tr td {
 }
 
 .progress-bar {
-    background-color: #009688;
+    background-color: #AD0040;
 }
 
 .progress-small,
@@ -3587,8 +3582,8 @@ fieldset[disabled] .btn-danger.active {
 }
 
 .fc-state-active {
-    background-color: #009688;
-    border-color: #009688;
+    background-color: #AD0040;
+    border-color: #AD0040;
     color: #ffffff;
 }
 
@@ -3600,16 +3595,16 @@ fieldset[disabled] .btn-danger.active {
 
 .fc-content .fc-widget-header,
 .fc-content .fc-widget-content {
-    border-color: #009688;
+    border-color: #AD0040;
     font-weight: normal;
 }
 
 .fc-border-separate tbody {
-    background-color: #009688;
+    background-color: #AD0040;
 }
 
 .fc-state-highlight {
-    background: none repeat scroll 0 0 #009688;
+    background: none repeat scroll 0 0 #AD0040;
 }
 
 .external-event {
@@ -3628,31 +3623,16 @@ fieldset[disabled] .btn-danger.active {
 .fc-agenda .fc-event-time,
 .fc-event a {
     padding: 4px 6px;
-    background-color: #009688;
+    background-color: #AD0040;
     /* background color */
-    border-color: #009688;
+    border-color: #AD0040;
     /* border color */
 }
 
 .fc-event-time,
 .fc-event-title {
-    color: #009688;
+    color: #AD0040;
     padding: 0 1px;
-}
-
-/*
- *  Usage:
- *
- *    <div class="sk-spinner sk-spinner-rotating-plane"></div>
- *
- */
-.sk-spinner-rotating-plane.sk-spinner {
-    width: 30px;
-    height: 30px;
-    background-color: #1ab394;
-    margin: 0 auto;
-    -webkit-animation: sk-rotatePlane 1.2s infinite ease-in-out;
-    animation: sk-rotatePlane 1.2s infinite ease-in-out;
 }
 
 @-webkit-keyframes sk-rotatePlane {

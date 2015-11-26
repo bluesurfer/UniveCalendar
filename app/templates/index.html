@@ -6,7 +6,8 @@
 
     <!-- Full Calendar style -->
     <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.css" rel="stylesheet">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.print.css" rel='stylesheet' media='print'>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.print.css" rel='stylesheet'
+          media='print'>
 
     {{ super() }}
 
@@ -88,10 +89,11 @@
                                     <div class="media-body ">
                                         <small class="pull-right">{{ moment(feed.timestamp).fromNow() }}</small>
                                         <strong>{{ feed.author }}</strong><br> {{ feed.title|safe }}<br>
-
-                                        <div class="well">
-                                            {{ feed.body|safe }}
-                                        </div>
+                                        {% if feed.body %}
+                                            <div class="well">
+                                                {{ feed.body|safe }}
+                                            </div>
+                                        {% endif %}
                                         <small class="text-muted">{{ gettext('Published %(fromnow)s at %(date)s', fromnow=moment(feed.timestamp).fromNow(), date=moment(feed.timestamp).format('D.M.YYYY')) }}</small>
                                     </div>
                                 </div>
@@ -172,6 +174,7 @@
     <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 
     <script>
+
         /* initialize the calendar
          -----------------------------------------------------------------*/
         var date = new Date();
@@ -192,7 +195,7 @@
                     for (var i = 0; i < data.lessons.length; i++) {
                         var l = data.lessons[i];
                         l.textColor = (l.past || !l.has_changed) ? '#fff' : '#000';
-                        l.color = (l.past) ? '#78909C' : ((l.has_changed) ? '#FFC107' : '#009688');
+                        l.color = (l.past) ? '#78909C' : ((l.has_changed) ? '#FFC107' : '#AD0040');
                     }
                     return data.lessons;
                 }
