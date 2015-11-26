@@ -2511,7 +2511,7 @@ table.table-mail tr td {
 
 /* BACKGROUNDS */
 .gray-bg {
-    background-color: #f3f3f4;
+    background-color: #EBECED;
 }
 
 .white-bg {
@@ -2523,6 +2523,8 @@ table.table-mail tr td {
     background-image: -webkit-linear-gradient(top, #55968e, #41736D);
     background-image: linear-gradient(to bottom, #55968e, #41736D);
     background-color: #41736D;
+    -webkit-box-shadow: inset 0 0 100px rgba(0, 0, 0, .5);
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, .5);
 }
 
 .blue-bg {
@@ -3489,7 +3491,7 @@ a {
 
 .ibox-title {
     border-radius: 5px 5px 0 0;
-    background: #fff;
+    background: #F5F5F5;
     border-color: #e7eaec;
     border-image: none;
     color: #606a79;
@@ -3693,4 +3695,5 @@ fieldset[disabled] .btn-danger.active {
 
 html, body {
     min-height: 100%;
+    height:100%
 }

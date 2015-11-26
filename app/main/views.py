@@ -51,7 +51,7 @@ def index():
     if current_user.is_authenticated:
         latest_feeds = current_user.get_latest_feeds()
         return render_template('index.html', feeds=latest_feeds)
-    return render_template('welcome.html')
+    return redirect(url_for('auth.login'))
 
 
 @main.route('/courses')
