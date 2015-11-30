@@ -7,7 +7,7 @@ from . import api
 def get_courses():
     page = request.args.get('page', 1, type=int)
     pagination = Course.query.order_by(Course.id.desc()).paginate(
-        page, per_page=current_app.config['COURSES_PER_PAGE'],
+        page, per_page=current_app.config['OBJECTS_PER_PAGE'],
         error_out=False)
     courses = pagination.items
     prev = None
