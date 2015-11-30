@@ -126,7 +126,7 @@ def follow():
     if added > 0:
         flash(ngettext('%(num)s new course added',
                        '%(num)s new courses added',
-                       added), 'info')
+                       added), 'success')
     else:
         flash(gettext('No new course added'), 'warning')
     return redirect(url_for('main.courses'))

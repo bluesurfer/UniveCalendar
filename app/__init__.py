@@ -1,3 +1,6 @@
+"""
+Application's setup module.
+"""
 import telebot
 
 from flask import Flask
@@ -15,8 +18,10 @@ from config import config, Config
 
 
 class CustomJSONEncoder(JSONEncoder):
-    """This class adds support for lazy translation texts to Flask's
-    JSON encoder. This is necessary when flashing translated texts."""
+    """ This class adds support for lazy translation texts to Flask's
+    JSON encoder. This is necessary when flashing translated texts.
+
+    """
     def default(self, obj):
         from speaklater import is_lazy_string
 
@@ -44,6 +49,7 @@ login_manager.login_message = lazy_gettext('Please login to access this page')
 
 
 def create_app(config_name):
+
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     app.json_encoder = CustomJSONEncoder
@@ -56,6 +62,10 @@ def create_app(config_name):
     breadcrumbs.init_app(app)
     moment.init_app(app)
     login_manager.init_app(app)
+
+    if not app.debug and not app.config['SSL_DISABLE']:
+        from flask.ext.sslify import SSLify
+        SSLify(app)
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)

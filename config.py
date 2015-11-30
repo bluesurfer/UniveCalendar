@@ -1,4 +1,8 @@
+"""
+Flask configuration file
+"""
 import os
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -19,7 +23,7 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     UC_MAIL_SUBJECT_PREFIX = '[UniveCalendar]'
-    UC_MAIL_SENDER = 'UniveCalendar Admin <andreacasini88@gmail.com>'
+    UC_MAIL_SENDER = 'UniveCalendar Admin'
     LANGUAGES = {
         'en': 'English',
         'it': 'Italian'

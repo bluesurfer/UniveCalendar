@@ -1,7 +1,13 @@
+"""
+UniveCalendar manager
+
+Usage Example
+-------------
+> python manage.py runserver
+
+"""
 import os
 import sys
-import logging
-import telebot
 
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager
@@ -35,7 +41,9 @@ def connect_user(msg):
 
         Available Commands
         /start <TOKEN> - Authorize bot
-        /stop - Disconnect your connect"""
+        /stop - Disconnect your connect
+
+        """
     bot.reply_to(msg, reply)
 
 
@@ -54,16 +62,10 @@ def stop(msg):
 
 @manager.command
 def runbot():
-    telebot.logger.setLevel(logging.INFO)
+    import logging
+    from telebot import logger
+    logger.setLevel(logging.INFO)
     bot.polling()
-
-
-@manager.command
-def populatedb():
-    os.system('python manage.py cleardb')
-    os.system('python db_update.py locations data/coordinate_sedi.csv')
-    os.system('python db_update.py calendars data/calendars2.json')
-    os.system('python db_update.py courses data/esploso_corsi.csv')
 
 
 @manager.command
@@ -106,7 +108,7 @@ def delaylesson(lesson_id, hours=1):
 
 
 @manager.command
-def adduser():
+def addusers():
     u = models.User(email='bob@unive.it',
                     username='bobby85',
                     confirmed=True,
@@ -121,39 +123,12 @@ def adduser():
     db.session.add(u)
     db.session.commit()
 
-@manager.command
-def addprofessor():
-    p = models.Professor(
-        id=1,
-        first_name='UniveCalendar',
-        last_name='Admin',
-        email='univecalendar@gmail.com')
-    db.session.add(p)
-    db.session.commit()
-
-
-@manager.command
-def deleteusers():
-    models.User.query.delete()
-    db.session.commit()
-
 
 @manager.command
 def dbcreate():
     os.system('python manage.py db init')
     os.system('python manage.py db migrate')
     os.system('python manage.py db upgrade')
-
-
-@manager.command
-def profile(length=25, profile_dir=None):
-    """Start the application under the code profiler."""
-    from werkzeug.contrib.profiler import ProfilerMiddleware
-
-    app.wsgi_app = ProfilerMiddleware(app.wsgi_app,
-                                      restrictions=[length],
-                                      profile_dir=profile_dir)
-    app.run()
 
 
 @manager.command
@@ -174,20 +149,6 @@ def trupdate():
     os.system(pybabel + ' extract -F babel.cfg -k lazy_gettext -o messages.pot app')
     os.system(pybabel + ' update -i messages.pot -d app/translations')
     os.unlink('messages.pot')
-
-
-@manager.command
-def dbupdate():
-    os.system('python db_update.py locations data/coordinate_sedi.csv')
-    os.system('python db_update.py courses data/esploso_corsi.csv')
-    os.system('python db_update.py calendars data/calendars.json')
-
-
-@manager.command
-def dbreset():
-    os.system('rm -rf migrations')
-    os.system('rm data-dev.sqlite')
-    dbcreate()
 
 
 @manager.command

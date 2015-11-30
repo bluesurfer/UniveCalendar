@@ -1,3 +1,6 @@
+"""
+Main blueprint
+"""
 from flask import Blueprint
 from flask.ext import breadcrumbs
 

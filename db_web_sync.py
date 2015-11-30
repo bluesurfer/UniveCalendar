@@ -75,9 +75,8 @@ def merge_professors(json_professors):
     from app.models import Professor
 
     for (i, row) in enumerate(json_professors):
-        logging.info('Processing row %s of %s with id %s' % (i + 1,
-                                                             len(json_professors),
-                                                             row['DOCENTE_ID']))
+        logging.info('Processing row %s of %s with id %s' % (
+            i + 1, len(json_professors), row['DOCENTE_ID']))
         add_or_update(
             db.session, Professor, 'id',
             id=row['DOCENTE_ID'],
