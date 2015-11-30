@@ -87,7 +87,7 @@ def show_feeds():
     if not query:
         return render_template('feeds.html')
     pagination = query.order_by(Feed.timestamp.desc()).paginate(
-        page, per_page=current_app.config['FEEDS_PER_PAGE'],
+        page, per_page=current_app.config['OBJECTS_PER_PAGE'],
         error_out=False)
     feeds = pagination.items
     return render_template('feeds.html', feeds=feeds, pagination=pagination)
