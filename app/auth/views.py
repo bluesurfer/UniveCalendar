@@ -168,8 +168,8 @@ def change_email_request():
                        'auth/email/en/change_email',
                        user=current_user, token=token)
             flash(gettext('An email with instructions to confirm your new email '
-                  'address has been sent to you.'))
-            return redirect(url_for('main.index'))
+                  'address has been sent to you.'), 'success')
+            return redirect(url_for('auth.index'))
         else:
             flash(gettext('Invalid email or password.'))
     return render_template("auth/change_email.html", form=form)

@@ -178,8 +178,8 @@ msgid ""
 "An email with instructions to confirm your new email address has been "
 "sent to you."
 msgstr ""
-"Ti abbiamo inviato una email con le istruzioni per resettare la tua "
-"password."
+"Ti abbiamo inviato una email con le istruzioni per confermare il tuo "
+"nuovo indirizzo email"
 
 #: app/auth/views.py:174
 msgid "Invalid email or password."

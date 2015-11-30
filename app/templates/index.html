@@ -116,7 +116,7 @@
                     <h5>{{ gettext('My calendar') }} </h5>
                 </div>
                 <div class="ibox-content">
-                    {% if not current_user.courses %}
+                    {% if n_courses == 0 %}
                         <div class="alert alert-warning">
                             {{ gettext('You calendar is empty.') }} <a
                                 class="alert-link"
