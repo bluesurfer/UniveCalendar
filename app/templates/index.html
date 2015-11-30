@@ -5,8 +5,8 @@
 {% block styles %}
 
     <!-- Full Calendar style -->
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.css" rel="stylesheet">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.print.css" rel='stylesheet'
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.print.css" rel='stylesheet'
           media='print'>
 
     {{ super() }}
@@ -161,16 +161,16 @@
     {{ super() }}
 
     <!-- Full Calendar -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.js"></script>
     {% if g.locale == 'it' %}
         <script src="{{ url_for('static', filename='js/plugins/fullcalendar/lang/it.js') }}"></script>
     {% endif %}
 
     <!-- Qtip2 -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/basic/jquery.qtip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/basic/jquery.qtip.min.js"></script>
 
     <!-- Google maps -->
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCaDjPvZqIM8iAUhn6PiyX4EaIfW7AbXsA&amp;libraries=geometry&amp;"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaDjPvZqIM8iAUhn6PiyX4EaIfW7AbXsA&amp;libraries=geometry&amp;"></script>
     <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 
     <script>

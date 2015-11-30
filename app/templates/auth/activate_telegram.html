@@ -13,17 +13,11 @@
             </div>
             <div class="ibox-content text-center">
                 <div class="text-center">
-                        <img class="img-responsive"
-                             style="margin: 0 auto;"
-                             src="{{ url_for('static', filename='img/telegram.png') }}"
-                             alt="telegram">
+                    <img class="img-responsive" style="margin: 0 auto;" src="{{ url_for('static', filename='img/telegram.png') }}" alt="telegram">
                     <h1>{{ gettext("Stay up to date!") }}</h1>
-
                     <p>{{ gettext("Don't you want to miss a feed?") }}</p>
-
                     <p>{{ gettext("Click the following link to connect your Telegram account and start receiving updates.") }}</p>
-                    <a class="lead"
-                       href="https://telegram.me/{{ config['BOT_NAME'] }}?start={{ token }}">https://telegram.me/{{ config['BOT_NAME'] }}?start={{ token }}</a>
+                    <a class="lead" href="https://telegram.me/{{ config['BOT_NAME'] }}?start={{ token }}">https://telegram.me/{{ config['BOT_NAME'] }}?start={{ token }}</a>
                 </div>
             </div>
         </div>
