@@ -238,7 +238,7 @@ class Professor(db.Model):
     avatar_url = db.Column(db.String(100))
     avatar_hash = db.Column(db.String(32))
     courses = db.relationship('Course', backref='professor')
-    feeds = db.relationship('Feed', backref='author')
+    feeds = db.relationship('Feed', backref='professor')
 
     def __init__(self, **kwargs):
         super(Professor, self).__init__(**kwargs)
@@ -517,20 +517,20 @@ class Feed(db.Model):
             'id': self.id,
             'body': self.body,
             'timestamp': self.timestamp,
-            'author': self.author
+            'professor': self.professor
         }
         return json_feed
 
 
 def on_new_feed(mapper, connection, target):
     """Notify users with Telegram message."""
-    followers = [u for c in target.author.courses
+    followers = [u for c in target.professor.courses
                  for u in c.users if u.telegram_chat_id]
     for f in followers:
         bot.send_message(f.telegram_chat_id,
-                         '{title}\nFrom: {author}\n{body}'.format(
+                         '{title}\nFrom: {professor}\n{body}'.format(
                              title=target.title,
-                             author=target.author,
+                             professor=target.professor,
                              body=target.body))
 
 

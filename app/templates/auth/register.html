@@ -35,8 +35,7 @@
                         {% endif %}
                     {% endwith %}
 
-                    <form class="m-t" role="form" method='post'
-                          action="{{ url_for('auth.register') }}">
+                    <form class="m-t" role="form" method='post' action="{{ url_for('auth.register') }}">
                         {{ form.csrf_token }}
                         {{ render_field(form.username, type="text", required=True) }}
                         {{ render_field(form.email, type="email", required=True) }}

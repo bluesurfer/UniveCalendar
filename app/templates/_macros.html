@@ -23,14 +23,14 @@
         {% for feed in feeds[:n] %}
             <li>
                 <div class="dropdown-messages-box">
-                    <a href="{{ feed.author.url }}" class="pull-left">
+                    <a href="{{ feed.professor.url }}" class="pull-left">
                         <img alt="image" class="img-circle"
-                             src="{{ feed.author.gravatar() }}">
+                             src="{{ feed.professor.gravatar() }}">
                     </a>
 
                     <div class="media-body">
                         <small class="pull-right">{{ moment(feed.timestamp).fromNow() }}</small>
-                        <strong>{{ feed.author }}</strong><br>{{ feed.title }}<br>
+                        <strong>{{ feed.professor }}</strong><br>{{ feed.title }}<br>
                         <small class="text-muted">{{ gettext('Published %(fromnow)s at %(date)s', fromnow=moment(feed.timestamp).fromNow(), date=moment(feed.timestamp).format('D.M.YYYY')) }}</small>
                     </div>
                 </div>

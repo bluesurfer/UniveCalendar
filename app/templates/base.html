@@ -24,7 +24,7 @@
         <!-- Bootstrap Core CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
-        <!-- Custom Fonts -->
+        <!-- Font Awesome -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
         <!-- Custom CSS -->
@@ -221,8 +221,7 @@
 
         <script type=text/javascript>
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-            $USER_ID =
-            {{ current_user.id }}
+            $USER_ID = {{ current_user.id }}
         </script>
     {% endblock %}
     </body>

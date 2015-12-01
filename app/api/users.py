@@ -1,6 +1,6 @@
 from itertools import groupby
 
-from sqlalchemy import or_, inspect
+from sqlalchemy import or_
 
 from flask.ext.login import current_user
 from flask import jsonify, request
@@ -30,13 +30,12 @@ def get_user_courses(id):
     descending = request.args.get('order', 'asc', type=str) == 'desc'
     search = request.args.get('search', '', type=str)
     column = sort if sort in Course.__sortable__ else 'id'
+    query = u.courses
 
     if search:
-        query = u.courses.filter(or_(
+        query = query.filter(or_(
             Course.name.like('%' + search + '%'),
             Course.code.like('%' + search + '%')))
-    else:
-        query = u.courses
 
     if descending:
         query = query.order_by(column + ' desc')

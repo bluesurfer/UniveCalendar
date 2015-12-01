@@ -5,10 +5,13 @@ from flask.ext.login import login_required, current_user
 from flask.ext.sqlalchemy import get_debug_queries
 from flask.ext.babel import gettext, ngettext, lazy_gettext
 from flask.ext import breadcrumbs
+from sqlalchemy import or_
+
+from forms import SearchFeedForm
 
 from . import main
 from ..auth import auth
-from ..models import Course, Feed
+from ..models import Course, Feed, Professor
 from .. import babel
 
 
@@ -79,18 +82,22 @@ def mark_as_read():
     return redirect(url_for('main.feeds'))
 
 
-@main.route('/feeds')
+@main.route('/feeds', methods=['GET', 'POST'])
 @login_required
 def show_feeds():
+    form = SearchFeedForm()
+    query = current_user.feeds_query().join(Professor)
+    if form.validate_on_submit():
+        search = form.search.data
+        query = query.filter(or_(Feed.title.like('%' + search + '%'),
+                                 Professor.first_name.like('%' + search + '%'),
+                                 Professor.last_name.like('%' + search + '%')))
     page = request.args.get('page', 1, type=int)
-    query = current_user.feeds_query()
-    if not query:
-        return render_template('feeds.html')
     pagination = query.order_by(Feed.timestamp.desc()).paginate(
         page, per_page=current_app.config['OBJECTS_PER_PAGE'],
         error_out=False)
     feeds = pagination.items
-    return render_template('feeds.html', feeds=feeds, pagination=pagination)
+    return render_template('feeds.html', form=form, feeds=feeds, pagination=pagination)
 
 
 @main.route('/download')

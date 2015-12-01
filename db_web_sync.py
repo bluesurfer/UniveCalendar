@@ -122,7 +122,7 @@ def merge_lessons(json_lessons):
     for (i, row) in enumerate(json_lessons):
         logging.info('Processing row %s of %s' % (i + 1, len(json_lessons)))
         classroom = Classroom.query.filter_by(code=row['AULA_ID']).first()
-        if classroom.location.address == 'Via Torino 155, 30170 Venezia Mestre':
+        if classroom:
             start = datetime.datetime.strptime(row['GIORNO'] + row['INIZIO'], date_format)
             end = datetime.datetime.strptime(row['GIORNO'] + row['FINE'], date_format)
             lesson = add_or_update(
@@ -133,9 +133,10 @@ def merge_lessons(json_lessons):
                 calendar_id=row['AR_ID'],
             )
             lesson.classrooms.append(classroom)
+            db.session.add(lesson)
             db.session.commit()
         else:
-            logging.warning('Classroom not found')
+            logging.warn('Classroom not found')
 
 
 def merge_classrooms(json_classrooms):
@@ -259,11 +260,11 @@ if __name__ == '__main__':
         json_lessons = json.load(urlopen((baseurl + 'lezioni')))
         parallel(merge_lessons, json_lessons, n_process)
 
-        print('# Merging courses/curriculums')
+        print('# Merging courses_curriculums')
         json_relation = json.load(urlopen((baseurl + 'corsiinsegnamenti')))
         parallel(courses_curriculums, json_relation, n_process)
 
-        print('# Merging courses/professors')
+        print('# Merging courses_professors')
         json_relation = json.load(urlopen((baseurl + 'insegnamentidocenti')))
         parallel(courses_professors, json_relation, n_process)
 

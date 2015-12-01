@@ -6,13 +6,12 @@
 
     <!-- Full Calendar style -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.print.css" rel='stylesheet'
-          media='print'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.print.css" rel='stylesheet' media='print'>
 
     {{ super() }}
 
     <!-- Qtip style -->
-    <link href="{{ url_for('static', filename='css/plugins/qtip/jquery.qtip.css') }}" rel='stylesheet'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.1/jquery.qtip.min.css" rel='stylesheet'>
 
     <!-- Google Map -->
     <style>
@@ -82,13 +81,13 @@
                         {% else %}
                             {% for feed in feeds %}
                                 <div class="feed-element">
-                                    <a href="{{ feed.author.url }}" class="pull-left">
-                                        <img alt="image" class="img-circle" src="{{ feed.author.gravatar() }}">
+                                    <a href="{{ feed.professor.url }}" class="pull-left">
+                                        <img alt="image" class="img-circle" src="{{ feed.professor.gravatar() }}">
                                     </a>
 
                                     <div class="media-body ">
                                         <small class="pull-right">{{ moment(feed.timestamp).fromNow() }}</small>
-                                        <strong>{{ feed.author }}</strong><br> {{ feed.title|safe }}<br>
+                                        <strong>{{ feed.professor }}</strong><br> {{ feed.title|safe }}<br>
                                         {% if feed.body %}
                                             <div class="well">
                                                 {{ feed.body|safe }}
@@ -163,7 +162,7 @@
     <!-- Full Calendar -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/fullcalendar.min.js"></script>
     {% if g.locale == 'it' %}
-        <script src="{{ url_for('static', filename='js/plugins/fullcalendar/lang/it.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.4.0/lang/it.js"></script>
     {% endif %}
 
     <!-- Qtip2 -->
