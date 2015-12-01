@@ -9,6 +9,7 @@
 
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     {% block head %}
 
@@ -221,7 +222,7 @@
 
         <script type=text/javascript>
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-            $USER_ID = {{ current_user.id }}
+            $USER_ID = {{ current_user.id }};
         </script>
     {% endblock %}
     </body>

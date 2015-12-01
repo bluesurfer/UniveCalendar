@@ -121,7 +121,7 @@ class User(UserMixin, db.Model):
         return feed in self.feeds
 
     def feeds_query(self):
-        if not self.courses:
+        if self.courses.count() == 0:
             return
         professor_ids = set([c.professor_id for c in self.courses])
         return Feed.query.filter(Feed.professor_id.in_(professor_ids))
