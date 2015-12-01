@@ -101,12 +101,6 @@ with sqlite3.connect(db_filename) as conn:
             models.courses_curriculums.insert(),
             [dict(row) for row in cursor.fetchall()])
 
-        logging.info('Migrating "feeds" ...')
-        cursor.execute("SELECT * FROM feeds")
-        db.engine.execute(
-            models.Feed.__table__.insert(),
-            [feed_handler(row) for row in cursor.fetchall()])
-
         logging.info('Migrating "users" ...')
         cursor.execute("SELECT * FROM users")
         db.engine.execute(
@@ -118,3 +112,9 @@ with sqlite3.connect(db_filename) as conn:
         db.engine.execute(
             models.follows.insert(),
             [dict(row) for row in cursor.fetchall()])
+
+        logging.info('Migrating "feeds" ...')
+        cursor.execute("SELECT * FROM feeds")
+        db.engine.execute(
+            models.Feed.__table__.insert(),
+            [feed_handler(row) for row in cursor.fetchall()])
