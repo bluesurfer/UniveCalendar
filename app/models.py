@@ -433,15 +433,16 @@ def on_lesson_change_event(lesson):
     old_start_value = get_old_value(start_state)
     old_end_value = get_old_value(end_state)
     if old_start_value or old_end_value:
-        new_feed = Feed(title='Modifica orario',
-                        body=render_template('messages/changed_schedule_feed.txt').format(
-                            title=lesson.title,
-                            day=start_state.value.strftime('%d.%m.%Y'),
-                            start=start_state.value.strftime('%H:%M %d.%m.%Y'),
-                            end=end_state.value.strftime('%H:%M %d.%m.%Y')),
-                        professor=lesson.professor)
+        for course in lesson.calendar.courses:
+            new_feed = Feed(title='Modifica orario',
+                            body=render_template('messages/changed_schedule_feed.txt').format(
+                                title=course.name,
+                                day=start_state.value.strftime('%d.%m.%Y'),
+                                start=start_state.value.strftime('%H:%M %d.%m.%Y'),
+                                end=end_state.value.strftime('%H:%M %d.%m.%Y')),
+                            professor=lesson.professor)
+            db.session.add(new_feed)
         lesson.has_changed = True
-        db.session.add(new_feed)
 
 
 @event.listens_for(SignallingSession, 'before_flush')
