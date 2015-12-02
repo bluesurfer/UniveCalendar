@@ -440,7 +440,7 @@ def on_lesson_change_event(lesson):
                                 day=start_state.value.strftime('%d.%m.%Y'),
                                 start=start_state.value.strftime('%H:%M %d.%m.%Y'),
                                 end=end_state.value.strftime('%H:%M %d.%m.%Y')),
-                            professor=lesson.professor)
+                            professor=course.professor)
             db.session.add(new_feed)
         lesson.has_changed = True
 
